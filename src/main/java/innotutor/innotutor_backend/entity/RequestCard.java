@@ -18,10 +18,6 @@ public class RequestCard extends Card {
     @JoinColumn(name = "userId")
     private Set<User> respondedTutors = new HashSet<>();
 
-    @ManyToOne()
-    @JoinColumn(name = "userId")
-    private User tutor;
-
     @Column
     private Integer tutorId;
 }
