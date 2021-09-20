@@ -1,48 +1,180 @@
 package innotutor.innotutor_backend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Collection;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@MappedSuperclass
-abstract public class Card {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+@Entity
+public class Card {
     private Integer cardId;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
-    private User creator;
-
-    @Column(insertable = false, updatable = false)
-    private Integer creatorId;
-
-    @Column
-    private String subject;
-
-    @Column
-    private String formatSession;
-
-    @Column
-    private String formatType;
-
-    @Column
+    private Integer subjectId;
     private String description;
+    private String creationDate;
+    private String lastUpdate;
+    private Subject subjectBySubjectId;
+    private Collection<CardEnroll> cardEnrollsByCardId;
+    private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
+    private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
+    private Collection<CardRating> cardRatingsByCardId;
+    private Collection<CardSessionFormat> cardSessionFormatsByCardId;
+    private Collection<CardSessionType> cardSessionTypesByCardId;
+    private Collection<Request> requestsByCardId;
+    private Collection<Service> servicesByCardId;
 
-    @CreationTimestamp
-    @Column(name = "creationDate", insertable = false, updatable = false)
-    private Date creationDate;
+    @Id
+    @Column(name = "card_id", nullable = false)
+    public Integer getCardId() {
+        return cardId;
+    }
 
-    @UpdateTimestamp
-    @Column(name = "lastUpdate", insertable = false)
-    private Date lastUpdate;
+    public void setCardId(Integer cardId) {
+        this.cardId = cardId;
+    }
+
+    @Basic
+    @Column(name = "subject_id", nullable = false)
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    @Basic
+    @Column(name = "description", nullable = true, length = 1024)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Basic
+    @Column(name = "creation_date", nullable = true, length = 256)
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Basic
+    @Column(name = "last_update", nullable = true, length = 256)
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) return false;
+        if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
+        if (description != null ? !description.equals(card.description) : card.description != null) return false;
+        if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) return false;
+        if (lastUpdate != null ? !lastUpdate.equals(card.lastUpdate) : card.lastUpdate != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cardId != null ? cardId.hashCode() : 0;
+        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id", referencedColumnName = "subject_id", nullable = false)
+    public Subject getSubjectBySubjectId() {
+        return subjectBySubjectId;
+    }
+
+    public void setSubjectBySubjectId(Subject subjectBySubjectId) {
+        this.subjectBySubjectId = subjectBySubjectId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<CardEnroll> getCardEnrollsByCardId() {
+        return cardEnrollsByCardId;
+    }
+
+    public void setCardEnrollsByCardId(Collection<CardEnroll> cardEnrollsByCardId) {
+        this.cardEnrollsByCardId = cardEnrollsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardEnrollId")
+    public Collection<CardEnrollSessionFormat> getCardEnrollSessionFormatsByCardId() {
+        return cardEnrollSessionFormatsByCardId;
+    }
+
+    public void setCardEnrollSessionFormatsByCardId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
+        this.cardEnrollSessionFormatsByCardId = cardEnrollSessionFormatsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardEnrollId")
+    public Collection<CardEnrollSessionType> getCardEnrollSessionTypesByCardId() {
+        return cardEnrollSessionTypesByCardId;
+    }
+
+    public void setCardEnrollSessionTypesByCardId(Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
+        this.cardEnrollSessionTypesByCardId = cardEnrollSessionTypesByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<CardRating> getCardRatingsByCardId() {
+        return cardRatingsByCardId;
+    }
+
+    public void setCardRatingsByCardId(Collection<CardRating> cardRatingsByCardId) {
+        this.cardRatingsByCardId = cardRatingsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<CardSessionFormat> getCardSessionFormatsByCardId() {
+        return cardSessionFormatsByCardId;
+    }
+
+    public void setCardSessionFormatsByCardId(Collection<CardSessionFormat> cardSessionFormatsByCardId) {
+        this.cardSessionFormatsByCardId = cardSessionFormatsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<CardSessionType> getCardSessionTypesByCardId() {
+        return cardSessionTypesByCardId;
+    }
+
+    public void setCardSessionTypesByCardId(Collection<CardSessionType> cardSessionTypesByCardId) {
+        this.cardSessionTypesByCardId = cardSessionTypesByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<Request> getRequestsByCardId() {
+        return requestsByCardId;
+    }
+
+    public void setRequestsByCardId(Collection<Request> requestsByCardId) {
+        this.requestsByCardId = requestsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardByCardId")
+    public Collection<Service> getServicesByCardId() {
+        return servicesByCardId;
+    }
+
+    public void setServicesByCardId(Collection<Service> servicesByCardId) {
+        this.servicesByCardId = servicesByCardId;
+    }
 }
