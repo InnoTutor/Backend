@@ -5,29 +5,40 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card_enroll_session_type", schema = "public", catalog = "innotutor")
 public class CardEnrollSessionType {
-    private Integer cardEnrollId;
-    private Integer sessionTypeId;
+    private Long cardEnrollId;
+    private Long sessionTypeId;
+    private Long cardEnrollSessionTypeId;
     private Card cardByCardEnrollId;
     private SessionType sessionTypeBySessionTypeId;
 
     @Basic
-    @Column(name = "card_enroll_id", nullable = false)
-    public Integer getCardEnrollId() {
+    @Column(name = "card_enroll_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardEnrollId() {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Integer cardEnrollId) {
+    public void setCardEnrollId(Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
     @Basic
-    @Column(name = "session_type_id", nullable = false)
-    public Integer getSessionTypeId() {
+    @Column(name = "session_type_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionTypeId() {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Integer sessionTypeId) {
+    public void setSessionTypeId(Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
+    }
+
+    @Id
+    @Column(name = "card_enroll_session_type_id", nullable = false)
+    public Long getCardEnrollSessionTypeId() {
+        return cardEnrollSessionTypeId;
+    }
+
+    public void setCardEnrollSessionTypeId(Long cardEnrollSessionTypeId) {
+        this.cardEnrollSessionTypeId = cardEnrollSessionTypeId;
     }
 
     @Override
@@ -40,6 +51,8 @@ public class CardEnrollSessionType {
         if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;
+        if (cardEnrollSessionTypeId != null ? !cardEnrollSessionTypeId.equals(that.cardEnrollSessionTypeId) : that.cardEnrollSessionTypeId != null)
+            return false;
 
         return true;
     }
@@ -48,6 +61,7 @@ public class CardEnrollSessionType {
     public int hashCode() {
         int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
         result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
+        result = 31 * result + (cardEnrollSessionTypeId != null ? cardEnrollSessionTypeId.hashCode() : 0);
         return result;
     }
 

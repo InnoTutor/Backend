@@ -1,21 +1,22 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 public class Session {
-    private Integer sessionId;
-    private Integer tutorId;
-    private Integer subjectId;
-    private Integer sessionFormatId;
-    private Integer sessionTypeId;
+    private Long sessionId;
+    private Long tutorId;
+    private Long subjectId;
+    private Long sessionFormatId;
+    private Long sessionTypeId;
     private String date;
     private String startTime;
     private String endTime;
     private String description;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private User userByTutorId;
     private Subject subjectBySubjectId;
     private SessionFormat sessionFormatBySessionFormatId;
@@ -24,51 +25,51 @@ public class Session {
 
     @Id
     @Column(name = "session_id", nullable = false)
-    public Integer getSessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(Integer sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
 
     @Basic
-    @Column(name = "tutor_id", nullable = false)
-    public Integer getTutorId() {
+    @Column(name = "tutor_id", nullable = false, insertable = false, updatable = false)
+    public Long getTutorId() {
         return tutorId;
     }
 
-    public void setTutorId(Integer tutorId) {
+    public void setTutorId(Long tutorId) {
         this.tutorId = tutorId;
     }
 
     @Basic
-    @Column(name = "subject_id", nullable = false)
-    public Integer getSubjectId() {
+    @Column(name = "subject_id", nullable = false, insertable = false, updatable = false)
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 
     @Basic
-    @Column(name = "session_format_id", nullable = false)
-    public Integer getSessionFormatId() {
+    @Column(name = "session_format_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionFormatId() {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Integer sessionFormatId) {
+    public void setSessionFormatId(Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
     @Basic
-    @Column(name = "session_type_id", nullable = false)
-    public Integer getSessionTypeId() {
+    @Column(name = "session_type_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionTypeId() {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Integer sessionTypeId) {
+    public void setSessionTypeId(Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -113,22 +114,22 @@ public class Session {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

@@ -1,26 +1,27 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 @Table(name = "session_type", schema = "public", catalog = "innotutor")
 public class SessionType {
-    private Integer sessionTypeId;
+    private Long sessionTypeId;
     private String name;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesBySessionTypeId;
     private Collection<CardSessionType> cardSessionTypesBySessionTypeId;
     private Collection<Session> sessionsBySessionTypeId;
 
     @Id
     @Column(name = "session_type_id", nullable = false)
-    public Integer getSessionTypeId() {
+    public Long getSessionTypeId() {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Integer sessionTypeId) {
+    public void setSessionTypeId(Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -35,22 +36,22 @@ public class SessionType {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

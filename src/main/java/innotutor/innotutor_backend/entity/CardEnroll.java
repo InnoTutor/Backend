@@ -1,77 +1,78 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "card_enroll", schema = "public", catalog = "innotutor")
 public class CardEnroll {
-    private Integer cardEnrollId;
-    private Integer cardId;
-    private Integer userId;
-    private Integer statusId;
-    private String creationDate;
-    private String lastUpdate;
+    private Long cardEnrollId;
+    private Long cardId;
+    private Long userId;
+    private Long statusId;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Card cardByCardId;
     private User userByUserId;
     private EnrollmentStatus enrollmentStatusByStatusId;
 
     @Id
     @Column(name = "card_enroll_id", nullable = false)
-    public Integer getCardEnrollId() {
+    public Long getCardEnrollId() {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Integer cardEnrollId) {
+    public void setCardEnrollId(Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
     @Basic
-    @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
     @Basic
-    @Column(name = "user_id", nullable = false)
-    public Integer getUserId() {
+    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
     @Basic
-    @Column(name = "status_id", nullable = false)
-    public Integer getStatusId() {
+    @Column(name = "status_id", nullable = false, insertable = false, updatable = false)
+    public Long getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(Integer statusId) {
+    public void setStatusId(Long statusId) {
         this.statusId = statusId;
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

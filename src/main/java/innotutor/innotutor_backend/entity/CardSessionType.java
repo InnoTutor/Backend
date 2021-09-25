@@ -5,29 +5,40 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card_session_type", schema = "public", catalog = "innotutor")
 public class CardSessionType {
-    private Integer cardId;
-    private Integer sessionTypeId;
+    private Long cardId;
+    private Long sessionTypeId;
+    private Long cardSessionTypeId;
     private Card cardByCardId;
     private SessionType sessionTypeBySessionTypeId;
 
     @Basic
-    @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
     @Basic
-    @Column(name = "session_type_id", nullable = false)
-    public Integer getSessionTypeId() {
+    @Column(name = "session_type_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionTypeId() {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Integer sessionTypeId) {
+    public void setSessionTypeId(Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
+    }
+
+    @Id
+    @Column(name = "card_session_type_id", nullable = false)
+    public Long getCardSessionTypeId() {
+        return cardSessionTypeId;
+    }
+
+    public void setCardSessionTypeId(Long cardSessionTypeId) {
+        this.cardSessionTypeId = cardSessionTypeId;
     }
 
     @Override
@@ -40,6 +51,8 @@ public class CardSessionType {
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;
+        if (cardSessionTypeId != null ? !cardSessionTypeId.equals(that.cardSessionTypeId) : that.cardSessionTypeId != null)
+            return false;
 
         return true;
     }
@@ -48,6 +61,7 @@ public class CardSessionType {
     public int hashCode() {
         int result = cardId != null ? cardId.hashCode() : 0;
         result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
+        result = 31 * result + (cardSessionTypeId != null ? cardSessionTypeId.hashCode() : 0);
         return result;
     }
 

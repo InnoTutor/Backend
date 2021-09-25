@@ -1,24 +1,25 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 public class Subject {
-    private Integer subjectId;
+    private Long subjectId;
     private String name;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Collection<Card> cardsBySubjectId;
     private Collection<Session> sessionsBySubjectId;
 
     @Id
     @Column(name = "subject_id", nullable = false)
-    public Integer getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -33,22 +34,22 @@ public class Subject {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

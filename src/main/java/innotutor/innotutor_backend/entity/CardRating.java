@@ -1,46 +1,47 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "card_rating", schema = "public", catalog = "innotutor")
 public class CardRating {
-    private Integer cardRatingId;
-    private Integer cardId;
-    private Integer userId;
+    private Long cardRatingId;
+    private Long cardId;
+    private Long userId;
     private Integer mark;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Card cardByCardId;
     private User userByUserId;
 
     @Id
     @Column(name = "card_rating_id", nullable = false)
-    public Integer getCardRatingId() {
+    public Long getCardRatingId() {
         return cardRatingId;
     }
 
-    public void setCardRatingId(Integer cardRatingId) {
+    public void setCardRatingId(Long cardRatingId) {
         this.cardRatingId = cardRatingId;
     }
 
     @Basic
-    @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
     @Basic
-    @Column(name = "user_id", nullable = false)
-    public Integer getUserId() {
+    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -55,22 +56,22 @@ public class CardRating {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

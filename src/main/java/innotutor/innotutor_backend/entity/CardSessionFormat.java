@@ -5,29 +5,40 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card_session_format", schema = "public", catalog = "innotutor")
 public class CardSessionFormat {
-    private Integer cardId;
-    private Integer sessionFormatId;
+    private Long cardId;
+    private Long sessionFormatId;
+    private Long cardSessionFormatId;
     private Card cardByCardId;
     private SessionFormat sessionFormatBySessionFormatId;
 
     @Basic
-    @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
     @Basic
-    @Column(name = "session_format_id", nullable = false)
-    public Integer getSessionFormatId() {
+    @Column(name = "session_format_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionFormatId() {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Integer sessionFormatId) {
+    public void setSessionFormatId(Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
+    }
+
+    @Id
+    @Column(name = "card_session_format_id", nullable = false)
+    public Long getCardSessionFormatId() {
+        return cardSessionFormatId;
+    }
+
+    public void setCardSessionFormatId(Long cardSessionFormatId) {
+        this.cardSessionFormatId = cardSessionFormatId;
     }
 
     @Override
@@ -40,6 +51,8 @@ public class CardSessionFormat {
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
             return false;
+        if (cardSessionFormatId != null ? !cardSessionFormatId.equals(that.cardSessionFormatId) : that.cardSessionFormatId != null)
+            return false;
 
         return true;
     }
@@ -48,6 +61,7 @@ public class CardSessionFormat {
     public int hashCode() {
         int result = cardId != null ? cardId.hashCode() : 0;
         result = 31 * result + (sessionFormatId != null ? sessionFormatId.hashCode() : 0);
+        result = 31 * result + (cardSessionFormatId != null ? cardSessionFormatId.hashCode() : 0);
         return result;
     }
 

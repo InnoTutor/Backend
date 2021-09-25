@@ -1,15 +1,16 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 public class Card {
-    private Integer cardId;
-    private Integer subjectId;
+    private Long cardId;
+    private Long subjectId;
     private String description;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Subject subjectBySubjectId;
     private Collection<CardEnroll> cardEnrollsByCardId;
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
@@ -22,21 +23,21 @@ public class Card {
 
     @Id
     @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
     @Basic
-    @Column(name = "subject_id", nullable = false)
-    public Integer getSubjectId() {
+    @Column(name = "subject_id", nullable = false, insertable = false, updatable = false)
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -51,22 +52,22 @@ public class Card {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

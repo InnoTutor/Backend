@@ -4,29 +4,40 @@ import javax.persistence.*;
 
 @Entity
 public class Service {
-    private Integer tutorId;
-    private Integer cardId;
+    private Long tutorId;
+    private Long cardId;
+    private Long serviceId;
     private User userByTutorId;
     private Card cardByCardId;
 
     @Basic
-    @Column(name = "tutor_id", nullable = false)
-    public Integer getTutorId() {
+    @Column(name = "tutor_id", nullable = false, insertable = false, updatable = false)
+    public Long getTutorId() {
         return tutorId;
     }
 
-    public void setTutorId(Integer tutorId) {
+    public void setTutorId(Long tutorId) {
         this.tutorId = tutorId;
     }
 
     @Basic
-    @Column(name = "card_id", nullable = false)
-    public Integer getCardId() {
+    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(Integer cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
+    }
+
+    @Id
+    @Column(name = "service_id", nullable = false)
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     @Override
@@ -38,6 +49,7 @@ public class Service {
 
         if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) return false;
         if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) return false;
+        if (serviceId != null ? !serviceId.equals(service.serviceId) : service.serviceId != null) return false;
 
         return true;
     }
@@ -46,6 +58,7 @@ public class Service {
     public int hashCode() {
         int result = tutorId != null ? tutorId.hashCode() : 0;
         result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
+        result = 31 * result + (serviceId != null ? serviceId.hashCode() : 0);
         return result;
     }
 

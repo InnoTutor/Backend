@@ -1,26 +1,27 @@
 package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 @Table(name = "session_format", schema = "public", catalog = "innotutor")
 public class SessionFormat {
-    private Integer sessionFormatId;
+    private Long sessionFormatId;
     private String name;
-    private String creationDate;
-    private String lastUpdate;
+    private Timestamp creationDate;
+    private Timestamp lastUpdate;
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsBySessionFormatId;
     private Collection<CardSessionFormat> cardSessionFormatsBySessionFormatId;
     private Collection<Session> sessionsBySessionFormatId;
 
     @Id
     @Column(name = "session_format_id", nullable = false)
-    public Integer getSessionFormatId() {
+    public Long getSessionFormatId() {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Integer sessionFormatId) {
+    public void setSessionFormatId(Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -35,22 +36,22 @@ public class SessionFormat {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true, length = 256)
-    public String getCreationDate() {
+    @Column(name = "creation_date", nullable = true)
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true, length = 256)
-    public String getLastUpdate() {
+    @Column(name = "last_update", nullable = true)
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
