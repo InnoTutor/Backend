@@ -35,9 +35,9 @@ import java.util.List;
 public class TutorCvDTO {
     private Long tutorId;
     private Long cardId;
-    private Integer rating;
+    private Double rating;
     private String description;
     private String subject;
-    private List<String> formatSession;
-    private List<String> formatType;
+    private List<String> sessionFormat;
+    private List<String> sessionType;
 }

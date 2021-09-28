@@ -37,6 +37,6 @@ public class StudentRequestDTO {
     private Long cardId;
     private String description;
     private String subject;
-    private List<String> formatSession;
-    private List<String> formatType;
+    private List<String> sessionFormat;
+    private List<String> sessionType;
 }
