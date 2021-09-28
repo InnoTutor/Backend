@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
+@Table(name = "card", schema = "public", catalog = "innotutor")
 public class Card {
     private Long cardId;
     private Long subjectId;
@@ -36,8 +37,6 @@ public class Card {
     private Timestamp lastUpdate;
     private Subject subjectBySubjectId;
     private Collection<CardEnroll> cardEnrollsByCardId;
-    private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
-    private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
     private Collection<CardRating> cardRatingsByCardId;
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
@@ -45,6 +44,7 @@ public class Card {
     private Collection<Service> servicesByCardId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id", nullable = false)
     public Long getCardId() {
         return cardId;
@@ -137,24 +137,6 @@ public class Card {
 
     public void setCardEnrollsByCardId(Collection<CardEnroll> cardEnrollsByCardId) {
         this.cardEnrollsByCardId = cardEnrollsByCardId;
-    }
-
-    @OneToMany(mappedBy = "cardByCardEnrollId")
-    public Collection<CardEnrollSessionFormat> getCardEnrollSessionFormatsByCardId() {
-        return cardEnrollSessionFormatsByCardId;
-    }
-
-    public void setCardEnrollSessionFormatsByCardId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
-        this.cardEnrollSessionFormatsByCardId = cardEnrollSessionFormatsByCardId;
-    }
-
-    @OneToMany(mappedBy = "cardByCardEnrollId")
-    public Collection<CardEnrollSessionType> getCardEnrollSessionTypesByCardId() {
-        return cardEnrollSessionTypesByCardId;
-    }
-
-    public void setCardEnrollSessionTypesByCardId(Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
-        this.cardEnrollSessionTypesByCardId = cardEnrollSessionTypesByCardId;
     }
 
     @OneToMany(mappedBy = "cardByCardId")

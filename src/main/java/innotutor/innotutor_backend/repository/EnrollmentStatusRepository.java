@@ -21,16 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend;
+package innotutor.innotutor_backend.repository;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import innotutor.innotutor_backend.entity.EnrollmentStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@SpringBootApplication
-public class InnotutorBackendApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(InnotutorBackendApplication.class, args);
-    }
-
+@Repository
+public interface EnrollmentStatusRepository extends JpaRepository<EnrollmentStatus, Long> {
+    EnrollmentStatus findEnrollmentStatusByStatus(String status);
 }

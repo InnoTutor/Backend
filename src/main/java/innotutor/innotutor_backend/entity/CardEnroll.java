@@ -25,6 +25,7 @@ package innotutor.innotutor_backend.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Entity
 @Table(name = "card_enroll", schema = "public", catalog = "innotutor")
@@ -38,8 +39,24 @@ public class CardEnroll {
     private Card cardByCardId;
     private User userByUserId;
     private EnrollmentStatus enrollmentStatusByStatusId;
+    private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
+    private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
+
+    public CardEnroll(Long cardId, Long userId, Long statusId, Card cardByCardId, User userByUserId,
+                      EnrollmentStatus enrollmentStatusByStatusId) {
+        this.cardId = cardId;
+        this.userId = userId;
+        this.statusId = statusId;
+        this.cardByCardId = cardByCardId;
+        this.userByUserId = userByUserId;
+        this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
+    }
+
+    public CardEnroll() {
+    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_enroll_id", nullable = false)
     public Long getCardEnrollId() {
         return cardEnrollId;
@@ -155,5 +172,23 @@ public class CardEnroll {
 
     public void setEnrollmentStatusByStatusId(EnrollmentStatus enrollmentStatusByStatusId) {
         this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
+    }
+
+    @OneToMany(mappedBy = "cardEnrollByCardEnrollId")
+    public Collection<CardEnrollSessionFormat> getCardEnrollSessionFormatsByCardId() {
+        return cardEnrollSessionFormatsByCardId;
+    }
+
+    public void setCardEnrollSessionFormatsByCardId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
+        this.cardEnrollSessionFormatsByCardId = cardEnrollSessionFormatsByCardId;
+    }
+
+    @OneToMany(mappedBy = "cardEnrollByCardEnrollId")
+    public Collection<CardEnrollSessionType> getCardEnrollSessionTypesByCardId() {
+        return cardEnrollSessionTypesByCardId;
+    }
+
+    public void setCardEnrollSessionTypesByCardId(Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
+        this.cardEnrollSessionTypesByCardId = cardEnrollSessionTypesByCardId;
     }
 }

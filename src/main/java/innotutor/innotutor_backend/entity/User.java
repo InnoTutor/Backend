@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
+@Table(name = "user", schema = "public", catalog = "innotutor")
 public class User {
     private Long userId;
     private String name;
@@ -46,6 +47,7 @@ public class User {
     private Collection<SessionStudent> sessionStudentsByUserId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     public Long getUserId() {
         return userId;

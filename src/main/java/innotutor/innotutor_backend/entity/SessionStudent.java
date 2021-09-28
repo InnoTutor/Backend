@@ -55,6 +55,7 @@ public class SessionStudent {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_student_id", nullable = false)
     public Long getSessionStudentId() {
         return sessionStudentId;

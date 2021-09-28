@@ -26,6 +26,7 @@ package innotutor.innotutor_backend.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "request", schema = "public", catalog = "innotutor")
 public class Request {
     private Long studentId;
     private Long cardId;
@@ -54,6 +55,7 @@ public class Request {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_id", nullable = false)
     public Long getRequestId() {
         return requestId;
