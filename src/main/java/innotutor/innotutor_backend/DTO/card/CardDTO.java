@@ -37,6 +37,6 @@ public class CardDTO {
     private String subject;
     private Integer rating;
     private String description;
-    private List<String> formatSession;
-    private List<String> formatType;
+    private List<String> sessionFormat;
+    private List<String> sessionType;
 }

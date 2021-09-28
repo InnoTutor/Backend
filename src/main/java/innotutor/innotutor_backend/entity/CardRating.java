@@ -39,6 +39,7 @@ public class CardRating {
     private User userByUserId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_rating_id", nullable = false)
     public Long getCardRatingId() {
         return cardRatingId;

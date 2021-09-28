@@ -39,6 +39,7 @@ public class SessionType {
     private Collection<Session> sessionsBySessionTypeId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_type_id", nullable = false)
     public Long getSessionTypeId() {
         return sessionTypeId;

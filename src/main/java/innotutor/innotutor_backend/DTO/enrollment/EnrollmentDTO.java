@@ -35,6 +35,6 @@ import java.util.List;
 public class EnrollmentDTO {
     private Long enrollerId;
     private Long cardId;
-    private List<String> formatSession;
-    private List<String> formatType;
+    private List<String> sessionFormat;
+    private List<String> sessionType;
 }

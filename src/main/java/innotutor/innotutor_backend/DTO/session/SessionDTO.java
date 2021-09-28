@@ -41,7 +41,7 @@ public class SessionDTO {
     private String date;
     private String startTime;
     private String endTime;
-    private String formatSession;
-    private String formatType;
+    private String sessionFormat;
+    private String sessionType;
     private String description;
 }
