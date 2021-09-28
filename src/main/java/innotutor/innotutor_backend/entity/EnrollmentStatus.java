@@ -37,6 +37,7 @@ public class EnrollmentStatus {
     private Collection<CardEnroll> cardEnrollsByStatusId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "status_id", nullable = false)
     public Long getStatusId() {
         return statusId;

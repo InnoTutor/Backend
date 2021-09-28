@@ -39,6 +39,7 @@ public class SessionFormat {
     private Collection<Session> sessionsBySessionFormatId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_format_id", nullable = false)
     public Long getSessionFormatId() {
         return sessionFormatId;

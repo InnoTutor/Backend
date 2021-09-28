@@ -55,6 +55,7 @@ public class CardSessionFormat {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_session_format_id", nullable = false)
     public Long getCardSessionFormatId() {
         return cardSessionFormatId;

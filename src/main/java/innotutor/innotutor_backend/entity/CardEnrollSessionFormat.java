@@ -31,8 +31,19 @@ public class CardEnrollSessionFormat {
     private Long cardEnrollId;
     private Long sessionFormatId;
     private Long cardEnrollSessionFormatId;
-    private Card cardByCardEnrollId;
+    private CardEnroll cardEnrollByCardEnrollId;
     private SessionFormat sessionFormatBySessionFormatId;
+
+    public CardEnrollSessionFormat(Long cardEnrollId, Long sessionFormatId, CardEnroll cardEnrollByCardEnrollId,
+                                   SessionFormat sessionFormatBySessionFormatId) {
+        this.cardEnrollId = cardEnrollId;
+        this.sessionFormatId = sessionFormatId;
+        this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
+        this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
+    }
+
+    public CardEnrollSessionFormat() {
+    }
 
     @Basic
     @Column(name = "card_enroll_id", nullable = false, insertable = false, updatable = false)
@@ -55,6 +66,7 @@ public class CardEnrollSessionFormat {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_enroll_session_format_id", nullable = false)
     public Long getCardEnrollSessionFormatId() {
         return cardEnrollSessionFormatId;
@@ -89,13 +101,13 @@ public class CardEnrollSessionFormat {
     }
 
     @ManyToOne
-    @JoinColumn(name = "card_enroll_id", referencedColumnName = "card_id", nullable = false)
-    public Card getCardByCardEnrollId() {
-        return cardByCardEnrollId;
+    @JoinColumn(name = "card_enroll_id", referencedColumnName = "card_enroll_id", nullable = false)
+    public CardEnroll getCardEnrollByCardEnrollId() {
+        return cardEnrollByCardEnrollId;
     }
 
-    public void setCardByCardEnrollId(Card cardByCardEnrollId) {
-        this.cardByCardEnrollId = cardByCardEnrollId;
+    public void setCardEnrollByCardEnrollId(CardEnroll cardEnrollByCardEnrollId) {
+        this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
     }
 
     @ManyToOne
