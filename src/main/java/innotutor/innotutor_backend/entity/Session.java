@@ -180,9 +180,7 @@ public class Session {
         if (description != null ? !description.equals(session.description) : session.description != null) return false;
         if (creationDate != null ? !creationDate.equals(session.creationDate) : session.creationDate != null)
             return false;
-        if (lastUpdate != null ? !lastUpdate.equals(session.lastUpdate) : session.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(session.lastUpdate) : session.lastUpdate == null;
     }
 
     @Override

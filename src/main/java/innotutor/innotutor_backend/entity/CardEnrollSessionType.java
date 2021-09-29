@@ -86,10 +86,7 @@ public class CardEnrollSessionType {
         if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;
-        if (cardEnrollSessionTypeId != null ? !cardEnrollSessionTypeId.equals(that.cardEnrollSessionTypeId) : that.cardEnrollSessionTypeId != null)
-            return false;
-
-        return true;
+        return cardEnrollSessionTypeId != null ? cardEnrollSessionTypeId.equals(that.cardEnrollSessionTypeId) : that.cardEnrollSessionTypeId == null;
     }
 
     @Override

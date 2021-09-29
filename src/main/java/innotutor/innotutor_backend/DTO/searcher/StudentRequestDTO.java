@@ -32,7 +32,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentRequestDTO {
+public class StudentRequestDTO implements UserCard {
     private Long studentId;
     private Long cardId;
     private String description;

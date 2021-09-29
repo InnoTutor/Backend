@@ -128,9 +128,7 @@ public class CardEnroll {
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
     }
 
     @Override

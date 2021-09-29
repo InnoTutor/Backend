@@ -24,7 +24,7 @@ SOFTWARE.
 package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
-import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
+import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,21 +35,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
-public class TutorsListController {
+public class StudentsListController {
 
     @Autowired
     CardService cardService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TutorCvDTO>> getTutorsList(@RequestParam(name = "subject", required = false) String subject,
-                                                          @RequestParam(name = "format", required = false) String format,
-                                                          @RequestParam(name = "type", required = false) String type) {
-        List<TutorCvDTO> tutors = cardService.getTutorCvDTOList(subject, format, type);
-        return tutors == null
+    public ResponseEntity<List<StudentRequestDTO>> getStudentsList(@RequestParam(name = "subject", required = false) String subject,
+                                                                   @RequestParam(name = "format", required = false) String format,
+                                                                   @RequestParam(name = "type", required = false) String type) {
+        List<StudentRequestDTO> students = cardService.getStudentRequestDTOList(subject, format, type);
+        return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(tutors, HttpStatus.OK);
+                : new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

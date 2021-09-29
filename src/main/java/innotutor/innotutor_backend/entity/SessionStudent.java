@@ -74,10 +74,7 @@ public class SessionStudent {
 
         if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) return false;
         if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
-        if (sessionStudentId != null ? !sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId != null)
-            return false;
-
-        return true;
+        return sessionStudentId != null ? sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId == null;
     }
 
     @Override
