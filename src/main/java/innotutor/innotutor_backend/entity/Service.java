@@ -34,6 +34,16 @@ public class Service {
     private User userByTutorId;
     private Card cardByCardId;
 
+    public Service(Long tutorId, Long cardId, User userByTutorId, Card cardByCardId) {
+        this.tutorId = tutorId;
+        this.cardId = cardId;
+        this.userByTutorId = userByTutorId;
+        this.cardByCardId = cardByCardId;
+    }
+
+    public Service() {
+    }
+
     @Basic
     @Column(name = "tutor_id", nullable = false, insertable = false, updatable = false)
     public Long getTutorId() {
@@ -95,7 +105,7 @@ public class Service {
         this.userByTutorId = userByTutorId;
     }
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", nullable = false)
     public Card getCardByCardId() {
         return cardByCardId;

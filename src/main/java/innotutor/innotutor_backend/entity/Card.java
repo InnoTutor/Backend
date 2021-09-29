@@ -36,12 +36,21 @@ public class Card {
     private Timestamp creationDate;
     private Timestamp lastUpdate;
     private Subject subjectBySubjectId;
+    private Request requestByCardId;
+    private Service serviceByCardId;
     private Collection<CardEnroll> cardEnrollsByCardId;
     private Collection<CardRating> cardRatingsByCardId;
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
-    private Collection<Request> requestsByCardId;
-    private Collection<Service> servicesByCardId;
+
+    public Card(Long subjectId, String description, Subject subjectBySubjectId) {
+        this.subjectId = subjectId;
+        this.description = description;
+        this.subjectBySubjectId = subjectBySubjectId;
+    }
+
+    public Card() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,21 +173,21 @@ public class Card {
         this.cardSessionTypesByCardId = cardSessionTypesByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
-    public Collection<Request> getRequestsByCardId() {
-        return requestsByCardId;
+    @OneToOne(mappedBy = "cardByCardId")
+    public Request getRequestByCardId() {
+        return requestByCardId;
     }
 
-    public void setRequestsByCardId(Collection<Request> requestsByCardId) {
-        this.requestsByCardId = requestsByCardId;
+    public void setRequestByCardId(Request requestByCardId) {
+        this.requestByCardId = requestByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
-    public Collection<Service> getServicesByCardId() {
-        return servicesByCardId;
+    @OneToOne(mappedBy = "cardByCardId")
+    public Service getServiceByCardId() {
+        return serviceByCardId;
     }
 
-    public void setServicesByCardId(Collection<Service> servicesByCardId) {
-        this.servicesByCardId = servicesByCardId;
+    public void setServiceByCardId(Service serviceByCardId) {
+        this.serviceByCardId = serviceByCardId;
     }
 }

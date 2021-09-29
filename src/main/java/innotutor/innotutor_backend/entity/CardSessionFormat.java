@@ -34,6 +34,16 @@ public class CardSessionFormat {
     private Card cardByCardId;
     private SessionFormat sessionFormatBySessionFormatId;
 
+    public CardSessionFormat(Long cardId, Long sessionFormatId, Card cardByCardId, SessionFormat sessionFormatBySessionFormatId) {
+        this.cardId = cardId;
+        this.sessionFormatId = sessionFormatId;
+        this.cardByCardId = cardByCardId;
+        this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
+    }
+
+    public CardSessionFormat() {
+    }
+
     @Basic
     @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
     public Long getCardId() {

@@ -34,6 +34,16 @@ public class Request {
     private User userByStudentId;
     private Card cardByCardId;
 
+    public Request(Long studentId, Long cardId, User userByStudentId, Card cardByCardId) {
+        this.studentId = studentId;
+        this.cardId = cardId;
+        this.userByStudentId = userByStudentId;
+        this.cardByCardId = cardByCardId;
+    }
+
+    public Request() {
+    }
+
     @Basic
     @Column(name = "student_id", nullable = false, insertable = false, updatable = false)
     public Long getStudentId() {
@@ -95,7 +105,7 @@ public class Request {
         this.userByStudentId = userByStudentId;
     }
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", nullable = false)
     public Card getCardByCardId() {
         return cardByCardId;

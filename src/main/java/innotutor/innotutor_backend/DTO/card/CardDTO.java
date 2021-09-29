@@ -34,6 +34,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CardDTO {
     private Long cardId;
+    private Long creatorId;
     private String subject;
     private Integer rating;
     private String description;

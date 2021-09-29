@@ -23,11 +23,10 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.repository;
 
-import innotutor.innotutor_backend.entity.Subject;
+import innotutor.innotutor_backend.entity.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    Subject findSubjectByName(String name);
+public interface RequestRepository extends JpaRepository<Request, Long> {
 }

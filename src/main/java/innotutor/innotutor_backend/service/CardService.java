@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service;
 
+import innotutor.innotutor_backend.DTO.card.CardDTO;
 import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
 import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
@@ -56,6 +57,17 @@ public class CardService {
     SessionFormatRepository sessionFormatRepository;
     @Autowired
     SessionTypeRepository sessionTypeRepository;
+    @Autowired
+    SubjectRepository subjectRepository;
+    @Autowired
+    ServiceRepository serviceRepository;
+    @Autowired
+    RequestRepository requestRepository;
+    @Autowired
+    CardSessionFormatRepository cardSessionFormatRepository;
+    @Autowired
+    CardSessionTypeRepository cardSessionTypeRepository;
+
 
     public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
                                               String specifiedFormat,
@@ -85,21 +97,12 @@ public class CardService {
         return students;
     }
 
-    private List<UserCard> filterCards(List<UserCard> cards,
-                                       String specifiedSubject,
-                                       String specifiedFormat,
-                                       String specifiedType) {
-        List<UserCard> result = cards;
-        if (specifiedSubject != null) {
-            result = result.stream().filter(x -> x.getSubject().equals(specifiedSubject)).collect(Collectors.toList());
-        }
-        if (specifiedFormat != null) {
-            result = result.stream().filter(x -> x.getSessionFormat().contains(specifiedFormat)).collect(Collectors.toList());
-        }
-        if (specifiedType != null) {
-            result = result.stream().filter(x -> x.getSessionType().contains(specifiedType)).collect(Collectors.toList());
-        }
-        return result;
+    public CardDTO postCvCard(CardDTO cardDTO) {
+        return createCard(cardDTO, CardType.SERVICE);
+    }
+
+    public CardDTO postRequestCard(CardDTO cardDTO) {
+        return createCard(cardDTO, CardType.REQUEST);
     }
 
     public EnrollmentDTO postCardEnroll(EnrollmentDTO enrollmentDTO) {
@@ -108,10 +111,12 @@ public class CardService {
         Optional<Card> card = cardRepository.findById(cardId);
         Optional<User> user = userRepository.findById(enrollerId);
         if (card.isPresent() && user.isPresent()) {
-            List<String> availableFormats = convertSessionFormatsToString(card.get().getCardSessionFormatsByCardId());
-            List<String> availableTypes = convertSessionTypesToString(card.get().getCardSessionTypesByCardId());
-            List<String> sessionFormats = getIntersection(availableFormats, enrollmentDTO.getSessionFormat());
-            List<String> sessionTypes = getIntersection(availableTypes, enrollmentDTO.getSessionType());
+            List<String> availableFormats = convertCardSessionFormatsToString(card.get().getCardSessionFormatsByCardId());
+            List<String> availableTypes = convertCardSessionTypesToString(card.get().getCardSessionTypesByCardId());
+            List<String> sessionFormats = availableFormats.stream()
+                    .distinct().filter(enrollmentDTO.getSessionFormat()::contains).collect(Collectors.toList());
+            List<String> sessionTypes = availableTypes.stream()
+                    .distinct().filter(enrollmentDTO.getSessionType()::contains).collect(Collectors.toList());
             if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
                 CardEnroll cardEnroll = this.saveCardEnroll(
                         card.get(),
@@ -129,14 +134,14 @@ public class CardService {
     private List<TutorCvDTO> getAllTutorCvDTOList() {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (Card card : cardRepository.findAll()) {
-            if (!card.getServicesByCardId().isEmpty()) {
-                Long tutorId = card.getServicesByCardId().iterator().next().getTutorId();
+            if (card.getServiceByCardId() != null) {
+                Long tutorId = card.getServiceByCardId().getTutorId();
                 Long cardId = card.getCardId();
-                Double rating = this.calculateAverageRating(card.getCardRatingsByCardId());
+                Double rating = this.calculateAverageCardRating(card.getCardRatingsByCardId());
                 String description = card.getDescription();
                 String subject = card.getSubjectBySubjectId().getName();
-                List<String> sessionFormat = this.convertSessionFormatsToString(card.getCardSessionFormatsByCardId());
-                List<String> sessionType = this.convertSessionTypesToString(card.getCardSessionTypesByCardId());
+                List<String> sessionFormat = this.convertCardSessionFormatsToString(card.getCardSessionFormatsByCardId());
+                List<String> sessionType = this.convertCardSessionTypesToString(card.getCardSessionTypesByCardId());
                 tutors.add(new TutorCvDTO(tutorId, cardId, rating, description, subject, sessionFormat, sessionType));
             }
         }
@@ -146,17 +151,83 @@ public class CardService {
     private List<StudentRequestDTO> getAllStudentRequestDTOList() {
         List<StudentRequestDTO> students = new ArrayList<>();
         for (Card card : cardRepository.findAll()) {
-            if (!card.getRequestsByCardId().isEmpty()) {
-                Long studentId = card.getRequestsByCardId().iterator().next().getStudentId();
+            if (card.getRequestByCardId() != null) {
+                Long studentId = card.getRequestByCardId().getStudentId();
                 Long cardId = card.getCardId();
                 String description = card.getDescription();
                 String subject = card.getSubjectBySubjectId().getName();
-                List<String> sessionFormat = this.convertSessionFormatsToString(card.getCardSessionFormatsByCardId());
-                List<String> sessionType = this.convertSessionTypesToString(card.getCardSessionTypesByCardId());
+                List<String> sessionFormat = this.convertCardSessionFormatsToString(card.getCardSessionFormatsByCardId());
+                List<String> sessionType = this.convertCardSessionTypesToString(card.getCardSessionTypesByCardId());
                 students.add(new StudentRequestDTO(studentId, cardId, description, subject, sessionFormat, sessionType));
             }
         }
         return students;
+    }
+
+    private List<UserCard> filterCards(List<UserCard> cards,
+                                       String specifiedSubject,
+                                       String specifiedFormat,
+                                       String specifiedType) {
+        List<UserCard> result = cards;
+        if (specifiedSubject != null) {
+            result = result.stream().filter(x -> x.getSubject().equals(specifiedSubject)).collect(Collectors.toList());
+        }
+        if (specifiedFormat != null) {
+            result = result.stream().filter(x -> x.getSessionFormat().contains(specifiedFormat)).collect(Collectors.toList());
+        }
+        if (specifiedType != null) {
+            result = result.stream().filter(x -> x.getSessionType().contains(specifiedType)).collect(Collectors.toList());
+        }
+        return result;
+    }
+
+    private CardDTO createCard(CardDTO cardDTO, CardType type) {
+        Optional<User> creator = userRepository.findById(cardDTO.getCreatorId());
+        Subject subject = subjectRepository.findSubjectByName(cardDTO.getSubject());
+        List<SessionFormat> sessionFormat = this.convertSessionFormatToEntity(cardDTO.getSessionFormat());
+        List<SessionType> sessionType = this.convertSessionTypeToEntity(cardDTO.getSessionType());
+        if (creator.isPresent() && subject != null && !sessionFormat.isEmpty() && !sessionType.isEmpty()) {
+            Card card = cardRepository.save(new Card(subject.getSubjectId(), cardDTO.getDescription(), subject));
+            switch (type) {
+                case SERVICE:
+                    serviceRepository.save(
+                            new innotutor.innotutor_backend.entity.Service(creator.get().getUserId(), card.getCardId(), creator.get(), card)
+                    );
+                    break;
+                case REQUEST:
+                    requestRepository.save(new Request(creator.get().getUserId(), card.getCardId(), creator.get(), card));
+                    break;
+            }
+            for (SessionFormat format : sessionFormat) {
+                cardSessionFormatRepository.save(
+                        new CardSessionFormat(
+                                card.getCardId(),
+                                format.getSessionFormatId(),
+                                card,
+                                format
+                        )
+                );
+            }
+            for (SessionType sType : sessionType) {
+                cardSessionTypeRepository.save(
+                        new CardSessionType(
+                                card.getCardId(),
+                                sType.getSessionTypeId(),
+                                card,
+                                sType
+                        )
+                );
+            }
+            return new CardDTO(
+                    card.getCardId(),
+                    creator.get().getUserId(),
+                    subject.getName(),
+                    null,
+                    cardDTO.getDescription(),
+                    this.convertSessionFormatsToString(sessionFormat),
+                    this.convertSessionTypesToString(sessionType));
+        }
+        return null;
     }
 
     private CardEnroll saveCardEnroll(Card card, User tutor, EnrollmentStatus enrollmentStatus) {
@@ -200,11 +271,7 @@ public class CardService {
         }
     }
 
-    private List<String> getIntersection(List<String> firstList, List<String> secondList) {
-        return firstList.stream().distinct().filter(secondList::contains).collect(Collectors.toList());
-    }
-
-    private List<String> convertSessionFormatsToString(Collection<CardSessionFormat> formats) {
+    private List<String> convertCardSessionFormatsToString(Collection<CardSessionFormat> formats) {
         List<String> formatsNames = new ArrayList<>();
         for (CardSessionFormat format : formats) {
             formatsNames.add(format.getSessionFormatBySessionFormatId().getName());
@@ -212,7 +279,7 @@ public class CardService {
         return formatsNames;
     }
 
-    private List<String> convertSessionTypesToString(Collection<CardSessionType> types) {
+    private List<String> convertCardSessionTypesToString(Collection<CardSessionType> types) {
         List<String> formatsNames = new ArrayList<>();
         for (CardSessionType type : types) {
             formatsNames.add(type.getSessionTypeBySessionTypeId().getName());
@@ -220,7 +287,45 @@ public class CardService {
         return formatsNames;
     }
 
-    private Double calculateAverageRating(Collection<CardRating> cardRatings) {
+    private List<String> convertSessionFormatsToString(List<SessionFormat> sessionFormat) {
+        List<String> formatsNames = new ArrayList<>();
+        for (SessionFormat format : sessionFormat) {
+            formatsNames.add(format.getName());
+        }
+        return formatsNames;
+    }
+
+    private List<String> convertSessionTypesToString(List<SessionType> sessionType) {
+        List<String> typesNames = new ArrayList<>();
+        for (SessionType type : sessionType) {
+            typesNames.add(type.getName());
+        }
+        return typesNames;
+    }
+
+    private List<SessionFormat> convertSessionFormatToEntity(List<String> formats) {
+        List<SessionFormat> sessionFormats = new ArrayList<>();
+        for (String formatName : formats) {
+            SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(formatName);
+            if (sessionFormat != null) {
+                sessionFormats.add(sessionFormat);
+            }
+        }
+        return sessionFormats;
+    }
+
+    private List<SessionType> convertSessionTypeToEntity(List<String> types) {
+        List<SessionType> sessionTypes = new ArrayList<>();
+        for (String typeName : types) {
+            SessionType sessionType = sessionTypeRepository.findSessionTypeByName(typeName);
+            if (sessionType != null) {
+                sessionTypes.add(sessionType);
+            }
+        }
+        return sessionTypes;
+    }
+
+    private Double calculateAverageCardRating(Collection<CardRating> cardRatings) {
         if (cardRatings.size() == 0) {
             return null;
         }

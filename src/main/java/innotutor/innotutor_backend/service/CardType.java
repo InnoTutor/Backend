@@ -21,13 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.repository;
+package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.entity.Subject;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    Subject findSubjectByName(String name);
+public enum CardType {
+    SERVICE, REQUEST
 }
