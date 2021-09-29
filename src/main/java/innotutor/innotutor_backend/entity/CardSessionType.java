@@ -34,6 +34,16 @@ public class CardSessionType {
     private Card cardByCardId;
     private SessionType sessionTypeBySessionTypeId;
 
+    public CardSessionType(Long cardId, Long sessionTypeId, Card cardByCardId, SessionType sessionTypeBySessionTypeId) {
+        this.cardId = cardId;
+        this.sessionTypeId = sessionTypeId;
+        this.cardByCardId = cardByCardId;
+        this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
+    }
+
+    public CardSessionType() {
+    }
+
     @Basic
     @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
     public Long getCardId() {
