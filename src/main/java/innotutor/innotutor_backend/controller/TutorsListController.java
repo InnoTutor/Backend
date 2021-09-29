@@ -23,10 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
 import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
-import innotutor.innotutor_backend.service.CardService;
-import org.springframework.beans.factory.annotation.Autowired;
+import innotutor.innotutor_backend.service.SearcherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,23 +37,19 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class TutorsListController {
 
-    @Autowired
-    CardService cardService;
+    final SearcherService searcherService;
+
+    public TutorsListController(SearcherService searcherService) {
+        this.searcherService = searcherService;
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TutorCvDTO>> getTutorsList(@RequestParam(name = "subject", required = false) String subject,
                                                           @RequestParam(name = "format", required = false) String format,
                                                           @RequestParam(name = "type", required = false) String type) {
-        List<TutorCvDTO> tutors = cardService.getTutorCvDTOList(subject, format, type);
+        List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type);
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(tutors, HttpStatus.OK);
-    }
-
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EnrollmentDTO> postCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO) {
-        return enrollmentDTO == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(cardService.postCardEnroll(enrollmentDTO), HttpStatus.CREATED);
     }
 }

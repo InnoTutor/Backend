@@ -26,13 +26,12 @@ package innotutor.innotutor_backend.service;
 import innotutor.innotutor_backend.DTO.card.SubjectDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionFormatDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionTypeDTO;
-import innotutor.innotutor_backend.entity.SessionFormat;
-import innotutor.innotutor_backend.entity.SessionType;
-import innotutor.innotutor_backend.entity.Subject;
-import innotutor.innotutor_backend.repository.SessionFormatRepository;
-import innotutor.innotutor_backend.repository.SessionTypeRepository;
-import innotutor.innotutor_backend.repository.SubjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import innotutor.innotutor_backend.entity.session.SessionFormat;
+import innotutor.innotutor_backend.entity.session.SessionType;
+import innotutor.innotutor_backend.entity.session.Subject;
+import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
+import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
+import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,12 +40,17 @@ import java.util.List;
 @Service
 public class SessionService {
 
-    @Autowired
-    SessionFormatRepository sessionFormatRepository;
-    @Autowired
-    SessionTypeRepository sessionTypeRepository;
-    @Autowired
-    SubjectRepository subjectRepository;
+    final SessionFormatRepository sessionFormatRepository;
+    final SessionTypeRepository sessionTypeRepository;
+    final SubjectRepository subjectRepository;
+
+    public SessionService(SessionFormatRepository sessionFormatRepository,
+                          SessionTypeRepository sessionTypeRepository,
+                          SubjectRepository subjectRepository) {
+        this.sessionFormatRepository = sessionFormatRepository;
+        this.sessionTypeRepository = sessionTypeRepository;
+        this.subjectRepository = subjectRepository;
+    }
 
     public List<SessionFormatDTO> getSessionFormats() {
         List<SessionFormatDTO> sessionFormats = new ArrayList<>();

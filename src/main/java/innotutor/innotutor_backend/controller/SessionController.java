@@ -27,7 +27,6 @@ import innotutor.innotutor_backend.DTO.card.SubjectDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionFormatDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionTypeDTO;
 import innotutor.innotutor_backend.service.SessionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +38,11 @@ import java.util.List;
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SessionController {
-    @Autowired
-    SessionService sessionService;
+    final SessionService sessionService;
+
+    public SessionController(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
 
     @GetMapping(value = "/session-formats", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SessionFormatDTO>> getSessionFormats() {
