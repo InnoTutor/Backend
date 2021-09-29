@@ -24,7 +24,9 @@ SOFTWARE.
 package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
+import innotutor.innotutor_backend.DTO.searcher.UserCard;
 import innotutor.innotutor_backend.entity.*;
 import innotutor.innotutor_backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,26 +57,57 @@ public class CardService {
     @Autowired
     SessionTypeRepository sessionTypeRepository;
 
-    public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject, String specifiedFormat, String specifiedType) {
-        List<TutorCvDTO> tutors = this.getAllTutorCvDTOList();
-        if (specifiedSubject != null) {
-            tutors = tutors.stream().filter(x -> x.getSubject().equals(specifiedSubject)).collect(Collectors.toList());
-        }
-        if (specifiedFormat != null) {
-            tutors = tutors.stream().filter(x -> x.getSessionFormat().contains(specifiedFormat)).collect(Collectors.toList());
-        }
-        if (specifiedType != null) {
-            tutors = tutors.stream().filter(x -> x.getSessionType().contains(specifiedType)).collect(Collectors.toList());
+    public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
+                                              String specifiedFormat,
+                                              String specifiedType) {
+        List<TutorCvDTO> tutors = new ArrayList<>();
+        for (UserCard user : this.filterCards(
+                new ArrayList<>(this.getAllTutorCvDTOList()),
+                specifiedSubject,
+                specifiedFormat,
+                specifiedType)) {
+            tutors.add((TutorCvDTO) user);
         }
         return tutors;
+    }
+
+    public List<StudentRequestDTO> getStudentRequestDTOList(String specifiedSubject,
+                                                            String specifiedFormat,
+                                                            String specifiedType) {
+        List<StudentRequestDTO> students = new ArrayList<>();
+        for (UserCard user : this.filterCards(
+                new ArrayList<>(this.getAllStudentRequestDTOList()),
+                specifiedSubject,
+                specifiedFormat,
+                specifiedType)) {
+            students.add((StudentRequestDTO) user);
+        }
+        return students;
+    }
+
+    private List<UserCard> filterCards(List<UserCard> cards,
+                                       String specifiedSubject,
+                                       String specifiedFormat,
+                                       String specifiedType) {
+        List<UserCard> result = cards;
+        if (specifiedSubject != null) {
+            result = result.stream().filter(x -> x.getSubject().equals(specifiedSubject)).collect(Collectors.toList());
+        }
+        if (specifiedFormat != null) {
+            result = result.stream().filter(x -> x.getSessionFormat().contains(specifiedFormat)).collect(Collectors.toList());
+        }
+        if (specifiedType != null) {
+            result = result.stream().filter(x -> x.getSessionType().contains(specifiedType)).collect(Collectors.toList());
+        }
+        return result;
     }
 
     public EnrollmentDTO postCardEnroll(EnrollmentDTO enrollmentDTO) {
         Long enrollerId = enrollmentDTO.getEnrollerId();
         Long cardId = enrollmentDTO.getCardId();
         Optional<Card> card = cardRepository.findById(cardId);
-        Optional<User> tutor = userRepository.findById(enrollerId);
-        if (card.isPresent() && tutor.isPresent()) {
+        Optional<User> user = userRepository.findById(enrollerId);
+        if (card.isPresent() && user.isPresent()) {
             List<String> availableFormats = convertSessionFormatsToString(card.get().getCardSessionFormatsByCardId());
             List<String> availableTypes = convertSessionTypesToString(card.get().getCardSessionTypesByCardId());
             List<String> sessionFormats = getIntersection(availableFormats, enrollmentDTO.getSessionFormat());
@@ -82,7 +115,7 @@ public class CardService {
             if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
                 CardEnroll cardEnroll = this.saveCardEnroll(
                         card.get(),
-                        tutor.get(),
+                        user.get(),
                         enrollmentStatusRepository.findEnrollmentStatusByStatus("requested")
                 );
                 this.saveCardEnrollSessionFormat(sessionFormats, cardEnroll);
@@ -91,6 +124,39 @@ public class CardService {
             }
         }
         return null;
+    }
+
+    private List<TutorCvDTO> getAllTutorCvDTOList() {
+        List<TutorCvDTO> tutors = new ArrayList<>();
+        for (Card card : cardRepository.findAll()) {
+            if (!card.getServicesByCardId().isEmpty()) {
+                Long tutorId = card.getServicesByCardId().iterator().next().getTutorId();
+                Long cardId = card.getCardId();
+                Double rating = this.calculateAverageRating(card.getCardRatingsByCardId());
+                String description = card.getDescription();
+                String subject = card.getSubjectBySubjectId().getName();
+                List<String> sessionFormat = this.convertSessionFormatsToString(card.getCardSessionFormatsByCardId());
+                List<String> sessionType = this.convertSessionTypesToString(card.getCardSessionTypesByCardId());
+                tutors.add(new TutorCvDTO(tutorId, cardId, rating, description, subject, sessionFormat, sessionType));
+            }
+        }
+        return tutors;
+    }
+
+    private List<StudentRequestDTO> getAllStudentRequestDTOList() {
+        List<StudentRequestDTO> students = new ArrayList<>();
+        for (Card card : cardRepository.findAll()) {
+            if (!card.getRequestsByCardId().isEmpty()) {
+                Long studentId = card.getRequestsByCardId().iterator().next().getStudentId();
+                Long cardId = card.getCardId();
+                String description = card.getDescription();
+                String subject = card.getSubjectBySubjectId().getName();
+                List<String> sessionFormat = this.convertSessionFormatsToString(card.getCardSessionFormatsByCardId());
+                List<String> sessionType = this.convertSessionTypesToString(card.getCardSessionTypesByCardId());
+                students.add(new StudentRequestDTO(studentId, cardId, description, subject, sessionFormat, sessionType));
+            }
+        }
+        return students;
     }
 
     private CardEnroll saveCardEnroll(Card card, User tutor, EnrollmentStatus enrollmentStatus) {
@@ -136,21 +202,6 @@ public class CardService {
 
     private List<String> getIntersection(List<String> firstList, List<String> secondList) {
         return firstList.stream().distinct().filter(secondList::contains).collect(Collectors.toList());
-    }
-
-    private List<TutorCvDTO> getAllTutorCvDTOList() {
-        List<TutorCvDTO> tutors = new ArrayList<>();
-        for (Card card : cardRepository.findAll()) {
-            Long tutorId = card.getServicesByCardId().iterator().next().getTutorId();
-            Long cardId = card.getCardId();
-            Double rating = this.calculateAverageRating(card.getCardRatingsByCardId());
-            String description = card.getDescription();
-            String subject = card.getSubjectBySubjectId().getName();
-            List<String> sessionFormat = this.convertSessionFormatsToString(card.getCardSessionFormatsByCardId());
-            List<String> sessionType = this.convertSessionTypesToString(card.getCardSessionTypesByCardId());
-            tutors.add(new TutorCvDTO(tutorId, cardId, rating, description, subject, sessionFormat, sessionType));
-        }
-        return tutors;
     }
 
     private List<String> convertSessionFormatsToString(Collection<CardSessionFormat> formats) {

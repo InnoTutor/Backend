@@ -75,10 +75,7 @@ public class CardSessionType {
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;
-        if (cardSessionTypeId != null ? !cardSessionTypeId.equals(that.cardSessionTypeId) : that.cardSessionTypeId != null)
-            return false;
-
-        return true;
+        return cardSessionTypeId != null ? cardSessionTypeId.equals(that.cardSessionTypeId) : that.cardSessionTypeId == null;
     }
 
     @Override

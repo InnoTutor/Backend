@@ -74,9 +74,7 @@ public class Service {
 
         if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) return false;
         if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) return false;
-        if (serviceId != null ? !serviceId.equals(service.serviceId) : service.serviceId != null) return false;
-
-        return true;
+        return serviceId != null ? serviceId.equals(service.serviceId) : service.serviceId == null;
     }
 
     @Override

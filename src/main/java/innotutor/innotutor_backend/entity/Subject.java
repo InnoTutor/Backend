@@ -89,9 +89,7 @@ public class Subject {
         if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
         if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null)
             return false;
-        if (lastUpdate != null ? !lastUpdate.equals(subject.lastUpdate) : subject.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(subject.lastUpdate) : subject.lastUpdate == null;
     }
 
     @Override

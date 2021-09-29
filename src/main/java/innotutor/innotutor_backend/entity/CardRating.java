@@ -111,9 +111,7 @@ public class CardRating {
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (mark != null ? !mark.equals(that.mark) : that.mark != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
     }
 
     @Override

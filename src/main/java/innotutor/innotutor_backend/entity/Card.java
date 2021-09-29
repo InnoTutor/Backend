@@ -105,9 +105,7 @@ public class Card {
         if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
         if (description != null ? !description.equals(card.description) : card.description != null) return false;
         if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(card.lastUpdate) : card.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(card.lastUpdate) : card.lastUpdate == null;
     }
 
     @Override

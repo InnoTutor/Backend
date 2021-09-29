@@ -23,21 +23,12 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.DTO.searcher;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class TutorCvDTO implements UserCard {
-    private Long tutorId;
-    private Long cardId;
-    private Double rating;
-    private String description;
-    private String subject;
-    private List<String> sessionFormat;
-    private List<String> sessionType;
+public interface UserCard {
+    String getSubject();
+
+    List<String> getSessionFormat();
+
+    List<String> getSessionType();
 }

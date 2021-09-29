@@ -75,10 +75,7 @@ public class CardSessionFormat {
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
             return false;
-        if (cardSessionFormatId != null ? !cardSessionFormatId.equals(that.cardSessionFormatId) : that.cardSessionFormatId != null)
-            return false;
-
-        return true;
+        return cardSessionFormatId != null ? cardSessionFormatId.equals(that.cardSessionFormatId) : that.cardSessionFormatId == null;
     }
 
     @Override

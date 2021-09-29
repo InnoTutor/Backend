@@ -152,9 +152,7 @@ public class User {
         if (contacts != null ? !contacts.equals(user.contacts) : user.contacts != null) return false;
         if (description != null ? !description.equals(user.description) : user.description != null) return false;
         if (creationDate != null ? !creationDate.equals(user.creationDate) : user.creationDate != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(user.lastUpdate) : user.lastUpdate != null) return false;
-
-        return true;
+        return lastUpdate != null ? lastUpdate.equals(user.lastUpdate) : user.lastUpdate == null;
     }
 
     @Override
