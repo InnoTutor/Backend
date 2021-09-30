@@ -38,6 +38,7 @@ public class Card {
     private Long cardId;
     private Long subjectId;
     private String description;
+    private Boolean hidden;
     private Timestamp creationDate;
     private Timestamp lastUpdate;
     private Subject subjectBySubjectId;
@@ -48,9 +49,10 @@ public class Card {
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
 
-    public Card(Long subjectId, String description, Subject subjectBySubjectId) {
+    public Card(Long subjectId, String description, Boolean hidden, Subject subjectBySubjectId) {
         this.subjectId = subjectId;
         this.description = description;
+        this.hidden = hidden;
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
@@ -86,6 +88,16 @@ public class Card {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Basic
+    @Column(name = "hidden", nullable = false)
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 
     @Basic

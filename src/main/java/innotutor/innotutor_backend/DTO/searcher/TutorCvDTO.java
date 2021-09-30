@@ -36,6 +36,7 @@ public class TutorCvDTO implements UserCard {
     private Long tutorId;
     private Long cardId;
     private Double rating;
+    private Integer countVoted;
     private String description;
     private String subject;
     private List<String> sessionFormat;

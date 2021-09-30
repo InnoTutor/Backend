@@ -32,4 +32,6 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findBySubjectId(Long subjectId);
+
+    List<Card> findByHidden(Boolean hidden);
 }

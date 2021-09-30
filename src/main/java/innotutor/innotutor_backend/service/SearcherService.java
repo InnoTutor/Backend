@@ -27,6 +27,7 @@ import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.DTO.searcher.UserCard;
 import innotutor.innotutor_backend.entity.card.Card;
+import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.repository.card.CardRepository;
 import innotutor.innotutor_backend.utility.AverageRating;
 import innotutor.innotutor_backend.utility.session.sessionformat.CardSessionFormatConverter;
@@ -34,6 +35,7 @@ import innotutor.innotutor_backend.utility.session.sessiontype.CardSessionTypeCo
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,13 +77,15 @@ public class SearcherService {
 
     private List<TutorCvDTO> getAllTutorCvDTOList() {
         List<TutorCvDTO> tutors = new ArrayList<>();
-        for (Card card : cardRepository.findAll()) {
+        for (Card card : cardRepository.findByHidden(false)) {
             if (card.getServiceByCardId() != null) {
+                Collection<CardRating> ratings = card.getCardRatingsByCardId();
                 tutors.add(
                         new TutorCvDTO(
                                 card.getServiceByCardId().getTutorId(),
                                 card.getCardId(),
-                                new AverageRating(card.getCardRatingsByCardId()).averageRating(),
+                                new AverageRating(ratings).averageRating(),
+                                ratings.size(),
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),
                                 new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
@@ -95,7 +99,7 @@ public class SearcherService {
 
     private List<StudentRequestDTO> getAllStudentRequestDTOList() {
         List<StudentRequestDTO> students = new ArrayList<>();
-        for (Card card : cardRepository.findAll()) {
+        for (Card card : cardRepository.findByHidden(false)) {
             if (card.getRequestByCardId() != null) {
                 students.add(
                         new StudentRequestDTO(

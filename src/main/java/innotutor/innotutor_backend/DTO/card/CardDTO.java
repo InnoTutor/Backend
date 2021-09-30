@@ -37,7 +37,9 @@ public class CardDTO {
     private Long creatorId;
     private String subject;
     private Integer rating;
+    private Integer countVoted;
     private String description;
+    private boolean hidden;
     private List<String> sessionFormat;
     private List<String> sessionType;
 }

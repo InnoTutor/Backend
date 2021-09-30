@@ -104,7 +104,12 @@ public class CardService {
         if (creatorOptional.isPresent() && subject != null && !sessionFormat.isEmpty() && !sessionType.isEmpty()) {
             User creator = creatorOptional.get();
             if (this.isUniquePair(creator.getUserId(), subject.getSubjectId())) {
-                Card card = cardRepository.save(new Card(subject.getSubjectId(), cardDTO.getDescription(), subject));
+                Card card = cardRepository.save(new Card(
+                        subject.getSubjectId(),
+                        cardDTO.getDescription(),
+                        false,
+                        subject)
+                );
                 this.saveUserCardRelation(creator, card, type);
                 this.saveSessionFormat(card, sessionFormat);
                 this.saveSessionType(card, sessionType);
@@ -113,7 +118,9 @@ public class CardService {
                         creator.getUserId(),
                         subject.getName(),
                         null,
+                        0,
                         cardDTO.getDescription(),
+                        false,
                         new SessionFormatConverter(sessionFormat).stringList(),
                         new SessionTypeConverter(sessionType).stringList());
             }
