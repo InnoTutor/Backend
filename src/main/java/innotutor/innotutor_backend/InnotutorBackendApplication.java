@@ -25,12 +25,12 @@ package innotutor.innotutor_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootApplication
 public class InnotutorBackendApplication {
-
+    @Sql(scripts = {"restore.sql"})
     public static void main(String[] args) {
         SpringApplication.run(InnotutorBackendApplication.class, args);
     }
-
 }
