@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
 //@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class TutorsListController {
@@ -45,10 +45,10 @@ public class TutorsListController {
     public TutorsListController(SearcherService searcherService) {
         this.searcherService = searcherService;
         responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Headers",
-                "Accept");
-        responseHeaders.set("Access-Control-Allow-Origin",
-                "Accept");
+//        responseHeaders.set("Access-Control-Allow-Headers",
+//                "Access-Control-Allow-Origin, Accept");
+//        responseHeaders.set("Access-Control-Allow-Origin",
+//                "*");
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

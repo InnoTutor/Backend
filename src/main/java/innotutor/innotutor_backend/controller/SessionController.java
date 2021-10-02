@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
 //@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SessionController {
@@ -46,10 +46,10 @@ public class SessionController {
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
         responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Headers",
-                "Accept");
-        responseHeaders.set("Access-Control-Allow-Origin",
-                "Accept");
+//        responseHeaders.set("Access-Control-Allow-Headers",
+//                "Accept");
+//        responseHeaders.set("Access-Control-Allow-Origin",
+//                "Accept");
     }
 
     @GetMapping(value = "/session-formats", produces = MediaType.APPLICATION_JSON_VALUE)

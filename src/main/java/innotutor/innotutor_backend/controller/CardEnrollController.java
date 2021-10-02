@@ -32,7 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 //@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardEnrollController {
@@ -43,10 +43,10 @@ public class CardEnrollController {
     public CardEnrollController(CardEnrollService cardEnrollService) {
         this.cardEnrollService = cardEnrollService;
         responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Headers",
-                "Accept");
-        responseHeaders.set("Access-Control-Allow-Origin",
-                "Accept");
+//        responseHeaders.set("Access-Control-Allow-Headers",
+//                "*");
+//        responseHeaders.set("Access-Control-Allow-Origin",
+//                "*");
     }
 
     @PostMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
