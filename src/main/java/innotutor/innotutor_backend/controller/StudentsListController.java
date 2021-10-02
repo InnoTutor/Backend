@@ -36,7 +36,7 @@ import java.util.List;
 @RestController
 //@CrossOrigin(origins = "*")
 @RequestMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class StudentsListController {
 
     final SearcherService searcherService;
