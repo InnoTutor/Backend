@@ -32,7 +32,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
+@CrossOrigin
 public class CardEnrollController {
 
     final CardEnrollService cardEnrollService;

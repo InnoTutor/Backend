@@ -34,7 +34,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin
 public class TutorsListController {
 
     final SearcherService searcherService;
