@@ -38,7 +38,7 @@ import java.util.List;
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SessionController {
-    final SessionService sessionService;
+    private final SessionService sessionService;
 
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;

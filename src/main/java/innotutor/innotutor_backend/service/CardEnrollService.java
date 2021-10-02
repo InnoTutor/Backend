@@ -50,14 +50,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class CardEnrollService {
-    final CardRepository cardRepository;
-    final UserRepository userRepository;
-    final CardEnrollRepository cardEnrollRepository;
-    final CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository;
-    final CardEnrollSessionTypeRepository cardEnrollSessionTypeRepository;
-    final EnrollmentStatusRepository enrollmentStatusRepository;
-    final SessionFormatRepository sessionFormatRepository;
-    final SessionTypeRepository sessionTypeRepository;
+    private final CardRepository cardRepository;
+    private final UserRepository userRepository;
+    private final CardEnrollRepository cardEnrollRepository;
+    private final CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository;
+    private final CardEnrollSessionTypeRepository cardEnrollSessionTypeRepository;
+    private final EnrollmentStatusRepository enrollmentStatusRepository;
+    private final SessionFormatRepository sessionFormatRepository;
+    private final SessionTypeRepository sessionTypeRepository;
 
     public CardEnrollService(CardRepository cardRepository,
                              UserRepository userRepository,

@@ -40,9 +40,9 @@ import java.util.List;
 @Service
 public class SessionService {
 
-    final SessionFormatRepository sessionFormatRepository;
-    final SessionTypeRepository sessionTypeRepository;
-    final SubjectRepository subjectRepository;
+    private final SessionFormatRepository sessionFormatRepository;
+    private final SessionTypeRepository sessionTypeRepository;
+    private final SubjectRepository subjectRepository;
 
     public SessionService(SessionFormatRepository sessionFormatRepository,
                           SessionTypeRepository sessionTypeRepository,

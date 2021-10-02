@@ -37,7 +37,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class TutorsListController {
 
-    final SearcherService searcherService;
+    private final SearcherService searcherService;
 
     public TutorsListController(SearcherService searcherService) {
         this.searcherService = searcherService;

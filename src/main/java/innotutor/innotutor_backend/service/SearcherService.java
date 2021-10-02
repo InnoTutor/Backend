@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class SearcherService {
-    final CardRepository cardRepository;
+    private final CardRepository cardRepository;
 
     public SearcherService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;

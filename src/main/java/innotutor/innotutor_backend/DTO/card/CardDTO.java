@@ -36,7 +36,7 @@ public class CardDTO {
     private Long cardId;
     private Long creatorId;
     private String subject;
-    private Integer rating;
+    private Double rating;
     private Integer countVoted;
     private String description;
     private boolean hidden;

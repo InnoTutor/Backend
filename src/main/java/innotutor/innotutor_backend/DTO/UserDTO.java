@@ -47,7 +47,7 @@ public class UserDTO {
     // Upcoming events
     private SessionsListDTO sessionsList;
     // You provide help via creating own CV cards
-    private List<CardDTO> servicesList;
+    //private List<CardDTO> servicesList;
     // Students who requested to your CV cards
     private RequestedStudentsListDTO myStudentsList;
     // You ask for help via creating own Request Card

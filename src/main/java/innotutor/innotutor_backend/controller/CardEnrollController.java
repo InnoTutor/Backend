@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardEnrollController {
 
-    final CardEnrollService cardEnrollService;
+    private final CardEnrollService cardEnrollService;
 
     public CardEnrollController(CardEnrollService cardEnrollService) {
         this.cardEnrollService = cardEnrollService;

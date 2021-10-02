@@ -25,6 +25,7 @@ package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
+import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.card.CardSessionFormat;
 import innotutor.innotutor_backend.entity.card.CardSessionType;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
@@ -41,26 +42,31 @@ import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import innotutor.innotutor_backend.repository.user.RequestRepository;
 import innotutor.innotutor_backend.repository.user.ServiceRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
+import innotutor.innotutor_backend.utility.AverageRating;
+import innotutor.innotutor_backend.utility.session.sessionformat.CardSessionFormatConverter;
 import innotutor.innotutor_backend.utility.session.sessionformat.SessionFormatConverter;
 import innotutor.innotutor_backend.utility.session.sessionformat.SessionFormatEntityConverter;
+import innotutor.innotutor_backend.utility.session.sessiontype.CardSessionTypeConverter;
 import innotutor.innotutor_backend.utility.session.sessiontype.SessionTypeConverter;
 import innotutor.innotutor_backend.utility.session.sessiontype.SessionTypeEntityConverter;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CardService {
-    final CardRepository cardRepository;
-    final UserRepository userRepository;
-    final SessionFormatRepository sessionFormatRepository;
-    final SessionTypeRepository sessionTypeRepository;
-    final SubjectRepository subjectRepository;
-    final ServiceRepository serviceRepository;
-    final RequestRepository requestRepository;
-    final CardSessionFormatRepository cardSessionFormatRepository;
-    final CardSessionTypeRepository cardSessionTypeRepository;
+    private final CardRepository cardRepository;
+    private final UserRepository userRepository;
+    private final SessionFormatRepository sessionFormatRepository;
+    private final SessionTypeRepository sessionTypeRepository;
+    private final SubjectRepository subjectRepository;
+    private final ServiceRepository serviceRepository;
+    private final RequestRepository requestRepository;
+    private final CardSessionFormatRepository cardSessionFormatRepository;
+    private final CardSessionTypeRepository cardSessionTypeRepository;
 
     public CardService(CardRepository cardRepository,
                        UserRepository userRepository,
@@ -88,6 +94,70 @@ public class CardService {
 
     public CardDTO postRequestCard(CardDTO cardDTO) {
         return createCard(cardDTO, CardType.REQUEST);
+    }
+
+    public boolean deleteCardById(Long userId, Long cardId) {
+        Optional<Card> cardOptional = cardRepository.findById(cardId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!cardOptional.isPresent() || !userOptional.isPresent()) {
+            return false;
+        }
+        innotutor.innotutor_backend.entity.user.Service service = serviceRepository.findByCardId(cardId);
+        if (service != null) {
+            if (service.getTutorId().equals(userId)) {
+                cardRepository.deleteById(cardId);
+                return true;
+            }
+        }
+        Request request = requestRepository.findByCardId(cardId);
+        if (request != null) {
+            if (request.getStudentId().equals(userId)) {
+                cardRepository.deleteById(cardId);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+    public CardDTO putCvCard(CardDTO cardDTO) {
+        if (cardDTO.getCardId() == null) {
+            return this.postCvCard(cardDTO);
+        }
+        Optional<Card> card = cardRepository.findById(cardDTO.getCardId());
+        if (!card.isPresent()) {
+            return this.postCvCard(cardDTO);
+        }
+
+        //todo change fields
+        return null;
+    }
+     */
+
+    public List<CardDTO> getServices(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<CardDTO> services = new ArrayList<>();
+            for (innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
+                Card card = service.getCardByCardId();
+                Collection<CardRating> ratings = card.getCardRatingsByCardId();
+                services.add(new CardDTO(
+                                card.getCardId(),
+                                user.getUserId(),
+                                subjectRepository.getById(card.getSubjectId()).getName(),
+                                new AverageRating(ratings).averageRating(),
+                                ratings.size(),
+                                card.getDescription(),
+                                card.getHidden(),
+                                new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
+                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
+                        )
+                );
+            }
+            return services;
+        }
+        return null;
     }
 
     private CardDTO createCard(CardDTO cardDTO, CardType type) {

@@ -34,21 +34,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/card", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardController {
-    final CardService cardService;
+    private final CardService cardService;
 
     public CardController(CardService cardService) {
         this.cardService = cardService;
-    }
-
-    @PostMapping(value = "/cv-card", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postCvCard(@RequestBody CardDTO cardDTO) {
-        if (cardDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        CardDTO result = cardService.postCvCard(cardDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/request-card", produces = MediaType.APPLICATION_JSON_VALUE)
