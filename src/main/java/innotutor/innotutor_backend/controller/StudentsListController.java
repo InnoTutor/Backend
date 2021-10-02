@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
 //@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
-@CrossOrigin
 public class StudentsListController {
 
     final SearcherService searcherService;
