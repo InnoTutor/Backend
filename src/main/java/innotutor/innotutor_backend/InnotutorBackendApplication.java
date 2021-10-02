@@ -35,6 +35,7 @@ public class InnotutorBackendApplication {
         SpringApplication.run(InnotutorBackendApplication.class, args);
     }
 
+    /*
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -50,4 +51,5 @@ public class InnotutorBackendApplication {
             }
         };
     }
+     */
 }
