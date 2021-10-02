@@ -25,28 +25,20 @@ package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
 import innotutor.innotutor_backend.service.CardEnrollService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@CrossOrigin(origins = "*")
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardEnrollController {
 
     final CardEnrollService cardEnrollService;
-    final HttpHeaders responseHeaders;
 
     public CardEnrollController(CardEnrollService cardEnrollService) {
         this.cardEnrollService = cardEnrollService;
-        responseHeaders = new HttpHeaders();
-//        responseHeaders.set("Access-Control-Allow-Headers",
-//                "*");
-//        responseHeaders.set("Access-Control-Allow-Origin",
-//                "*");
     }
 
     @PostMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
