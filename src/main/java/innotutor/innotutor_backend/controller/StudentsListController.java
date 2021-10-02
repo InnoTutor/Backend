@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class StudentsListController {
 
     final SearcherService searcherService;
@@ -57,7 +57,7 @@ public class StudentsListController {
                                                                    @RequestParam(name = "type", required = false) String type) {
         List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type);
         return students == null
-                ? new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(students, responseHeaders, HttpStatus.OK);
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(students, HttpStatus.OK);
     }
 }

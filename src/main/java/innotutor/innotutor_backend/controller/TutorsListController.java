@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class TutorsListController {
 
     final SearcherService searcherService;
@@ -57,7 +57,7 @@ public class TutorsListController {
                                                           @RequestParam(name = "type", required = false) String type) {
         List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type);
         return tutors == null
-                ? new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(tutors, responseHeaders, HttpStatus.OK);
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(tutors, HttpStatus.OK);
     }
 }

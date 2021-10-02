@@ -32,9 +32,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardEnrollController {
 
     final CardEnrollService cardEnrollService;
@@ -65,7 +65,7 @@ public class CardEnrollController {
         }
         EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
         return result == null
-                ? new ResponseEntity<>(responseHeaders, HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, responseHeaders, HttpStatus.CREATED);
+                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }

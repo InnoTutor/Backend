@@ -36,9 +36,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SessionController {
     final SessionService sessionService;
     final HttpHeaders responseHeaders;
@@ -54,16 +54,16 @@ public class SessionController {
 
     @GetMapping(value = "/session-formats", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SessionFormatDTO>> getSessionFormats() {
-        return new ResponseEntity<>(sessionService.getSessionFormats(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(sessionService.getSessionFormats(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/session-types", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SessionTypeDTO>> getSessionTypes() {
-        return new ResponseEntity<>(sessionService.getSessionTypes(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(sessionService.getSessionTypes(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SubjectDTO>> getSubjects() {
-        return new ResponseEntity<>(sessionService.getSubjects(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(sessionService.getSubjects(), HttpStatus.OK);
     }
 }

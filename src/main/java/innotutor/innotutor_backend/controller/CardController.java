@@ -32,9 +32,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(value = "/card", produces = MediaType.APPLICATION_JSON_VALUE)
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
 public class CardController {
     final CardService cardService;
     final HttpHeaders responseHeaders;
@@ -55,8 +55,8 @@ public class CardController {
         }
         CardDTO result = cardService.postCvCard(cardDTO);
         return result == null
-                ? new ResponseEntity<>(responseHeaders, HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, responseHeaders, HttpStatus.CREATED);
+                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/request-card", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,7 +66,7 @@ public class CardController {
         }
         CardDTO result = cardService.postRequestCard(cardDTO);
         return result == null
-                ? new ResponseEntity<>(responseHeaders, HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, responseHeaders, HttpStatus.CREATED);
+                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }
