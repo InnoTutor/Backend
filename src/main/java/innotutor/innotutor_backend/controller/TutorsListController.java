@@ -24,10 +24,12 @@ SOFTWARE.
 package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
+import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.SearcherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +48,9 @@ public class TutorsListController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TutorCvDTO>> getTutorsList(@RequestParam(name = "subject", required = false) String subject,
                                                           @RequestParam(name = "format", required = false) String format,
-                                                          @RequestParam(name = "type", required = false) String type) {
+                                                          @RequestParam(name = "type", required = false) String type,
+                                                          @AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        System.out.println(customPrincipal);
         List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type);
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)

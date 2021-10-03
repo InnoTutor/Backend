@@ -1,10 +1,12 @@
 package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +18,24 @@ public class ServicesController {
 
     private final CardService cardService;
 
+    //TODO: create a UserService to fetch data about users from database
+    //    private final UserService userService;
+
+
     public ServicesController(CardService cardService) {
         this.cardService = cardService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getServices() {
+    public ResponseEntity<List<CardDTO>> getServices(@AuthenticationPrincipal CustomPrincipal customPrincipal) {
         //todo identify user's id who sent this request
+        //        String emailOfUser = customPrincipal.getEmail();
+        //        User user = userService.getByEmail();
+        //        if (!user.isPresent()){
+        //            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //        }else{
+        //            // all the needed stuff with user services
+        //        }
         Long userId = 2L;
         List<CardDTO> services = cardService.getServices(userId);
         return services == null
