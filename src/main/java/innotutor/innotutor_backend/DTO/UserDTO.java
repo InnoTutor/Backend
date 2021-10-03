@@ -49,7 +49,7 @@ public class UserDTO {
     // You provide help via creating own CV cards
     //private List<CardDTO> servicesList;
     // Students who requested to your CV cards
-    private RequestedStudentsListDTO myStudentsList;
+    //private RequestedStudentsListDTO myStudentsList;
     // You ask for help via creating own Request Card
     private List<CardDTO> requestsList;
     // Tutors who responded to your Request cards

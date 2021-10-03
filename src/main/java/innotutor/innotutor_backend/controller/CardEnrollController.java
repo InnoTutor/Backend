@@ -43,11 +43,17 @@ public class CardEnrollController {
 
     @PostMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDTO> postStudentCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO) {
+        //todo identify user's id who sent this request
+        Long userId = 2L;
+        enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }
 
     @PostMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO) {
+        //todo identify user's id who sent this request
+        Long userId = 2L;
+        enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }
 
