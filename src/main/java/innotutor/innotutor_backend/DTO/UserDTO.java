@@ -23,16 +23,9 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.DTO;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
-import innotutor.innotutor_backend.DTO.enrollment.AssignedCardsDTO;
-import innotutor.innotutor_backend.DTO.enrollment.RequestedStudentsListDTO;
-import innotutor.innotutor_backend.DTO.enrollment.RespondedTutorsListDTO;
-import innotutor.innotutor_backend.DTO.session.SessionsListDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -45,15 +38,15 @@ public class UserDTO {
     private String contacts;
     private String description;
     // Upcoming events
-    private SessionsListDTO sessionsList;
+    //private SessionsListDTO sessionsList;
     // You provide help via creating own CV cards
-    private List<CardDTO> servicesList;
+    //private List<CardDTO> servicesList;
     // Students who requested to your CV cards
-    private RequestedStudentsListDTO myStudentsList;
+    //private RequestedStudentsListDTO myStudentsList;
     // You ask for help via creating own Request Card
-    private List<CardDTO> requestsList;
+    //private List<CardDTO> requestsList;
     // Tutors who responded to your Request cards
-    private RespondedTutorsListDTO myTutorsList;
+    //private RespondedTutorsListDTO myTutorsList;
     // Cards to which you assigned or asked to be
-    private AssignedCardsDTO assignedCardsList;
+    //private AssignedCardsDTO assignedCardsList;
 }

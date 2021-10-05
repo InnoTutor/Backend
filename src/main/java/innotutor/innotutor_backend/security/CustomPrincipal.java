@@ -21,15 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.repository.user;
+package innotutor.innotutor_backend.security;
 
-import innotutor.innotutor_backend.entity.user.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Data;
 
-import java.util.Optional;
-
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+@Data
+public class CustomPrincipal {
+    private String email;
+    private String fullName;
 }

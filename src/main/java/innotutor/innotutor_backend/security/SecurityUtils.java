@@ -21,15 +21,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.repository.user;
+package innotutor.innotutor_backend.security;
 
-import innotutor.innotutor_backend.entity.user.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.WebUtils;
 
-import java.util.Optional;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+@Component
+public class SecurityUtils {
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String token = null;
+        Cookie cookieToken = WebUtils.getCookie(request, "token");
+        if (cookieToken != null) {
+            token = cookieToken.getValue();
+        } else {
+            String bearerToken = request.getHeader("Authorization");
+            System.out.println("bearerToken 1 " + bearerToken);
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+                token = bearerToken.substring(7);
+            }
+        }
+        return token;
+    }
 }

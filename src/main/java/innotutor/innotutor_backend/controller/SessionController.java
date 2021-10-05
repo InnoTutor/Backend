@@ -38,18 +38,18 @@ import java.util.List;
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SessionController {
-    final SessionService sessionService;
+    private final SessionService sessionService;
 
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
-    @GetMapping(value = "/session-formats", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SessionFormatDTO>> getSessionFormats() {
         return new ResponseEntity<>(sessionService.getSessionFormats(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/session-types", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SessionTypeDTO>> getSessionTypes() {
         return new ResponseEntity<>(sessionService.getSessionTypes(), HttpStatus.OK);
     }

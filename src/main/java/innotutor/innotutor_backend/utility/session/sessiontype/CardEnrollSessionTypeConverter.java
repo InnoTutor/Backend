@@ -21,15 +21,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.repository.user;
+package innotutor.innotutor_backend.utility.session.sessiontype;
 
-import innotutor.innotutor_backend.entity.user.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import innotutor.innotutor_backend.entity.card.enrollment.CardEnrollSessionType;
+import innotutor.innotutor_backend.utility.session.SessionConverter;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+public class CardEnrollSessionTypeConverter implements SessionConverter {
+    private final Collection<CardEnrollSessionType> types;
+
+    public CardEnrollSessionTypeConverter(Collection<CardEnrollSessionType> types) {
+        this.types = types;
+    }
+
+    @Override
+    public List<String> stringList() {
+        List<String> formatsNames = new ArrayList<>();
+        for (CardEnrollSessionType type : types) {
+            formatsNames.add(type.getSessionTypeBySessionTypeId().getName());
+        }
+        return formatsNames;
+    }
 }

@@ -24,39 +24,51 @@ SOFTWARE.
 package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.security.CustomPrincipal;
+import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.CardService;
+import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/card", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class CardController {
-    final CardService cardService;
 
-    public CardController(CardService cardService) {
+    private final UserService userService;
+    private final CardService cardService;
+    private final CardEnrollService cardEnrollService;
+
+    public CardController(UserService userService, CardService cardService, CardEnrollService cardEnrollService) {
+        this.userService = userService;
         this.cardService = cardService;
+        this.cardEnrollService = cardEnrollService;
     }
 
-    @PostMapping(value = "/cv-card", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postCvCard(@RequestBody CardDTO cardDTO) {
-        if (cardDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @GetMapping(value = "/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CardDTO> getCard(@PathVariable Long id, @AuthenticationPrincipal CustomPrincipal user) {
+        if (id == null){
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        CardDTO result = cardService.postCvCard(cardDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
+        CardDTO card = cardService.getCardById(id, userService.getUserId(user));
+        return card == null
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(card, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/request-card", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postRequestCard(@RequestBody CardDTO cardDTO) {
-        if (cardDTO == null) {
+    @PostMapping(value = "/enroll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO,
+                                                             @AuthenticationPrincipal CustomPrincipal user) {
+        if (enrollmentDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        CardDTO result = cardService.postRequestCard(cardDTO);
+        enrollmentDTO.setEnrollerId(userService.getUserId(user));
+        EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.CREATED);

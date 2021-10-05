@@ -92,7 +92,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "password", nullable = false, length = 64)
+    @Column(name = "password", nullable = true, length = 64)
     public String getPassword() {
         return password;
     }

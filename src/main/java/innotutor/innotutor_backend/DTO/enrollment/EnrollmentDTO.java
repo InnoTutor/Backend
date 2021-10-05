@@ -33,6 +33,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnrollmentDTO {
+    private Long enrollmentId;
     private Long enrollerId;
     private Long cardId;
     private List<String> sessionFormat;

@@ -31,6 +31,7 @@ import innotutor.innotutor_backend.entity.card.enrollment.CardEnrollSessionType;
 import innotutor.innotutor_backend.entity.card.enrollment.EnrollmentStatus;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
 import innotutor.innotutor_backend.entity.session.SessionType;
+import innotutor.innotutor_backend.entity.user.Request;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.CardRepository;
 import innotutor.innotutor_backend.repository.card.enrollment.CardEnrollRepository;
@@ -50,16 +51,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class CardEnrollService {
-    final CardRepository cardRepository;
-    final UserRepository userRepository;
-    final CardEnrollRepository cardEnrollRepository;
-    final CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository;
-    final CardEnrollSessionTypeRepository cardEnrollSessionTypeRepository;
-    final EnrollmentStatusRepository enrollmentStatusRepository;
-    final SessionFormatRepository sessionFormatRepository;
-    final SessionTypeRepository sessionTypeRepository;
+   private final CardService cardService;
+    private final CardRepository cardRepository;
+    private final UserRepository userRepository;
+    private final CardEnrollRepository cardEnrollRepository;
+    private final CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository;
+    private final CardEnrollSessionTypeRepository cardEnrollSessionTypeRepository;
+    private final EnrollmentStatusRepository enrollmentStatusRepository;
+    private final SessionFormatRepository sessionFormatRepository;
+    private final SessionTypeRepository sessionTypeRepository;
 
-    public CardEnrollService(CardRepository cardRepository,
+    public CardEnrollService(CardService cardService,
+                             CardRepository cardRepository,
                              UserRepository userRepository,
                              CardEnrollRepository cardEnrollRepository,
                              CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository,
@@ -67,6 +70,7 @@ public class CardEnrollService {
                              EnrollmentStatusRepository enrollmentStatusRepository,
                              SessionFormatRepository sessionFormatRepository,
                              SessionTypeRepository sessionTypeRepository) {
+        this.cardService = cardService;
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.cardEnrollRepository = cardEnrollRepository;
@@ -83,26 +87,73 @@ public class CardEnrollService {
         Optional<Card> cardOptional = cardRepository.findById(cardId);
         Optional<User> userOptional = userRepository.findById(enrollerId);
         if (cardOptional.isPresent() && userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (!user.getUserId().equals(enrollerId)) {
-                Card card = cardOptional.get();
-                if (isUniquePair(enrollerId, cardId)) {
-                    List<String> sessionFormats = this.getSessionFormats(card, enrollmentDTO);
-                    List<String> sessionTypes = this.getSessionTypes(card, enrollmentDTO);
-                    if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
-                        CardEnroll cardEnroll = this.saveCardEnroll(
-                                card,
-                                user,
-                                enrollmentStatusRepository.findEnrollmentStatusByStatus("requested")
-                        );
-                        this.saveCardEnrollSessionFormat(cardEnroll, sessionFormats);
-                        this.saveCardEnrollSessionType(cardEnroll, sessionTypes);
-                        return new EnrollmentDTO(enrollerId, cardId, sessionFormats, sessionTypes);
-                    }
+            Card card = cardOptional.get();
+            if (!cardService.getCardCreatorId(card).equals(enrollerId) && isUniquePair(enrollerId, cardId)) {
+                List<String> sessionFormats = this.getCommonSessionFormats(card, enrollmentDTO);
+                List<String> sessionTypes = this.getCommonSessionTypes(card, enrollmentDTO);
+                if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
+                    CardEnroll cardEnroll = this.saveCardEnroll(
+                            card,
+                            userOptional.get(),
+                            enrollmentStatusRepository.findEnrollmentStatusByStatus("requested")
+                    );
+                    this.saveCardEnrollSessionFormat(cardEnroll, sessionFormats);
+                    this.saveCardEnrollSessionType(cardEnroll, sessionTypes);
+                    return new EnrollmentDTO(cardEnroll.getCardEnrollId(), enrollerId, cardId, sessionFormats, sessionTypes);
                 }
             }
         }
         return null;
+    }
+
+    public boolean acceptStudent(Long tutorId, Long enrollmentId) {
+        Optional<CardEnroll> cardEnrollOptional = cardEnrollRepository.findById(enrollmentId);
+        if (cardEnrollOptional.isPresent()) {
+            CardEnroll cardEnroll = cardEnrollOptional.get();
+            innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
+            String previousStatus = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
+            if (service != null && service.getTutorId().equals(tutorId) && previousStatus.equals("requested")) {
+                EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted");
+                cardEnroll.setEnrollmentStatusByStatusId(enrollmentStatus);
+                cardEnroll.setStatusId(enrollmentStatus.getStatusId());
+                cardEnrollRepository.save(cardEnroll);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeStudent(Long tutorId, Long enrollmentId) {
+        Optional<CardEnroll> cardEnrollOptional = cardEnrollRepository.findById(enrollmentId);
+        if (cardEnrollOptional.isPresent()) {
+            CardEnroll cardEnroll = cardEnrollOptional.get();
+            String status = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
+            if (status.equals("requested") || status.equals("accepted")) {
+                return this.removeStudentCvCard(tutorId, cardEnroll) || this.removeStudentRequestCard(tutorId, cardEnroll);
+            }
+        }
+        return false;
+    }
+
+    private boolean removeStudentCvCard(Long tutorId, CardEnroll cardEnroll) {
+        innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
+        if (service != null && service.getTutorId().equals(tutorId)) {
+            EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus("rejected");
+            cardEnroll.setEnrollmentStatusByStatusId(enrollmentStatus);
+            cardEnroll.setStatusId(enrollmentStatus.getStatusId());
+            cardEnrollRepository.save(cardEnroll);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean removeStudentRequestCard(Long tutorId, CardEnroll cardEnroll) {
+        Request request = cardEnroll.getCardByCardId().getRequestByCardId();
+        if (request != null && cardEnroll.getUserId().equals(tutorId)) {
+            cardEnrollRepository.delete(cardEnroll);
+            return true;
+        }
+        return false;
     }
 
     private boolean isUniquePair(Long enrollerId, Long cardId) {
@@ -113,24 +164,6 @@ public class CardEnrollService {
             }
         }
         return true;
-    }
-
-    private List<String> getSessionFormats(Card card, EnrollmentDTO enrollmentDTO) {
-        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionFormat()::contains)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getSessionTypes(Card card, EnrollmentDTO enrollmentDTO) {
-        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionType()::contains)
-                .collect(Collectors.toList());
     }
 
     private CardEnroll saveCardEnroll(Card card, User tutor, EnrollmentStatus enrollmentStatus) {
@@ -172,5 +205,23 @@ public class CardEnrollService {
                     )
             );
         }
+    }
+
+    private List<String> getCommonSessionFormats(Card card, EnrollmentDTO enrollmentDTO) {
+        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
+                .stringList()
+                .stream()
+                .distinct()
+                .filter(enrollmentDTO.getSessionFormat()::contains)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getCommonSessionTypes(Card card, EnrollmentDTO enrollmentDTO) {
+        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
+                .stringList()
+                .stream()
+                .distinct()
+                .filter(enrollmentDTO.getSessionType()::contains)
+                .collect(Collectors.toList());
     }
 }
