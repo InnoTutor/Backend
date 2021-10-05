@@ -23,11 +23,15 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
+import innotutor.innotutor_backend.DTO.UserDTO;
 import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
+import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,23 +40,26 @@ import org.springframework.web.bind.annotation.*;
 public class CardEnrollController {
 
     private final CardEnrollService cardEnrollService;
-
-    public CardEnrollController(CardEnrollService cardEnrollService) {
+    private final UserService userService;
+    public CardEnrollController(CardEnrollService cardEnrollService, UserService userService) {
         this.cardEnrollService = cardEnrollService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EnrollmentDTO> postStudentCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO) {
-        //todo identify user's id who sent this request
-        Long userId = 2L;
+    public ResponseEntity<EnrollmentDTO> postStudentCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO, @AuthenticationPrincipal CustomPrincipal user) {
+        String email = user.getEmail();
+        UserDTO userDTO = userService.getUserByEmail(email);
+        Long userId = userDTO.getUserId();
         enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }
 
     @PostMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO) {
-        //todo identify user's id who sent this request
-        Long userId = 2L;
+    public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO, @AuthenticationPrincipal CustomPrincipal user) {
+        String email = user.getEmail();
+        UserDTO userDTO = userService.getUserByEmail(email);
+        Long userId = userDTO.getUserId();
         enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }

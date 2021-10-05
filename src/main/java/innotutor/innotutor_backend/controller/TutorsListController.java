@@ -48,9 +48,7 @@ public class TutorsListController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TutorCvDTO>> getTutorsList(@RequestParam(name = "subject", required = false) String subject,
                                                           @RequestParam(name = "format", required = false) String format,
-                                                          @RequestParam(name = "type", required = false) String type,
-                                                          @AuthenticationPrincipal CustomPrincipal customPrincipal) {
-        System.out.println(customPrincipal);
+                                                          @RequestParam(name = "type", required = false) String type) {
         List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type);
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
