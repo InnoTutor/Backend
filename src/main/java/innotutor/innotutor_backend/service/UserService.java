@@ -41,4 +41,11 @@ public class UserService {
         userToInsert.setSurname(surname);
         userRepository.save(userToInsert);
     }
+
+    public Long getUserId(CustomPrincipal user){
+        String email = user.getEmail();
+        UserDTO userDTO = getUserByEmail(email);
+        Long userId = userDTO.getUserId();
+        return userId;
+    }
 }

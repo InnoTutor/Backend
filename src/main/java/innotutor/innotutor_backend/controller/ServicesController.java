@@ -20,9 +20,6 @@ public class ServicesController {
 
     private final CardService cardService;
     private final UserService userService;
-    //TODO: create a UserService to fetch data about users from database
-    //    private final UserService userService;
-
 
     public ServicesController(CardService cardService, UserService userService) {
         this.cardService = cardService;
@@ -31,9 +28,7 @@ public class ServicesController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CardDTO>> getServices(@AuthenticationPrincipal CustomPrincipal user) {
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         List<CardDTO> services = cardService.getServices(userId);
         return services == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -45,9 +40,7 @@ public class ServicesController {
         if (cardDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         cardDTO.setCreatorId(userId);
         CardDTO result = cardService.postCvCard(cardDTO);
         return result == null
@@ -60,9 +53,7 @@ public class ServicesController {
         if (cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         return cardService.deleteCardById(userId, cardId)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -74,10 +65,7 @@ public class ServicesController {
         if (cardDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
-        Long userId = 2L;
+        Long userId = userService.getUserId(user);
         cardDTO.setCreatorId(userId);
         CardDTO result = cardService.putCvCard(cardDTO);
         if (result == null) {

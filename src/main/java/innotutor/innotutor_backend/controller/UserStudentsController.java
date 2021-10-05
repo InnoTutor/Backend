@@ -27,9 +27,7 @@ public class UserStudentsController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestedStudentsListDTO> getUserStudentsList(@AuthenticationPrincipal CustomPrincipal user) {
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         RequestedStudentsListDTO students = studentsService.getUserStudentsList(userId);
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -41,9 +39,7 @@ public class UserStudentsController {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         return cardEnrollService.acceptStudent(userId, id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -54,10 +50,7 @@ public class UserStudentsController {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         return cardEnrollService.removeStudent(userId, id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -48,18 +48,14 @@ public class CardEnrollController {
 
     @PostMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDTO> postStudentCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO, @AuthenticationPrincipal CustomPrincipal user) {
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }
 
     @PostMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO, @AuthenticationPrincipal CustomPrincipal user) {
-        String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
-        Long userId = userDTO.getUserId();
+        Long userId = userService.getUserId(user);
         enrollmentDTO.setEnrollerId(userId);
         return postCardEnroll(enrollmentDTO);
     }
