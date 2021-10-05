@@ -2,10 +2,8 @@ package innotutor.innotutor_backend.controller;
 
 
 import innotutor.innotutor_backend.DTO.UserDTO;
-import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.security.CustomPrincipal;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,7 @@ public class ProfileController {
 
     private final UserRepository userRepository;
     private final UserService userService;
+
     public ProfileController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -39,23 +38,11 @@ public class ProfileController {
     public void checkUserProfile(@AuthenticationPrincipal CustomPrincipal user) {
         String email = user.getEmail();
         UserDTO userDTO = userService.getUserByEmail(email);
-        if (userDTO == null){
-            addUserToDatabase(user);
+        if (userDTO == null) {
+            userService.addUserToDatabase(user);
         }
     }
 
 
-    private void addUserToDatabase(CustomPrincipal user){
-        String email = user.getEmail();
-        String fullName = user.getFullName();
-        String[] nameSurname = fullName.split(" ");
-        String name = nameSurname[0];
-        String surname = nameSurname[1];
-        User userToInsert = new User();
-        userToInsert.setEmail(email);
-        userToInsert.setName(name);
-        userToInsert.setSurname(surname);
-        userRepository.save(userToInsert);
-    }
 }
 
