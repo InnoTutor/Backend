@@ -33,7 +33,6 @@ public class TokenFilter extends OncePerRequestFilter {
         }
         if (decodedToken != null) {
             CustomPrincipal customPrincipal = new CustomPrincipal();
-            customPrincipal.setUid(decodedToken.getUid());
             customPrincipal.setEmail((String) decodedToken.getClaims().get("email"));
             customPrincipal.setFullName((String) decodedToken.getClaims().get("name"));
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
