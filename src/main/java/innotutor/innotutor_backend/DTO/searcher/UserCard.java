@@ -26,6 +26,8 @@ package innotutor.innotutor_backend.DTO.searcher;
 import java.util.List;
 
 public interface UserCard {
+    Long getCreatorId();
+
     String getSubject();
 
     List<String> getSessionFormat();

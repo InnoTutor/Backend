@@ -51,7 +51,6 @@ import innotutor.innotutor_backend.utility.session.sessiontype.SessionTypeConver
 import innotutor.innotutor_backend.utility.session.sessiontype.SessionTypeEntityConverter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -88,13 +87,42 @@ public class CardService {
         this.cardSessionTypeRepository = cardSessionTypeRepository;
     }
 
+    public CardDTO getCardById(Long cardId, Long userId) {
+        Optional<Card> cardOptional = cardRepository.findById(cardId);
+        if (cardOptional.isPresent()) {
+            Card card = cardOptional.get();
+            Long creatorId = this.getCardCreatorId(card);
+            if (!card.getHidden() || userId.equals(creatorId)) {
+                return this.createCardDTO(card, creatorId);
+            }
+        }
+        return null;
+    }
+
+
+
     public CardDTO postCvCard(CardDTO cardDTO) {
-        return createCard(cardDTO, CardType.SERVICE);
+        return postCard(cardDTO, CardType.SERVICE);
     }
 
     public CardDTO postRequestCard(CardDTO cardDTO) {
-        return createCard(cardDTO, CardType.REQUEST);
+        return postCard(cardDTO, CardType.REQUEST);
     }
+
+     /*
+    public CardDTO updateCvCard(CardDTO cardDTO) {
+        if (cardDTO.getCardId() == null) {
+            return this.postCvCard(cardDTO);
+        }
+        Optional<Card> card = cardRepository.findById(cardDTO.getCardId());
+        if (!card.isPresent()) {
+            return this.postCvCard(cardDTO);
+        }
+
+        //todo change fields
+        return null;
+    }
+     */
 
     public boolean deleteCardById(Long userId, Long cardId) {
         Optional<Card> cardOptional = cardRepository.findById(cardId);
@@ -119,48 +147,32 @@ public class CardService {
         return false;
     }
 
-    /*
-    public CardDTO putCvCard(CardDTO cardDTO) {
-        if (cardDTO.getCardId() == null) {
-            return this.postCvCard(cardDTO);
+    Long getCardCreatorId(Card card) {
+        if (card.getServiceByCardId() != null) {
+            return card.getServiceByCardId().getTutorId();
         }
-        Optional<Card> card = cardRepository.findById(cardDTO.getCardId());
-        if (!card.isPresent()) {
-            return this.postCvCard(cardDTO);
-        }
-
-        //todo change fields
-        return null;
-    }
-     */
-
-    public List<CardDTO> getServices(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<CardDTO> services = new ArrayList<>();
-            for (innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
-                Card card = service.getCardByCardId();
-                Collection<CardRating> ratings = card.getCardRatingsByCardId();
-                services.add(new CardDTO(
-                                card.getCardId(),
-                                user.getUserId(),
-                                subjectRepository.getById(card.getSubjectId()).getName(),
-                                new AverageRating(ratings).averageRating(),
-                                ratings.size(),
-                                card.getDescription(),
-                                card.getHidden(),
-                                new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
-                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
-                        )
-                );
-            }
-            return services;
+        if (card.getRequestByCardId() != null) {
+            return card.getRequestByCardId().getStudentId();
         }
         return null;
     }
 
-    private CardDTO createCard(CardDTO cardDTO, CardType type) {
+    CardDTO createCardDTO(Card card, Long creatorId) {
+        Collection<CardRating> ratings = card.getCardRatingsByCardId();
+        return new CardDTO(
+                card.getCardId(),
+                creatorId,
+                subjectRepository.getById(card.getSubjectId()).getName(),
+                new AverageRating(ratings).averageRating(),
+                ratings.size(),
+                card.getDescription(),
+                card.getHidden(),
+                new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
+                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
+        );
+    }
+
+    private CardDTO postCard(CardDTO cardDTO, CardType type) {
         Optional<User> creatorOptional = userRepository.findById(cardDTO.getCreatorId());
         Subject subject = subjectRepository.findSubjectByName(cardDTO.getSubject());
         List<SessionFormat> sessionFormat = new SessionFormatEntityConverter(
@@ -172,28 +184,33 @@ public class CardService {
                 sessionTypeRepository
         ).toEntityList();
         if (creatorOptional.isPresent() && subject != null && !sessionFormat.isEmpty() && !sessionType.isEmpty()) {
-            User creator = creatorOptional.get();
-            if (this.isUniquePair(creator.getUserId(), subject.getSubjectId())) {
-                Card card = cardRepository.save(new Card(
-                        subject.getSubjectId(),
-                        cardDTO.getDescription(),
-                        false,
-                        subject)
-                );
-                this.saveUserCardRelation(creator, card, type);
-                this.saveSessionFormat(card, sessionFormat);
-                this.saveSessionType(card, sessionType);
-                return new CardDTO(
-                        card.getCardId(),
-                        creator.getUserId(),
-                        subject.getName(),
-                        null,
-                        0,
-                        cardDTO.getDescription(),
-                        false,
-                        new SessionFormatConverter(sessionFormat).stringList(),
-                        new SessionTypeConverter(sessionType).stringList());
-            }
+            return createCard(type, creatorOptional.get(), subject, cardDTO.getDescription(), sessionFormat, sessionType);
+        }
+        return null;
+    }
+
+    private CardDTO createCard(CardType type, User creator, Subject subject, String description,
+                               List<SessionFormat> sessionFormat, List<SessionType> sessionType) {
+        if (this.isUniquePair(creator.getUserId(), subject.getSubjectId())) {
+            Card card = cardRepository.save(new Card(
+                    subject.getSubjectId(),
+                    description,
+                    false,
+                    subject)
+            );
+            this.saveUserCardRelation(creator, card, type);
+            this.saveSessionFormat(card, sessionFormat);
+            this.saveSessionType(card, sessionType);
+            return new CardDTO(
+                    card.getCardId(),
+                    creator.getUserId(),
+                    subject.getName(),
+                    null,
+                    0,
+                    description,
+                    false,
+                    new SessionFormatConverter(sessionFormat).stringList(),
+                    new SessionTypeConverter(sessionType).stringList());
         }
         return null;
     }

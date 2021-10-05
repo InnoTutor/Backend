@@ -22,23 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 package innotutor.innotutor_backend;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @SpringBootApplication
 public class InnotutorBackendApplication {
@@ -71,8 +71,6 @@ public class InnotutorBackendApplication {
     @Bean
     @Primary
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.build();
-        return objectMapper;
+        return builder.build();
     }
 }
-

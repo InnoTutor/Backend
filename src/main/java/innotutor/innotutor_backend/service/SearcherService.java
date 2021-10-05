@@ -49,10 +49,12 @@ public class SearcherService {
 
     public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
                                               String specifiedFormat,
-                                              String specifiedType) {
+                                              String specifiedType,
+                                              Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllTutorCvDTOList()),
+                userId,
                 specifiedSubject,
                 specifiedFormat,
                 specifiedType)) {
@@ -63,10 +65,12 @@ public class SearcherService {
 
     public List<StudentRequestDTO> getStudentRequestDTOList(String specifiedSubject,
                                                             String specifiedFormat,
-                                                            String specifiedType) {
+                                                            String specifiedType,
+                                                            Long userId) {
         List<StudentRequestDTO> students = new ArrayList<>();
         for (UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllStudentRequestDTOList()),
+                userId,
                 specifiedSubject,
                 specifiedFormat,
                 specifiedType)) {
@@ -117,18 +121,23 @@ public class SearcherService {
     }
 
     private List<UserCard> filterCards(List<UserCard> cards,
+                                       Long userId,
                                        String specifiedSubject,
                                        String specifiedFormat,
                                        String specifiedType) {
-        List<UserCard> result = cards;
+        List<UserCard> result = cards.stream().filter(userCard -> !userCard.getCreatorId().equals(userId))
+                .collect(Collectors.toList());
         if (specifiedSubject != null) {
-            result = result.stream().filter(x -> x.getSubject().equals(specifiedSubject)).collect(Collectors.toList());
+            result = result.stream().filter(userCard -> userCard.getSubject().equals(specifiedSubject))
+                    .collect(Collectors.toList());
         }
         if (specifiedFormat != null) {
-            result = result.stream().filter(x -> x.getSessionFormat().contains(specifiedFormat)).collect(Collectors.toList());
+            result = result.stream().filter(userCard -> userCard.getSessionFormat().contains(specifiedFormat))
+                    .collect(Collectors.toList());
         }
         if (specifiedType != null) {
-            result = result.stream().filter(x -> x.getSessionType().contains(specifiedType)).collect(Collectors.toList());
+            result = result.stream().filter(userCard -> userCard.getSessionType().contains(specifiedType))
+                    .collect(Collectors.toList());
         }
         return result;
     }

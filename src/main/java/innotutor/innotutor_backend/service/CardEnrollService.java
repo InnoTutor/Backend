@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CardEnrollService {
+   private final CardService cardService;
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardEnrollRepository cardEnrollRepository;
@@ -60,7 +61,8 @@ public class CardEnrollService {
     private final SessionFormatRepository sessionFormatRepository;
     private final SessionTypeRepository sessionTypeRepository;
 
-    public CardEnrollService(CardRepository cardRepository,
+    public CardEnrollService(CardService cardService,
+                             CardRepository cardRepository,
                              UserRepository userRepository,
                              CardEnrollRepository cardEnrollRepository,
                              CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository,
@@ -68,6 +70,7 @@ public class CardEnrollService {
                              EnrollmentStatusRepository enrollmentStatusRepository,
                              SessionFormatRepository sessionFormatRepository,
                              SessionTypeRepository sessionTypeRepository) {
+        this.cardService = cardService;
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.cardEnrollRepository = cardEnrollRepository;
@@ -85,7 +88,7 @@ public class CardEnrollService {
         Optional<User> userOptional = userRepository.findById(enrollerId);
         if (cardOptional.isPresent() && userOptional.isPresent()) {
             Card card = cardOptional.get();
-            if (isUniquePair(enrollerId, cardId)) {
+            if (!cardService.getCardCreatorId(card).equals(enrollerId) && isUniquePair(enrollerId, cardId)) {
                 List<String> sessionFormats = this.getCommonSessionFormats(card, enrollmentDTO);
                 List<String> sessionTypes = this.getCommonSessionTypes(card, enrollmentDTO);
                 if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
@@ -99,7 +102,6 @@ public class CardEnrollService {
                     return new EnrollmentDTO(cardEnroll.getCardEnrollId(), enrollerId, cardId, sessionFormats, sessionTypes);
                 }
             }
-
         }
         return null;
     }
@@ -164,24 +166,6 @@ public class CardEnrollService {
         return true;
     }
 
-    private List<String> getCommonSessionFormats(Card card, EnrollmentDTO enrollmentDTO) {
-        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionFormat()::contains)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getCommonSessionTypes(Card card, EnrollmentDTO enrollmentDTO) {
-        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionType()::contains)
-                .collect(Collectors.toList());
-    }
-
     private CardEnroll saveCardEnroll(Card card, User tutor, EnrollmentStatus enrollmentStatus) {
         return cardEnrollRepository.save(
                 new CardEnroll(
@@ -221,5 +205,23 @@ public class CardEnrollService {
                     )
             );
         }
+    }
+
+    private List<String> getCommonSessionFormats(Card card, EnrollmentDTO enrollmentDTO) {
+        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
+                .stringList()
+                .stream()
+                .distinct()
+                .filter(enrollmentDTO.getSessionFormat()::contains)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getCommonSessionTypes(Card card, EnrollmentDTO enrollmentDTO) {
+        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
+                .stringList()
+                .stream()
+                .distinct()
+                .filter(enrollmentDTO.getSessionType()::contains)
+                .collect(Collectors.toList());
     }
 }

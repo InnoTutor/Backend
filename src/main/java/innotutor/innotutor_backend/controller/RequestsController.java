@@ -25,8 +25,8 @@ package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
-import innotutor.innotutor_backend.service.CardsListService;
 import innotutor.innotutor_backend.service.CardService;
+import innotutor.innotutor_backend.service.CardsListService;
 import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,57 +37,57 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/services", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/requests", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {
         RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-public class ServicesController {
+public class RequestsController {
 
     private final CardService cardService;
     private final CardsListService cardsListService;
     private final UserService userService;
 
-    public ServicesController(CardService cardService, CardsListService cardsListService, UserService userService) {
+    public RequestsController(CardService cardService, CardsListService cardsListService, UserService userService) {
         this.cardService = cardService;
         this.cardsListService = cardsListService;
         this.userService = userService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getServices(@AuthenticationPrincipal CustomPrincipal user) {
-        List<CardDTO> services = cardsListService.getServices(userService.getUserId(user));
-        return services == null
+    public ResponseEntity<List<CardDTO>> getRequests(@AuthenticationPrincipal CustomPrincipal user) {
+        List<CardDTO> requests = cardsListService.getRequests(userService.getUserId(user));
+        return requests == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(services, HttpStatus.OK);
+                : new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getUserServicesById(@PathVariable Long id,
+    public ResponseEntity<List<CardDTO>> getUserRequestsById(@PathVariable Long id,
                                                              @AuthenticationPrincipal CustomPrincipal user) {
         if (userService.getUserId(user).equals(id)) {
-            return this.getServices(user);
+            return this.getRequests(user);
         }
-        List<CardDTO> result = cardsListService.getUserServices(id);
+        List<CardDTO> result = cardsListService.getUserRequests(id);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postCvCard(@RequestBody CardDTO cardDTO,
-                                              @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> postRequestCard(@RequestBody CardDTO cardDTO,
+                                                   @AuthenticationPrincipal CustomPrincipal user) {
         if (cardDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         cardDTO.setCreatorId(userService.getUserId(user));
-        CardDTO result = cardService.postCvCard(cardDTO);
+        CardDTO result = cardService.postRequestCard(cardDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCvCardById(@PathVariable Long id,
-                                              @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> deleteRequestCardById(@PathVariable Long id,
+                                                   @AuthenticationPrincipal CustomPrincipal user) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

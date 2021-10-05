@@ -39,4 +39,9 @@ public class StudentRequestDTO implements UserCard {
     private String subject;
     private List<String> sessionFormat;
     private List<String> sessionType;
+
+    @Override
+    public Long getCreatorId() {
+        return studentId;
+    }
 }
