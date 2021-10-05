@@ -226,3 +226,6 @@ hs_err_pid*
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,dart,flutter
 *.xml
 *.iml
+src/main/resources/innotutor-324ff-firebase-adminsdk-rnv3h-d53dbeb3ba.json
+target/classes/innotutor-324ff-firebase-adminsdk-rnv3h-d53dbeb3ba.json
+target/classes/innotutor-324ff-firebase-adminsdk-rnv3h-946bb14100.json
