@@ -38,6 +38,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,8 +47,11 @@ import java.io.InputStream;
 @SpringBootApplication
 public class InnotutorBackendApplication {
 
-//    @Value("${firebase.credential.resource-path}")
-//    private String keyPath;
+    @Value("${firebase.credential.resource-path}")
+    private String keyPath;
+
+    @Value("${GOOGLE_CREDENTIALS}")
+    private String gservicesConfig;
 
     public static void main(String[] args) {
         SpringApplication.run(InnotutorBackendApplication.class, args);
@@ -57,34 +61,6 @@ public class InnotutorBackendApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-//    @Value("${firebase.path}")
-//    private String path;
-//
-//    @Value("${firebase.database-url}")
-//    private String databaseUrl;
-//
-//    @Value("${firebase.storage-url}")
-//    private String storageUrl;
-//
-//    @Value("${GOOGLE_CREDENTIALS}")
-//    private String gservicesConfig;
-//
-//    @Bean
-//    public FirebaseApp provideFirebaseOptions() throws IOException {
-//        JSONObject jsonObject = new JSONObject(gservicesConfig);
-//        InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredentials(GoogleCredentials.fromStream((is)))
-//                .setDatabaseUrl(databaseUrl)
-//                .setStorageBucket(storageUrl)
-//                .build();
-//
-//        return FirebaseApp.initializeApp(options);
-//    }
-
-    @Value("${GOOGLE_CREDENTIALS}")
-    private String gservicesConfig;
 
     @Bean
     public FirebaseApp provideFirebaseOptions() throws IOException {
@@ -97,18 +73,20 @@ public class InnotutorBackendApplication {
         return FirebaseApp.initializeApp(options);
     }
 
-//    @Bean
-//    @Primary
-//    public void firebaseInitialization() throws IOException {
-//        Resource resource = new ClassPathResource(keyPath);
-//        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-//                .build();
-//        if (FirebaseApp.getApps().isEmpty()) {
-//            FirebaseApp.initializeApp(options);
-//        }
-//    }
+/*
+    @Bean
+    @Primary
+    public void firebaseInitialization() throws IOException {
+        Resource resource = new ClassPathResource(keyPath);
+        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
+        if (FirebaseApp.getApps().isEmpty()) {
+            FirebaseApp.initializeApp(options);
+        }
+    }
+ */
 
     @Bean
     @Primary
