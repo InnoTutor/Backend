@@ -227,5 +227,4 @@ hs_err_pid*
 *.xml
 *.iml
 src/main/resources/innotutor-324ff-firebase-adminsdk-rnv3h-d53dbeb3ba.json
-target/classes/innotutor-324ff-firebase-adminsdk-rnv3h-d53dbeb3ba.json
-target/classes/innotutor-324ff-firebase-adminsdk-rnv3h-946bb14100.json
+**/target/classes/

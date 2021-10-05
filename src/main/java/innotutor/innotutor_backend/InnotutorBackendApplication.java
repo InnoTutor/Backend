@@ -47,8 +47,8 @@ import java.io.InputStream;
 @SpringBootApplication
 public class InnotutorBackendApplication {
 
-    @Value("${firebase.credential.resource-path}")
-    private String keyPath;
+//    @Value("${firebase.credential.resource-path}")
+//    private String keyPath;
 
     @Value("${GOOGLE_CREDENTIALS}")
     private String gservicesConfig;
