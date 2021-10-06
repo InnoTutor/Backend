@@ -182,7 +182,9 @@ public class CardService {
                 cardDTO.getSessionType(),
                 sessionTypeRepository
         ).toEntityList();
+        System.out.println("MY_LOG: Getting values from DB");
         if (creatorOptional.isPresent() && subject != null && !sessionFormat.isEmpty() && !sessionType.isEmpty()) {
+            System.out.println("MY_LOG: Values are OK");
             return createCard(type, creatorOptional.get(), subject, cardDTO.getDescription(), sessionFormat, sessionType);
         }
         return null;
@@ -191,7 +193,9 @@ public class CardService {
     private CardDTO createCard(CardType type, User creator, Subject subject, String description,
                                List<SessionFormat> sessionFormat, List<SessionType> sessionType) {
         try {
+            System.out.println("MY_LOG: Creating CV Card");
             if (this.isUniquePair(type, creator.getUserId(), subject)) {
+                System.out.println("MY_LOG: Unique pair");
                 Card card = cardRepository.save(new Card(
                         subject.getSubjectId(),
                         description,
@@ -224,6 +228,7 @@ public class CardService {
             case SERVICE:
                 for (Card card : cards) {
                     if (card.getServiceByCardId() != null && card.getServiceByCardId().getTutorId().equals(creatorId)) {
+                        System.out.println("MY_LOG: creator ID exists in services for this subject");
                         return false;
                     }
                 }
