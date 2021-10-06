@@ -92,7 +92,6 @@ public class ServicesController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         cardDTO.setCreatorId(userService.getUserId(user));
-        System.out.println("MY_LOG: Posting CV Card");
         CardDTO result = cardService.postCvCard(cardDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
