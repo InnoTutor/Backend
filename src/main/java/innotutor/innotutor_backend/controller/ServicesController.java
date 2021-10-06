@@ -24,9 +24,11 @@ SOFTWARE.
 package innotutor.innotutor_backend.controller;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.DTO.card.SubjectDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
-import innotutor.innotutor_backend.service.CardsListService;
 import innotutor.innotutor_backend.service.CardService;
+import innotutor.innotutor_backend.service.CardsListService;
+import innotutor.innotutor_backend.service.SessionService;
 import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,11 +47,14 @@ public class ServicesController {
     private final CardService cardService;
     private final CardsListService cardsListService;
     private final UserService userService;
+    private final SessionService sessionService;
 
-    public ServicesController(CardService cardService, CardsListService cardsListService, UserService userService) {
+    public ServicesController(CardService cardService, CardsListService cardsListService,
+                              UserService userService, SessionService sessionService) {
         this.cardService = cardService;
         this.cardsListService = cardsListService;
         this.userService = userService;
+        this.sessionService = sessionService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,6 +63,14 @@ public class ServicesController {
         return services == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(services, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<SubjectDTO>> getAvailableSubjects(@AuthenticationPrincipal CustomPrincipal user) {
+        List<SubjectDTO> result = sessionService.getAvailableServiceSubjects(userService.getUserId(user));
+        return result == null
+                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

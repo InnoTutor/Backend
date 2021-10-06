@@ -81,7 +81,7 @@ public class Card {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 1024)
+    @Column(name = "description", length = 1024)
     public String getDescription() {
         return description;
     }
@@ -101,7 +101,7 @@ public class Card {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true)
+    @Column(name = "creation_date")
     public Timestamp getCreationDate() {
         return creationDate;
     }
@@ -111,7 +111,7 @@ public class Card {
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true)
+    @Column(name = "last_update")
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
