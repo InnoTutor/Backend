@@ -100,7 +100,6 @@ public class CardService {
     }
 
 
-
     public CardDTO postCvCard(CardDTO cardDTO) {
         return postCard(cardDTO, CardType.SERVICE);
     }
@@ -191,45 +190,56 @@ public class CardService {
 
     private CardDTO createCard(CardType type, User creator, Subject subject, String description,
                                List<SessionFormat> sessionFormat, List<SessionType> sessionType) {
-        if (this.isUniquePair(creator.getUserId(), subject.getSubjectId())) {
-            Card card = cardRepository.save(new Card(
-                    subject.getSubjectId(),
-                    description,
-                    false,
-                    subject)
-            );
-            this.saveUserCardRelation(creator, card, type);
-            this.saveSessionFormat(card, sessionFormat);
-            this.saveSessionType(card, sessionType);
-            return new CardDTO(
-                    card.getCardId(),
-                    creator.getUserId(),
-                    subject.getName(),
-                    null,
-                    0,
-                    description,
-                    false,
-                    new SessionFormatConverter(sessionFormat).stringList(),
-                    new SessionTypeConverter(sessionType).stringList());
+        try {
+            if (this.isUniquePair(type, creator.getUserId(), subject)) {
+                Card card = cardRepository.save(new Card(
+                        subject.getSubjectId(),
+                        description,
+                        false,
+                        subject)
+                );
+                this.saveUserCardRelation(creator, card, type);
+                this.saveSessionFormat(card, sessionFormat);
+                this.saveSessionType(card, sessionType);
+                return new CardDTO(
+                        card.getCardId(),
+                        creator.getUserId(),
+                        subject.getName(),
+                        null,
+                        0,
+                        description,
+                        false,
+                        new SessionFormatConverter(sessionFormat).stringList(),
+                        new SessionTypeConverter(sessionType).stringList());
+            }
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
         }
-        return null;
     }
 
-    private boolean isUniquePair(Long creatorId, Long subjectId) {
-        List<Card> cards = cardRepository.findBySubjectId(subjectId);
-        for (Card card : cards) {
-            if (card.getRequestByCardId() != null) {
-                if (card.getRequestByCardId().getStudentId().equals(creatorId)) {
-                    return false;
+    private boolean isUniquePair(CardType type, Long creatorId, Subject subject) throws IllegalAccessException {
+        List<Card> cards = cardRepository.findBySubjectId(subject.getSubjectId());
+        switch (type) {
+            case SERVICE:
+                for (Card card : cards) {
+                    if (card.getServiceByCardId() != null && card.getServiceByCardId().getTutorId().equals(creatorId)) {
+                        return false;
+                    }
                 }
-            }
-            if (card.getServiceByCardId() != null) {
-                if (card.getServiceByCardId().getTutorId().equals(creatorId)) {
-                    return false;
+                return true;
+            case REQUEST:
+                /*
+                for (Card card : cards) {
+                    if (card.getRequestByCardId() != null && card.getRequestByCardId().getStudentId().equals(creatorId)) {
+                        return false;
+                    }
                 }
-            }
+                 */
+                return true;
+            default:
+                throw new IllegalAccessException("The card type is not specified");
         }
-        return true;
     }
 
     private void saveUserCardRelation(User creator, Card card, CardType type) {
