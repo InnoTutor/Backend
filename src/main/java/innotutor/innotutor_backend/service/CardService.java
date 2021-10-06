@@ -183,6 +183,10 @@ public class CardService {
                 sessionTypeRepository
         ).toEntityList();
         System.out.println("MY_LOG: Getting values from DB");
+        System.out.println("1" + creatorOptional.isPresent());
+        System.out.println("2" + (subject != null));
+        System.out.println("3" + !sessionFormat.isEmpty());
+        System.out.println("4" + !sessionType.isEmpty());
         if (creatorOptional.isPresent() && subject != null && !sessionFormat.isEmpty() && !sessionType.isEmpty()) {
             System.out.println("MY_LOG: Values are OK");
             return createCard(type, creatorOptional.get(), subject, cardDTO.getDescription(), sessionFormat, sessionType);
