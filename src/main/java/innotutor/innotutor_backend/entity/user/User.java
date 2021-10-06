@@ -26,6 +26,8 @@ package innotutor.innotutor_backend.entity.user;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.session.Session;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -92,7 +94,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "password", nullable = true, length = 64)
+    @Column(name = "password", length = 64)
     public String getPassword() {
         return password;
     }
@@ -102,7 +104,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "contacts", nullable = true, length = 256)
+    @Column(name = "contacts", length = 256)
     public String getContacts() {
         return contacts;
     }
@@ -112,7 +114,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 1024)
+    @Column(name = "description", length = 1024)
     public String getDescription() {
         return description;
     }
@@ -122,7 +124,8 @@ public class User {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true)
+    @CreationTimestamp
+    @Column(name = "creation_date", insertable = false, updatable = false)
     public Timestamp getCreationDate() {
         return creationDate;
     }
@@ -132,7 +135,8 @@ public class User {
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true)
+    @UpdateTimestamp
+    @Column(name = "last_update", insertable = false)
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }

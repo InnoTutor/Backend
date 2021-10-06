@@ -25,6 +25,8 @@ package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.user.SessionStudent;
 import innotutor.innotutor_backend.entity.user.User;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -134,7 +136,7 @@ public class Session {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 1024)
+    @Column(name = "description", length = 1024)
     public String getDescription() {
         return description;
     }
@@ -144,7 +146,8 @@ public class Session {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true)
+    @CreationTimestamp
+    @Column(name = "creation_date", insertable = false, updatable = false)
     public Timestamp getCreationDate() {
         return creationDate;
     }
@@ -154,7 +157,8 @@ public class Session {
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true)
+    @UpdateTimestamp
+    @Column(name = "last_update", insertable = false)
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }

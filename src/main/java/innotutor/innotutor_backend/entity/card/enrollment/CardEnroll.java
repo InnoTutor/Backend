@@ -25,6 +25,8 @@ package innotutor.innotutor_backend.entity.card.enrollment;
 
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.user.User;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -100,7 +102,8 @@ public class CardEnroll {
     }
 
     @Basic
-    @Column(name = "creation_date", nullable = true)
+    @CreationTimestamp
+    @Column(name = "creation_date", insertable = false, updatable = false)
     public Timestamp getCreationDate() {
         return creationDate;
     }
@@ -110,7 +113,8 @@ public class CardEnroll {
     }
 
     @Basic
-    @Column(name = "last_update", nullable = true)
+    @UpdateTimestamp
+    @Column(name = "last_update", insertable = false)
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
