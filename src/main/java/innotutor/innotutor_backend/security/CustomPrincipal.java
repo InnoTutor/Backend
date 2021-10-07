@@ -29,4 +29,5 @@ import lombok.Data;
 public class CustomPrincipal {
     private String email;
     private String fullName;
+    private String picture;
 }

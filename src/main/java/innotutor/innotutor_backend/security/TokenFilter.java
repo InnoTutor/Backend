@@ -59,6 +59,7 @@ public class TokenFilter extends OncePerRequestFilter {
             CustomPrincipal customPrincipal = new CustomPrincipal();
             customPrincipal.setEmail((String) decodedToken.getClaims().get("email"));
             customPrincipal.setFullName((String) decodedToken.getClaims().get("name"));
+            customPrincipal.setPicture((String) decodedToken.getClaims().get("picture"));
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     customPrincipal, decodedToken, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

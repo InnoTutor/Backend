@@ -40,6 +40,7 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    private String picture;
     private String password;
     private String contacts;
     private String description;
@@ -62,6 +63,7 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
 
     @Basic
     @Column(name = "name", nullable = false, length = 64)
@@ -91,6 +93,17 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    @Basic
+    @Column(name = "picture", nullable = false, length = 512)
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     @Basic

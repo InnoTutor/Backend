@@ -65,10 +65,12 @@ public class UserService {
             String[] nameSurname = fullName.split(" ");
             String name = nameSurname[0];
             String surname = nameSurname[1];
+            String picture = user.getPicture();
             User userToInsert = new User();
             userToInsert.setEmail(email);
             userToInsert.setName(name);
             userToInsert.setSurname(surname);
+            userToInsert.setPicture(picture);
             userRepository.save(userToInsert);
             return true;
         }
@@ -83,6 +85,7 @@ public class UserService {
             user.setSurname(userDTO.getSurname());
             user.setContacts(userDTO.getContacts());
             user.setDescription(userDTO.getDescription());
+            user.setPicture(userDTO.getPicture());
             return modelMapper.map(userRepository.save(user), UserDTO.class);
         }
         return null;
