@@ -37,6 +37,7 @@ public class UserDTO {
     private String email;
     private String contacts;
     private String description;
+    private String picture;
     // Upcoming events
     //private SessionsListDTO sessionsList;
     // You provide help via creating own CV cards

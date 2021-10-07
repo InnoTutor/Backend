@@ -38,7 +38,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -73,20 +72,20 @@ public class InnotutorBackendApplication {
         return FirebaseApp.initializeApp(options);
     }
 
-/*
-    @Bean
-    @Primary
-    public void firebaseInitialization() throws IOException {
-        Resource resource = new ClassPathResource(keyPath);
-        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .build();
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
-    }
- */
+
+//    @Bean
+//    @Primary
+//    public void firebaseInitialization() throws IOException {
+//        Resource resource = new ClassPathResource(keyPath);
+//        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+//                .build();
+//        if (FirebaseApp.getApps().isEmpty()) {
+//            FirebaseApp.initializeApp(options);
+//        }
+//    }
+
 
     @Bean
     @Primary
