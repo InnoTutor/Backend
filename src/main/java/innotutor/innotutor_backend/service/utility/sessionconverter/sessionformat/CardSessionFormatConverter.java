@@ -21,32 +21,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.utility.session.sessiontype;
+package innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat;
 
-import innotutor.innotutor_backend.entity.session.SessionType;
-import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
+import innotutor.innotutor_backend.entity.card.CardSessionFormat;
+import innotutor.innotutor_backend.service.utility.sessionconverter.SessionConverter;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class SessionTypeEntityConverter {
+@AllArgsConstructor
+public class CardSessionFormatConverter implements SessionConverter {
+    private final Collection<CardSessionFormat> formats;
 
-    private final List<String> types;
-    private final SessionTypeRepository sessionTypeRepository;
-
-    public SessionTypeEntityConverter(List<String> types, SessionTypeRepository sessionTypeRepository) {
-        this.types = types;
-        this.sessionTypeRepository = sessionTypeRepository;
-    }
-
-    public List<SessionType> toEntityList() {
-        List<SessionType> sessionTypes = new ArrayList<>();
-        for (String typeName : types) {
-            SessionType sessionType = sessionTypeRepository.findSessionTypeByName(typeName);
-            if (sessionType != null) {
-                sessionTypes.add(sessionType);
-            }
+    @Override
+    public List<String> stringList() {
+        List<String> formatsNames = new ArrayList<>();
+        for (CardSessionFormat format : formats) {
+            formatsNames.add(format.getSessionFormatBySessionFormatId().getName());
         }
-        return sessionTypes;
+        return formatsNames;
     }
 }

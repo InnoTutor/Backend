@@ -21,31 +21,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.utility.session.sessionformat;
+package innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat;
 
 import innotutor.innotutor_backend.entity.session.SessionFormat;
-import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
+import innotutor.innotutor_backend.service.utility.sessionconverter.SessionConverter;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionFormatEntityConverter {
-    private final List<String> formats;
-    private final SessionFormatRepository sessionFormatRepository;
+@AllArgsConstructor
+public class SessionFormatConverter implements SessionConverter {
 
-    public SessionFormatEntityConverter(List<String> formats, SessionFormatRepository sessionFormatRepository) {
-        this.formats = formats;
-        this.sessionFormatRepository = sessionFormatRepository;
-    }
+    private final List<SessionFormat> sessionFormat;
 
-    public List<SessionFormat> toEntityList() {
-        List<SessionFormat> sessionFormats = new ArrayList<>();
-        for (String formatName : formats) {
-            SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(formatName);
-            if (sessionFormat != null) {
-                sessionFormats.add(sessionFormat);
-            }
+    @Override
+    public List<String> stringList() {
+        List<String> formatsNames = new ArrayList<>();
+        for (SessionFormat format : sessionFormat) {
+            formatsNames.add(format.getName());
         }
-        return sessionFormats;
+        return formatsNames;
     }
 }

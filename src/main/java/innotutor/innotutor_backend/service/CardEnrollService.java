@@ -41,8 +41,10 @@ import innotutor.innotutor_backend.repository.card.enrollment.EnrollmentStatusRe
 import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
 import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
-import innotutor.innotutor_backend.utility.session.sessionformat.CardSessionFormatConverter;
-import innotutor.innotutor_backend.utility.session.sessiontype.CardSessionTypeConverter;
+import innotutor.innotutor_backend.service.utility.card.CardCreatorId;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +52,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CardEnrollService {
-   private final CardService cardService;
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardEnrollRepository cardEnrollRepository;
@@ -61,26 +63,6 @@ public class CardEnrollService {
     private final SessionFormatRepository sessionFormatRepository;
     private final SessionTypeRepository sessionTypeRepository;
 
-    public CardEnrollService(CardService cardService,
-                             CardRepository cardRepository,
-                             UserRepository userRepository,
-                             CardEnrollRepository cardEnrollRepository,
-                             CardEnrollSessionFormatRepository cardEnrollSessionFormatRepository,
-                             CardEnrollSessionTypeRepository cardEnrollSessionTypeRepository,
-                             EnrollmentStatusRepository enrollmentStatusRepository,
-                             SessionFormatRepository sessionFormatRepository,
-                             SessionTypeRepository sessionTypeRepository) {
-        this.cardService = cardService;
-        this.cardRepository = cardRepository;
-        this.userRepository = userRepository;
-        this.cardEnrollRepository = cardEnrollRepository;
-        this.cardEnrollSessionFormatRepository = cardEnrollSessionFormatRepository;
-        this.cardEnrollSessionTypeRepository = cardEnrollSessionTypeRepository;
-        this.enrollmentStatusRepository = enrollmentStatusRepository;
-        this.sessionFormatRepository = sessionFormatRepository;
-        this.sessionTypeRepository = sessionTypeRepository;
-    }
-
     public EnrollmentDTO postCardEnroll(EnrollmentDTO enrollmentDTO) {
         Long enrollerId = enrollmentDTO.getEnrollerId();
         Long cardId = enrollmentDTO.getCardId();
@@ -88,7 +70,7 @@ public class CardEnrollService {
         Optional<User> userOptional = userRepository.findById(enrollerId);
         if (cardOptional.isPresent() && userOptional.isPresent()) {
             Card card = cardOptional.get();
-            if (!cardService.getCardCreatorId(card).equals(enrollerId) && isUniquePair(enrollerId, cardId)) {
+            if (!enrollerId.equals(new CardCreatorId(card).creatorId()) && isUniquePair(enrollerId, cardId)) {
                 List<String> sessionFormats = this.getCommonSessionFormats(card, enrollmentDTO);
                 List<String> sessionTypes = this.getCommonSessionTypes(card, enrollmentDTO);
                 if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
