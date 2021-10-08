@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> homePage(@AuthenticationPrincipal CustomPrincipal user) {
-       return this.getUserProfile(user);
+        return this.getUserProfile(user);
     }
 
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

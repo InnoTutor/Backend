@@ -28,21 +28,18 @@ import innotutor.innotutor_backend.DTO.UserDTO;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.security.CustomPrincipal;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public UserDTO getUserById(Long userId) {
         return userRepository.findById(userId).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);

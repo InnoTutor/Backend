@@ -29,9 +29,10 @@ import innotutor.innotutor_backend.DTO.searcher.UserCard;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.repository.card.CardRepository;
-import innotutor.innotutor_backend.utility.AverageRating;
-import innotutor.innotutor_backend.utility.session.sessionformat.CardSessionFormatConverter;
-import innotutor.innotutor_backend.utility.session.sessiontype.CardSessionTypeConverter;
+import innotutor.innotutor_backend.service.utility.card.AverageCardRating;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,12 +41,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class SearcherService {
     private final CardRepository cardRepository;
-
-    public SearcherService(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
 
     public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
                                               String specifiedFormat,
@@ -88,7 +86,7 @@ public class SearcherService {
                         new TutorCvDTO(
                                 card.getServiceByCardId().getTutorId(),
                                 card.getCardId(),
-                                new AverageRating(ratings).averageRating(),
+                                new AverageCardRating(ratings).averageRating(),
                                 ratings.size(),
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),

@@ -32,10 +32,11 @@ import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.enrollment.EnrollmentStatusRepository;
 import innotutor.innotutor_backend.repository.user.RequestRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
-import innotutor.innotutor_backend.utility.session.sessionformat.CardEnrollSessionFormatConverter;
-import innotutor.innotutor_backend.utility.session.sessionformat.CardSessionFormatConverter;
-import innotutor.innotutor_backend.utility.session.sessiontype.CardEnrollSessionTypeConverter;
-import innotutor.innotutor_backend.utility.session.sessiontype.CardSessionTypeConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardEnrollSessionFormatConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardEnrollSessionTypeConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,17 +44,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class StudentsService {
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
     private final EnrollmentStatusRepository enrollmentStatusRepository;
-
-    public StudentsService(UserRepository userRepository, RequestRepository requestRepository,
-                           EnrollmentStatusRepository enrollmentStatusRepository) {
-        this.userRepository = userRepository;
-        this.requestRepository = requestRepository;
-        this.enrollmentStatusRepository = enrollmentStatusRepository;
-    }
 
     public RequestedStudentsListDTO getUserStudentsList(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
