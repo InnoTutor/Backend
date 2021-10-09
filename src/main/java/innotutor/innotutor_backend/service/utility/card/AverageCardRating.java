@@ -34,7 +34,7 @@ public class AverageCardRating {
     private final Collection<CardRating> cardRatings;
 
     public Double averageRating() {
-        if (cardRatings.size() == 0) {
+        if (cardRatings.isEmpty()) {
             return null;
         }
         double sum = 0;
