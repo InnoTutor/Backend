@@ -25,7 +25,10 @@ package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.DTO.card.CardDTO;
 import innotutor.innotutor_backend.entity.user.User;
+import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
+import innotutor.innotutor_backend.service.utility.card.CardDTOCreator;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,14 +37,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CardsListService {
-    private final CardService cardService;
     private final UserRepository userRepository;
-
-    public CardsListService(CardService cardService, UserRepository userRepository) {
-        this.cardService = cardService;
-        this.userRepository = userRepository;
-    }
+    private final SubjectRepository subjectRepository;
 
     public List<CardDTO> getServices(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -49,7 +48,9 @@ public class CardsListService {
             User user = userOptional.get();
             List<CardDTO> services = new ArrayList<>();
             user.getServicesByUserId().forEach(service ->
-                    services.add(cardService.createCardDTO(service.getCardByCardId(), user.getUserId()))
+                    services.add(
+                            new CardDTOCreator(service.getCardByCardId(), user.getUserId(), subjectRepository).create()
+                    )
             );
             return services;
         }
@@ -68,7 +69,9 @@ public class CardsListService {
             User user = userOptional.get();
             List<CardDTO> requests = new ArrayList<>();
             user.getRequestsByUserId().forEach(request ->
-                    requests.add(cardService.createCardDTO(request.getCardByCardId(), user.getUserId()))
+                    requests.add(
+                            new CardDTOCreator(request.getCardByCardId(), user.getUserId(), subjectRepository).create()
+                    )
             );
             return requests;
         }

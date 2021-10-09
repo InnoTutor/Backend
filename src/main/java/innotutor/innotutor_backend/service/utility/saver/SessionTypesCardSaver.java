@@ -21,28 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.utility;
+package innotutor.innotutor_backend.service.utility.saver;
 
-import innotutor.innotutor_backend.entity.card.CardRating;
+import innotutor.innotutor_backend.entity.card.Card;
+import innotutor.innotutor_backend.entity.card.CardSessionType;
+import innotutor.innotutor_backend.entity.session.SessionType;
+import innotutor.innotutor_backend.repository.card.CardSessionTypeRepository;
+import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-public class AverageRating {
+@AllArgsConstructor
 
-    private final Collection<CardRating> cardRatings;
+public class SessionTypesCardSaver {
+    private final Card card;
+    private final List<SessionType> sessionTypes;
+    private final CardSessionTypeRepository cardSessionTypeRepository;
 
-    public AverageRating(Collection<CardRating> cardRatings) {
-        this.cardRatings = cardRatings;
-    }
-
-    public Double averageRating() {
-        if (cardRatings.size() == 0) {
-            return null;
+    public Card save() {
+        Collection<CardSessionType> cardSessionTypesByCardId = new ArrayList<>();
+        for (SessionType type : sessionTypes) {
+            CardSessionType cardSessionType = new CardSessionType(card.getCardId(), type.getSessionTypeId(), card, type);
+            cardSessionTypeRepository.save(cardSessionType);
+            cardSessionTypesByCardId.add(cardSessionType);
         }
-        double sum = 0;
-        for (CardRating rating : cardRatings) {
-            sum += rating.getMark();
-        }
-        return sum / cardRatings.size();
+        card.setCardSessionTypesByCardId(cardSessionTypesByCardId);
+        return card;
     }
 }

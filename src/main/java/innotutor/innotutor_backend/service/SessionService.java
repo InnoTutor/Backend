@@ -34,12 +34,14 @@ import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
 import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
 import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class SessionService {
 
     private final CardsListService cardsListService;
@@ -47,18 +49,6 @@ public class SessionService {
     private final SessionTypeRepository sessionTypeRepository;
     private final SubjectRepository subjectRepository;
     private final UserRepository userRepository;
-
-    public SessionService(CardsListService cardsListService,
-                          SessionFormatRepository sessionFormatRepository,
-                          SessionTypeRepository sessionTypeRepository,
-                          SubjectRepository subjectRepository,
-                          UserRepository userRepository) {
-        this.cardsListService = cardsListService;
-        this.sessionFormatRepository = sessionFormatRepository;
-        this.sessionTypeRepository = sessionTypeRepository;
-        this.subjectRepository = subjectRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<SessionFormatDTO> getSessionFormats() {
         List<SessionFormatDTO> sessionFormats = new ArrayList<>();

@@ -98,26 +98,15 @@ public class ServicesController {
                 : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCvCardById(@PathVariable Long id,
-                                              @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return cardService.deleteCardById(userService.getUserId(user), id)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    /*
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> putCvCard(@RequestBody CardDTO cardDTO,
+    @PutMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CardDTO> putCvCard(@PathVariable Long cardId,
+                                             @RequestBody CardDTO cardDTO,
                                              @AuthenticationPrincipal CustomPrincipal user) {
-        if (cardDTO == null) {
+        if (cardDTO == null || cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Long userId = userService.getUserId(user);
-        cardDTO.setCreatorId(userId);
+        cardDTO.setCreatorId(userService.getUserId(user));
+        cardDTO.setCardId(cardId);
         CardDTO result = cardService.putCvCard(cardDTO);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -129,5 +118,15 @@ public class ServicesController {
                         : HttpStatus.CREATED
         );
     }
-     */
+
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCvCardById(@PathVariable Long id,
+                                              @AuthenticationPrincipal CustomPrincipal user) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return cardService.deleteCardById(userService.getUserId(user), id)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

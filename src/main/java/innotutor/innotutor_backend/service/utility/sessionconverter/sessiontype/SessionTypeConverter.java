@@ -21,28 +21,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.utility.session.sessionformat;
+package innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype;
 
-import innotutor.innotutor_backend.entity.card.CardSessionFormat;
-import innotutor.innotutor_backend.utility.session.SessionConverter;
+import innotutor.innotutor_backend.entity.session.SessionType;
+import innotutor.innotutor_backend.service.utility.sessionconverter.SessionConverter;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class CardSessionFormatConverter implements SessionConverter {
-    private final Collection<CardSessionFormat> formats;
-
-    public CardSessionFormatConverter(Collection<CardSessionFormat> formats) {
-        this.formats = formats;
-    }
+@AllArgsConstructor
+public class SessionTypeConverter implements SessionConverter {
+    private final List<SessionType> sessionType;
 
     @Override
     public List<String> stringList() {
-        List<String> formatsNames = new ArrayList<>();
-        for (CardSessionFormat format : formats) {
-            formatsNames.add(format.getSessionFormatBySessionFormatId().getName());
+        List<String> typesNames = new ArrayList<>();
+        for (SessionType type : sessionType) {
+            typesNames.add(type.getName());
         }
-        return formatsNames;
+        return typesNames;
     }
 }
