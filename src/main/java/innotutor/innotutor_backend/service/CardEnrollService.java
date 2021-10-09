@@ -110,7 +110,7 @@ public class CardEnrollService {
         if (cardEnrollOptional.isPresent()) {
             CardEnroll cardEnroll = cardEnrollOptional.get();
             String status = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
-            if (status.equals("requested") || status.equals("accepted")) {
+            if ("requested".equals(status) || "accepted".equals(status)) {
                 return this.removeStudentCvCard(tutorId, cardEnroll) || this.removeStudentRequestCard(tutorId, cardEnroll);
             }
         }
