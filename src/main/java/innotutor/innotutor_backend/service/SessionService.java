@@ -90,21 +90,21 @@ public class SessionService {
         return subjects;
     }
 
-    public List<SubjectDTO> getAvailableServiceSubjects(Long userId) {
+    public List<SubjectDTO> getAvailableServiceSubjects(final Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getServices(userId));
         }
         return null;
     }
 
-    public List<SubjectDTO> getAvailableRequestSubjects(Long userId) {
+    public List<SubjectDTO> getAvailableRequestSubjects(final Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getRequests(userId));
         }
         return null;
     }
 
-    public SessionDTO postSession(SessionDTO sessionDTO) {
+    public SessionDTO postSession(final SessionDTO sessionDTO) {
         final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
         final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
         final Optional<User> userOptional = userRepository.findById(sessionDTO.getTutorId());
@@ -121,10 +121,10 @@ public class SessionService {
         return null;
     }
 
-    public List<UserDTO> filterStudentsForSession(Long tutorId,
-                                                  String specifiedSubject,
-                                                  String specifiedFormat,
-                                                  String specifiedType) {
+    public List<UserDTO> filterStudentsForSession(final Long tutorId,
+                                                  final String specifiedSubject,
+                                                  final String specifiedFormat,
+                                                  final String specifiedType) {
         List<EnrollmentDTO> students = studentsService.getUserStudentsList(tutorId).getAcceptedStudentsList();
         if (specifiedSubject != null) {
             students = students.stream()
@@ -185,8 +185,8 @@ public class SessionService {
         return null;
     }
 
-    private List<User> getValidStudents(Long tutorId, List<Long> studentIDsList, String subject, String sessionFormat,
-                                        String sessionType) {
+    private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
+                                        final String sessionType) {
         final List<User> validStudents = new ArrayList<>();
         List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType); //NOPMD - suppressed DataflowAnomalyAnalysis
         final List<User> students = new ArrayList<>();
@@ -199,14 +199,14 @@ public class SessionService {
         return validStudents;
     }
 
-    private void saveSessionStudentList(Session session, List<User> students) {
+    private void saveSessionStudentList(final Session session, final List<User> students) {
         final List<SessionStudent> sessionStudentList = new ArrayList<>();
         students.forEach(student -> sessionStudentList.add(new SessionStudent(session.getSessionId(), student.getUserId(),
                 session, student)));
         sessionStudentRepository.saveAll(sessionStudentList);
     }
 
-    private List<SubjectDTO> getAvailableSubjects(List<CardDTO> userCards) {
+    private List<SubjectDTO> getAvailableSubjects(final List<CardDTO> userCards) {
         final List<SubjectDTO> result = new ArrayList<>();
         for (final SubjectDTO subject : this.getSubjects()) {
             boolean available = true; //NOPMD - suppressed DataflowAnomalyAnalysis

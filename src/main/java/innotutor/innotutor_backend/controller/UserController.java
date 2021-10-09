@@ -39,12 +39,12 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(final UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> homePage(@AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<UserDTO> homePage(@AuthenticationPrincipal final CustomPrincipal user) {
         return this.getUserProfile(user);
     }
 
@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal final CustomPrincipal user) {
         final String email = user.getEmail();
         UserDTO userDTO = userService.getUserByEmail(email);
         if (userDTO == null) {

@@ -37,7 +37,7 @@ public class CardDTOCreator {
     private final Long creatorId;
     private final SubjectRepository subjectRepository;
 
-    public CardDTOCreator(Card card, Long creatorId, SubjectRepository subjectRepository) {
+    public CardDTOCreator(final Card card, final Long creatorId, final SubjectRepository subjectRepository) {
         this.card = card;
         this.creatorId = creatorId;
         this.subjectRepository = subjectRepository;

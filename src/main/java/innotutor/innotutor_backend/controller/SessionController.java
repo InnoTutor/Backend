@@ -71,7 +71,7 @@ public class SessionController {
             @RequestParam(name = "subject", required = false) final String subject,
             @RequestParam(name = "format", required = false) final String format,
             @RequestParam(name = "type", required = false) final String type,
-            @AuthenticationPrincipal CustomPrincipal user) {
+            @AuthenticationPrincipal final CustomPrincipal user) {
         final List<UserDTO> students = sessionService.filterStudentsForSession(userService.getUserId(user), subject, format, type);
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)

@@ -38,8 +38,8 @@ public class CardEnrollSessionType {
     private CardEnroll cardEnrollByCardEnrollId;
     private SessionType sessionTypeBySessionTypeId;
 
-    public CardEnrollSessionType(Long cardEnrollId, Long sessionTypeId, CardEnroll cardEnrollByCardEnrollId,
-                                 SessionType sessionTypeBySessionTypeId) {
+    public CardEnrollSessionType(final Long cardEnrollId, final Long sessionTypeId, final CardEnroll cardEnrollByCardEnrollId,
+                                 final SessionType sessionTypeBySessionTypeId) {
         this.cardEnrollId = cardEnrollId;
         this.sessionTypeId = sessionTypeId;
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
@@ -52,7 +52,7 @@ public class CardEnrollSessionType {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -62,7 +62,7 @@ public class CardEnrollSessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -73,12 +73,12 @@ public class CardEnrollSessionType {
         return cardEnrollSessionTypeId;
     }
 
-    public void setCardEnrollSessionTypeId(Long cardEnrollSessionTypeId) {
+    public void setCardEnrollSessionTypeId(final Long cardEnrollSessionTypeId) {
         this.cardEnrollSessionTypeId = cardEnrollSessionTypeId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final CardEnrollSessionType that = (CardEnrollSessionType) object;
@@ -102,7 +102,7 @@ public class CardEnrollSessionType {
         return cardEnrollByCardEnrollId;
     }
 
-    public void setCardEnrollByCardEnrollId(CardEnroll cardEnrollByCardEnrollId) {
+    public void setCardEnrollByCardEnrollId(final CardEnroll cardEnrollByCardEnrollId) {
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
     }
 
@@ -112,7 +112,7 @@ public class CardEnrollSessionType {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 }

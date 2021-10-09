@@ -41,21 +41,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public UserDTO getUserById(Long userId) {
+    public UserDTO getUserById(final Long userId) {
         return userRepository.findById(userId).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
-    public UserDTO getUserByEmail(String email) {
+    public UserDTO getUserByEmail(final String email) {
         return userRepository.findByEmail(email).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
-    public Long getUserId(CustomPrincipal user) {
+    public Long getUserId(final CustomPrincipal user) {
         final String email = user.getEmail();
         final UserDTO userDTO = getUserByEmail(email);
         return userDTO.getUserId();
     }
 
-    public boolean addUserToDatabase(CustomPrincipal user) {
+    public boolean addUserToDatabase(final CustomPrincipal user) {
         if (user != null) {
             final String email = user.getEmail();
             final String fullName = user.getFullName();
@@ -74,7 +74,7 @@ public class UserService {
         return false;
     }
 
-    public UserDTO updateUserProfile(UserDTO userDTO) {
+    public UserDTO updateUserProfile(final UserDTO userDTO) {
         final Optional<User> userOptional = userRepository.findById(userDTO.getUserId());
         if (userOptional.isPresent()) {
             final User user = userOptional.get();

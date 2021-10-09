@@ -38,7 +38,7 @@ public class Request {
     private User userByStudentId;
     private Card cardByCardId;
 
-    public Request(Long studentId, Long cardId, User userByStudentId, Card cardByCardId) {
+    public Request(final Long studentId, final Long cardId, final User userByStudentId, final Card cardByCardId) {
         this.studentId = studentId;
         this.cardId = cardId;
         this.userByStudentId = userByStudentId;
@@ -51,7 +51,7 @@ public class Request {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(final Long studentId) {
         this.studentId = studentId;
     }
 
@@ -61,7 +61,7 @@ public class Request {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -72,12 +72,12 @@ public class Request {
         return requestId;
     }
 
-    public void setRequestId(Long requestId) {
+    public void setRequestId(final Long requestId) {
         this.requestId = requestId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final Request request = (Request) object;
@@ -100,7 +100,7 @@ public class Request {
         return userByStudentId;
     }
 
-    public void setUserByStudentId(User userByStudentId) {
+    public void setUserByStudentId(final User userByStudentId) {
         this.userByStudentId = userByStudentId;
     }
 
@@ -110,7 +110,7 @@ public class Request {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 }

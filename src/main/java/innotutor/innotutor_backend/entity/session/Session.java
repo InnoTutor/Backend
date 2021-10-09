@@ -89,7 +89,7 @@ public class Session {
         return sessionId;
     }
 
-    public void setSessionId(Long sessionId) {
+    public void setSessionId(final Long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -99,7 +99,7 @@ public class Session {
         return tutorId;
     }
 
-    public void setTutorId(Long tutorId) {
+    public void setTutorId(final Long tutorId) {
         this.tutorId = tutorId;
     }
 
@@ -109,7 +109,7 @@ public class Session {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(final Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -119,7 +119,7 @@ public class Session {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -139,7 +139,7 @@ public class Session {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -149,7 +149,7 @@ public class Session {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(final Time startTime) {
         this.startTime = startTime;
     }
 
@@ -159,7 +159,7 @@ public class Session {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(final Time endTime) {
         this.endTime = endTime;
     }
 
@@ -169,7 +169,7 @@ public class Session {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -180,7 +180,7 @@ public class Session {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -191,12 +191,12 @@ public class Session {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final Session session = (Session) object;
@@ -238,7 +238,7 @@ public class Session {
         return userByTutorId;
     }
 
-    public void setUserByTutorId(User userByTutorId) {
+    public void setUserByTutorId(final User userByTutorId) {
         this.userByTutorId = userByTutorId;
     }
 
@@ -248,7 +248,7 @@ public class Session {
         return subjectBySubjectId;
     }
 
-    public void setSubjectBySubjectId(Subject subjectBySubjectId) {
+    public void setSubjectBySubjectId(final Subject subjectBySubjectId) {
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
@@ -258,7 +258,7 @@ public class Session {
         return sessionFormatBySessionFormatId;
     }
 
-    public void setSessionFormatBySessionFormatId(SessionFormat sessionFormatBySessionFormatId) {
+    public void setSessionFormatBySessionFormatId(final SessionFormat sessionFormatBySessionFormatId) {
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
     }
 
@@ -268,7 +268,7 @@ public class Session {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 
@@ -277,7 +277,7 @@ public class Session {
         return sessionStudentsBySessionId;
     }
 
-    public void setSessionStudentsBySessionId(Collection<SessionStudent> sessionStudentsBySessionId) {
+    public void setSessionStudentsBySessionId(final Collection<SessionStudent> sessionStudentsBySessionId) {
         this.sessionStudentsBySessionId = sessionStudentsBySessionId;
     }
 }

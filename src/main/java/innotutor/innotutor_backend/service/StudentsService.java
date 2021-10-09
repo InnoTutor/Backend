@@ -50,7 +50,7 @@ public class StudentsService {
     private final RequestRepository requestRepository;
     private final EnrollmentStatusRepository enrollmentStatusRepository;
 
-    public RequestedStudentsListDTO getUserStudentsList(Long userId) {
+    public RequestedStudentsListDTO getUserStudentsList(final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();
@@ -64,7 +64,7 @@ public class StudentsService {
         return null;
     }
 
-    private List<EnrollmentDTO> getStudentsListByStatusId(User user, Long statusId) {
+    private List<EnrollmentDTO> getStudentsListByStatusId(final User user, final Long statusId) {
         final List<EnrollmentDTO> studentsList = new ArrayList<>();
         for (final innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
             final Card card = service.getCardByCardId();
@@ -83,7 +83,7 @@ public class StudentsService {
         return studentsList;
     }
 
-    private List<EnrollmentDTO> getStudentsToWhomRequested(User tutor, Long acceptedStatusId) {
+    private List<EnrollmentDTO> getStudentsToWhomRequested(final User tutor, final Long acceptedStatusId) {
         final List<EnrollmentDTO> studentsList = new ArrayList<>();
         for (final Request request : requestRepository.findAll()) {
             final Card card = request.getCardByCardId();

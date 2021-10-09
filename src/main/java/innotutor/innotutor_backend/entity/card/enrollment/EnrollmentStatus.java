@@ -48,7 +48,7 @@ public class EnrollmentStatus {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
+    public void setStatusId(final Long statusId) {
         this.statusId = statusId;
     }
 
@@ -69,7 +69,7 @@ public class EnrollmentStatus {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -80,12 +80,12 @@ public class EnrollmentStatus {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final EnrollmentStatus that = (EnrollmentStatus) object;
@@ -109,7 +109,7 @@ public class EnrollmentStatus {
         return cardEnrollsByStatusId;
     }
 
-    public void setCardEnrollsByStatusId(Collection<CardEnroll> cardEnrollsByStatusId) {
+    public void setCardEnrollsByStatusId(final Collection<CardEnroll> cardEnrollsByStatusId) {
         this.cardEnrollsByStatusId = cardEnrollsByStatusId;
     }
 }

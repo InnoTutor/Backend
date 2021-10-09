@@ -126,12 +126,12 @@ public class CardUpdater {
         return new CardDTOCreator(savedCard, cardDTO.getCreatorId(), subjectRepository).create();
     }
 
-    private Card updateSessionFormats(Card card) {
+    private Card updateSessionFormats(final Card card) {
         cardSessionFormatRepository.deleteAll(card.getCardSessionFormatsByCardId());
         return new SessionFormatsCardSaver(card, sessionFormats, cardSessionFormatRepository).save();
     }
 
-    private Card updateSessionTypes(Card card) {
+    private Card updateSessionTypes(final Card card) {
         cardSessionTypeRepository.deleteAll(card.getCardSessionTypesByCardId());
         return new SessionTypesCardSaver(card, sessionTypes, cardSessionTypeRepository).save();
     }

@@ -73,7 +73,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -83,7 +83,7 @@ public class User {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(final String surname) {
         this.surname = surname;
     }
 
@@ -93,7 +93,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -104,7 +104,7 @@ public class User {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(final String picture) {
         this.picture = picture;
     }
 
@@ -114,7 +114,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -124,7 +124,7 @@ public class User {
         return contacts;
     }
 
-    public void setContacts(String contacts) {
+    public void setContacts(final String contacts) {
         this.contacts = contacts;
     }
 
@@ -134,7 +134,7 @@ public class User {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -145,7 +145,7 @@ public class User {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -156,7 +156,7 @@ public class User {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -195,7 +195,7 @@ public class User {
         return cardEnrollsByUserId;
     }
 
-    public void setCardEnrollsByUserId(Collection<CardEnroll> cardEnrollsByUserId) {
+    public void setCardEnrollsByUserId(final Collection<CardEnroll> cardEnrollsByUserId) {
         this.cardEnrollsByUserId = cardEnrollsByUserId;
     }
 
@@ -204,7 +204,7 @@ public class User {
         return cardRatingsByUserId;
     }
 
-    public void setCardRatingsByUserId(Collection<CardRating> cardRatingsByUserId) {
+    public void setCardRatingsByUserId(final Collection<CardRating> cardRatingsByUserId) {
         this.cardRatingsByUserId = cardRatingsByUserId;
     }
 
@@ -222,7 +222,7 @@ public class User {
         return servicesByUserId;
     }
 
-    public void setServicesByUserId(Collection<Service> servicesByUserId) {
+    public void setServicesByUserId(final Collection<Service> servicesByUserId) {
         this.servicesByUserId = servicesByUserId;
     }
 
@@ -231,7 +231,7 @@ public class User {
         return sessionsByUserId;
     }
 
-    public void setSessionsByUserId(Collection<Session> sessionsByUserId) {
+    public void setSessionsByUserId(final Collection<Session> sessionsByUserId) {
         this.sessionsByUserId = sessionsByUserId;
     }
 
@@ -240,7 +240,7 @@ public class User {
         return sessionStudentsByUserId;
     }
 
-    public void setSessionStudentsByUserId(Collection<SessionStudent> sessionStudentsByUserId) {
+    public void setSessionStudentsByUserId(final Collection<SessionStudent> sessionStudentsByUserId) {
         this.sessionStudentsByUserId = sessionStudentsByUserId;
     }
 }

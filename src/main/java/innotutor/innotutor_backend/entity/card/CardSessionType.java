@@ -38,7 +38,7 @@ public class CardSessionType {
     private Card cardByCardId;
     private SessionType sessionTypeBySessionTypeId;
 
-    public CardSessionType(Long cardId, Long sessionTypeId, Card cardByCardId, SessionType sessionTypeBySessionTypeId) {
+    public CardSessionType(final Long cardId, final Long sessionTypeId, final Card cardByCardId, final SessionType sessionTypeBySessionTypeId) {
         this.cardId = cardId;
         this.sessionTypeId = sessionTypeId;
         this.cardByCardId = cardByCardId;
@@ -51,7 +51,7 @@ public class CardSessionType {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -61,7 +61,7 @@ public class CardSessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -72,12 +72,12 @@ public class CardSessionType {
         return cardSessionTypeId;
     }
 
-    public void setCardSessionTypeId(Long cardSessionTypeId) {
+    public void setCardSessionTypeId(final Long cardSessionTypeId) {
         this.cardSessionTypeId = cardSessionTypeId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final CardSessionType that = (CardSessionType) object;
@@ -101,7 +101,7 @@ public class CardSessionType {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -111,7 +111,7 @@ public class CardSessionType {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 }

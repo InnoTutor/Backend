@@ -28,7 +28,7 @@ import innotutor.innotutor_backend.entity.card.Card;
 public class CardCreatorId {
     private final Card card;
 
-    public CardCreatorId(Card card) {
+    public CardCreatorId(final Card card) {
         this.card = card;
     }
 

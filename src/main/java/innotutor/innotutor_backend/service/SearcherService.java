@@ -43,11 +43,11 @@ import java.util.stream.Collectors;
 public class SearcherService {
     private final CardRepository cardRepository;
 
-    public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
-                                              String specifiedFormat,
-                                              String specifiedType,
-                                              String sorting,
-                                              Long userId) {
+    public List<TutorCvDTO> getTutorCvDTOList(final String specifiedSubject,
+                                              final String specifiedFormat,
+                                              final String specifiedType,
+                                              final String sorting,
+                                              final Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (final UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllTutorCvDTOList()),
@@ -133,11 +133,11 @@ public class SearcherService {
         return students;
     }
 
-    private List<UserCard> filterCards(List<UserCard> cards,
-                                       Long userId,
-                                       String specifiedSubject,
-                                       String specifiedFormat,
-                                       String specifiedType) {
+    private List<UserCard> filterCards(final List<UserCard> cards,
+                                       final Long userId,
+                                       final String specifiedSubject,
+                                       final String specifiedFormat,
+                                       final String specifiedType) {
         List<UserCard> result = cards.stream().filter(userCard -> !userCard.getCreatorId().equals(userId))
                 .collect(Collectors.toList());
         if (specifiedSubject != null) {

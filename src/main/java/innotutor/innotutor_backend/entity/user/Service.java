@@ -38,7 +38,7 @@ public class Service {
     private User userByTutorId;
     private Card cardByCardId;
 
-    public Service(Long tutorId, Long cardId, User userByTutorId, Card cardByCardId) {
+    public Service(final Long tutorId, final Long cardId, final User userByTutorId, final Card cardByCardId) {
         this.tutorId = tutorId;
         this.cardId = cardId;
         this.userByTutorId = userByTutorId;
@@ -51,7 +51,7 @@ public class Service {
         return tutorId;
     }
 
-    public void setTutorId(Long tutorId) {
+    public void setTutorId(final Long tutorId) {
         this.tutorId = tutorId;
     }
 
@@ -61,7 +61,7 @@ public class Service {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -72,12 +72,12 @@ public class Service {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(final Long serviceId) {
         this.serviceId = serviceId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final Service service = (Service) object;
@@ -100,7 +100,7 @@ public class Service {
         return userByTutorId;
     }
 
-    public void setUserByTutorId(User userByTutorId) {
+    public void setUserByTutorId(final User userByTutorId) {
         this.userByTutorId = userByTutorId;
     }
 
@@ -110,7 +110,7 @@ public class Service {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 }

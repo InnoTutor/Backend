@@ -73,13 +73,13 @@ public class RequestsController {
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getUserRequestsById(@PathVariable final Long id,
+    @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CardDTO>> getUserRequestsById(@PathVariable final Long userId,
                                                              @AuthenticationPrincipal final CustomPrincipal user) {
-        if (userService.getUserId(user).equals(id)) {
+        if (userService.getUserId(user).equals(userId)) {
             return this.getRequests(user);
         }
-        final List<CardDTO> result = cardsListService.getUserRequests(id);
+        final List<CardDTO> result = cardsListService.getUserRequests(userId);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(result, HttpStatus.OK);

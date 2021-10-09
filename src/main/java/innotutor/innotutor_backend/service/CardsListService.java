@@ -42,7 +42,7 @@ public class CardsListService {
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
 
-    public List<CardDTO> getServices(Long userId) {
+    public List<CardDTO> getServices(final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();
@@ -57,13 +57,13 @@ public class CardsListService {
         return null;
     }
 
-    public List<CardDTO> getUserServices(Long userId) {
+    public List<CardDTO> getUserServices(final Long userId) {
         return userRepository.findById(userId).isPresent()
                 ? this.getServices(userId).stream().filter(card -> !card.isHidden()).collect(Collectors.toList())
                 : null;
     }
 
-    public List<CardDTO> getRequests(Long userId) {
+    public List<CardDTO> getRequests(final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();
@@ -78,7 +78,7 @@ public class CardsListService {
         return null;
     }
 
-    public List<CardDTO> getUserRequests(Long userId) {
+    public List<CardDTO> getUserRequests(final Long userId) {
         return userRepository.findById(userId).isPresent()
                 ? this.getRequests(userId).stream().filter(card -> !card.isHidden()).collect(Collectors.toList())
                 : null;

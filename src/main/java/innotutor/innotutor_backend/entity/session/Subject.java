@@ -50,7 +50,7 @@ public class Subject {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(final Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -60,7 +60,7 @@ public class Subject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -71,7 +71,7 @@ public class Subject {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -82,12 +82,12 @@ public class Subject {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final Subject subject = (Subject) object;
@@ -112,7 +112,7 @@ public class Subject {
         return cardsBySubjectId;
     }
 
-    public void setCardsBySubjectId(Collection<Card> cardsBySubjectId) {
+    public void setCardsBySubjectId(final Collection<Card> cardsBySubjectId) {
         this.cardsBySubjectId = cardsBySubjectId;
     }
 
@@ -121,7 +121,7 @@ public class Subject {
         return sessionsBySubjectId;
     }
 
-    public void setSessionsBySubjectId(Collection<Session> sessionsBySubjectId) {
+    public void setSessionsBySubjectId(final Collection<Session> sessionsBySubjectId) {
         this.sessionsBySubjectId = sessionsBySubjectId;
     }
 }

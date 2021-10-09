@@ -59,7 +59,7 @@ public class CardService {
     private final CardSessionFormatRepository cardSessionFormatRepository;
     private final CardSessionTypeRepository cardSessionTypeRepository;
 
-    public CardDTO getCardById(Long cardId, Long userId) {
+    public CardDTO getCardById(final Long cardId, final Long userId) {
         final Optional<Card> cardOptional = cardRepository.findById(cardId);
         if (cardOptional.isPresent()) {
             final Card card = cardOptional.get();
@@ -71,7 +71,7 @@ public class CardService {
         return null;
     }
 
-    public CardDTO postCvCard(CardDTO cardDTO) {
+    public CardDTO postCvCard(final CardDTO cardDTO) {
         return new CardCreator(cardDTO,
                 CardType.SERVICE,
                 cardRepository,
@@ -85,7 +85,7 @@ public class CardService {
                 cardSessionTypeRepository).postCard();
     }
 
-    public CardDTO postRequestCard(CardDTO cardDTO) {
+    public CardDTO postRequestCard(final CardDTO cardDTO) {
         return new CardCreator(cardDTO,
                 CardType.REQUEST,
                 cardRepository,
@@ -99,7 +99,7 @@ public class CardService {
                 cardSessionTypeRepository).postCard();
     }
 
-    public CardDTO putCvCard(CardDTO cardDTO) {
+    public CardDTO putCvCard(final CardDTO cardDTO) {
         return new CardUpdater(cardDTO,
                 CardType.SERVICE,
                 cardRepository,
@@ -113,7 +113,7 @@ public class CardService {
                 cardSessionTypeRepository).putCard();
     }
 
-    public CardDTO putRequestCard(CardDTO cardDTO) {
+    public CardDTO putRequestCard(final CardDTO cardDTO) {
         return new CardUpdater(cardDTO,
                 CardType.REQUEST,
                 cardRepository,

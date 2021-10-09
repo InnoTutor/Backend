@@ -75,7 +75,7 @@ public class Card {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(final Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -85,7 +85,7 @@ public class Card {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -95,7 +95,7 @@ public class Card {
         return hidden;
     }
 
-    public void setHidden(Boolean hidden) {
+    public void setHidden(final Boolean hidden) {
         this.hidden = hidden;
     }
 
@@ -105,7 +105,7 @@ public class Card {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -115,12 +115,12 @@ public class Card {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final Card card = (Card) object;
@@ -156,7 +156,7 @@ public class Card {
         return cardEnrollsByCardId;
     }
 
-    public void setCardEnrollsByCardId(Collection<CardEnroll> cardEnrollsByCardId) {
+    public void setCardEnrollsByCardId(final Collection<CardEnroll> cardEnrollsByCardId) {
         this.cardEnrollsByCardId = cardEnrollsByCardId;
     }
 
@@ -165,7 +165,7 @@ public class Card {
         return cardRatingsByCardId;
     }
 
-    public void setCardRatingsByCardId(Collection<CardRating> cardRatingsByCardId) {
+    public void setCardRatingsByCardId(final Collection<CardRating> cardRatingsByCardId) {
         this.cardRatingsByCardId = cardRatingsByCardId;
     }
 
@@ -174,7 +174,7 @@ public class Card {
         return cardSessionFormatsByCardId;
     }
 
-    public void setCardSessionFormatsByCardId(Collection<CardSessionFormat> cardSessionFormatsByCardId) {
+    public void setCardSessionFormatsByCardId(final Collection<CardSessionFormat> cardSessionFormatsByCardId) {
         this.cardSessionFormatsByCardId = cardSessionFormatsByCardId;
     }
 
@@ -201,7 +201,7 @@ public class Card {
         return serviceByCardId;
     }
 
-    public void setServiceByCardId(Service serviceByCardId) {
+    public void setServiceByCardId(final Service serviceByCardId) {
         this.serviceByCardId = serviceByCardId;
     }
 }

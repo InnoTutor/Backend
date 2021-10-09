@@ -38,7 +38,7 @@ public class CardSessionFormat {
     private Card cardByCardId;
     private SessionFormat sessionFormatBySessionFormatId;
 
-    public CardSessionFormat(Long cardId, Long sessionFormatId, final Card cardByCardId, SessionFormat sessionFormatBySessionFormatId) {
+    public CardSessionFormat(final Long cardId, final Long sessionFormatId, final Card cardByCardId, final SessionFormat sessionFormatBySessionFormatId) {
         this.cardId = cardId;
         this.sessionFormatId = sessionFormatId;
         this.cardByCardId = cardByCardId;
@@ -51,7 +51,7 @@ public class CardSessionFormat {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -61,7 +61,7 @@ public class CardSessionFormat {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -72,7 +72,7 @@ public class CardSessionFormat {
         return cardSessionFormatId;
     }
 
-    public void setCardSessionFormatId(Long cardSessionFormatId) {
+    public void setCardSessionFormatId(final Long cardSessionFormatId) {
         this.cardSessionFormatId = cardSessionFormatId;
     }
 
@@ -101,7 +101,7 @@ public class CardSessionFormat {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -111,7 +111,7 @@ public class CardSessionFormat {
         return sessionFormatBySessionFormatId;
     }
 
-    public void setSessionFormatBySessionFormatId(SessionFormat sessionFormatBySessionFormatId) {
+    public void setSessionFormatBySessionFormatId(final SessionFormat sessionFormatBySessionFormatId) {
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
     }
 }

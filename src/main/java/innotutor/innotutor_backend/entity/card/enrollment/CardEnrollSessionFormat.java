@@ -52,7 +52,7 @@ public class CardEnrollSessionFormat {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -62,7 +62,7 @@ public class CardEnrollSessionFormat {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -73,12 +73,12 @@ public class CardEnrollSessionFormat {
         return cardEnrollSessionFormatId;
     }
 
-    public void setCardEnrollSessionFormatId(Long cardEnrollSessionFormatId) {
+    public void setCardEnrollSessionFormatId(final Long cardEnrollSessionFormatId) {
         this.cardEnrollSessionFormatId = cardEnrollSessionFormatId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final CardEnrollSessionFormat that = (CardEnrollSessionFormat) object;
@@ -102,7 +102,7 @@ public class CardEnrollSessionFormat {
         return cardEnrollByCardEnrollId;
     }
 
-    public void setCardEnrollByCardEnrollId(CardEnroll cardEnrollByCardEnrollId) {
+    public void setCardEnrollByCardEnrollId(final CardEnroll cardEnrollByCardEnrollId) {
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
     }
 
@@ -112,7 +112,7 @@ public class CardEnrollSessionFormat {
         return sessionFormatBySessionFormatId;
     }
 
-    public void setSessionFormatBySessionFormatId(SessionFormat sessionFormatBySessionFormatId) {
+    public void setSessionFormatBySessionFormatId(final SessionFormat sessionFormatBySessionFormatId) {
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
     }
 }

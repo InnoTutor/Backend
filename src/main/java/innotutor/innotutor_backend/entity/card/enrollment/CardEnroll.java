@@ -49,8 +49,8 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(Long cardId, Long userId, Long statusId, final Card cardByCardId, User userByUserId,
-                      EnrollmentStatus enrollmentStatusByStatusId) {
+    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final Card cardByCardId, final User userByUserId,
+                      final EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;
         this.statusId = statusId;
@@ -66,7 +66,7 @@ public class CardEnroll {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -76,7 +76,7 @@ public class CardEnroll {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -86,7 +86,7 @@ public class CardEnroll {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -96,7 +96,7 @@ public class CardEnroll {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
+    public void setStatusId(final Long statusId) {
         this.statusId = statusId;
     }
 
@@ -107,7 +107,7 @@ public class CardEnroll {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -152,7 +152,7 @@ public class CardEnroll {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -162,7 +162,7 @@ public class CardEnroll {
         return userByUserId;
     }
 
-    public void setUserByUserId(User userByUserId) {
+    public void setUserByUserId(final User userByUserId) {
         this.userByUserId = userByUserId;
     }
 
@@ -172,7 +172,7 @@ public class CardEnroll {
         return enrollmentStatusByStatusId;
     }
 
-    public void setEnrollmentStatusByStatusId(EnrollmentStatus enrollmentStatusByStatusId) {
+    public void setEnrollmentStatusByStatusId(final EnrollmentStatus enrollmentStatusByStatusId) {
         this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
     }
 
@@ -181,7 +181,7 @@ public class CardEnroll {
         return cardEnrollSessionFormatsByCardId;
     }
 
-    public void setCardEnrollSessionFormatsByCardId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
+    public void setCardEnrollSessionFormatsByCardId(final Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
         this.cardEnrollSessionFormatsByCardId = cardEnrollSessionFormatsByCardId;
     }
 
@@ -190,7 +190,7 @@ public class CardEnroll {
         return cardEnrollSessionTypesByCardId;
     }
 
-    public void setCardEnrollSessionTypesByCardId(Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
+    public void setCardEnrollSessionTypesByCardId(final Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
         this.cardEnrollSessionTypesByCardId = cardEnrollSessionTypesByCardId;
     }
 }

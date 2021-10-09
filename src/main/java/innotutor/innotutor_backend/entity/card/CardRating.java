@@ -51,7 +51,7 @@ public class CardRating {
         return cardRatingId;
     }
 
-    public void setCardRatingId(Long cardRatingId) {
+    public void setCardRatingId(final Long cardRatingId) {
         this.cardRatingId = cardRatingId;
     }
 
@@ -61,7 +61,7 @@ public class CardRating {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -71,7 +71,7 @@ public class CardRating {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -92,7 +92,7 @@ public class CardRating {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -103,7 +103,7 @@ public class CardRating {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -137,7 +137,7 @@ public class CardRating {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -147,7 +147,7 @@ public class CardRating {
         return userByUserId;
     }
 
-    public void setUserByUserId(User userByUserId) {
+    public void setUserByUserId(final User userByUserId) {
         this.userByUserId = userByUserId;
     }
 }

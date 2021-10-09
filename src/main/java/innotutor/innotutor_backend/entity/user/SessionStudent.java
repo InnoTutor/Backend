@@ -38,7 +38,7 @@ public class SessionStudent {
     private Session sessionBySessionId;
     private User userByStudentId;
 
-    public SessionStudent(Long sessionId, Long studentId, Session sessionBySessionId, User userByStudentId) {
+    public SessionStudent(final Long sessionId, final Long studentId, final Session sessionBySessionId, final User userByStudentId) {
         this.sessionId = sessionId;
         this.studentId = studentId;
         this.sessionBySessionId = sessionBySessionId;
@@ -51,7 +51,7 @@ public class SessionStudent {
         return sessionId;
     }
 
-    public void setSessionId(Long sessionId) {
+    public void setSessionId(final Long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -61,7 +61,7 @@ public class SessionStudent {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(final Long studentId) {
         this.studentId = studentId;
     }
 
@@ -72,12 +72,12 @@ public class SessionStudent {
         return sessionStudentId;
     }
 
-    public void setSessionStudentId(Long sessionStudentId) {
+    public void setSessionStudentId(final Long sessionStudentId) {
         this.sessionStudentId = sessionStudentId;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final SessionStudent that = (SessionStudent) object;
@@ -100,7 +100,7 @@ public class SessionStudent {
         return sessionBySessionId;
     }
 
-    public void setSessionBySessionId(Session sessionBySessionId) {
+    public void setSessionBySessionId(final Session sessionBySessionId) {
         this.sessionBySessionId = sessionBySessionId;
     }
 
@@ -110,7 +110,7 @@ public class SessionStudent {
         return userByStudentId;
     }
 
-    public void setUserByStudentId(User userByStudentId) {
+    public void setUserByStudentId(final User userByStudentId) {
         this.userByStudentId = userByStudentId;
     }
 }

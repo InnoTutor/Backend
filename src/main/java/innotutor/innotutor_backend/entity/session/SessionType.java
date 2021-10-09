@@ -52,7 +52,7 @@ public class SessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -62,7 +62,7 @@ public class SessionType {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -73,7 +73,7 @@ public class SessionType {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -84,12 +84,12 @@ public class SessionType {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final SessionType that = (SessionType) object;
@@ -114,7 +114,7 @@ public class SessionType {
         return cardEnrollSessionTypesBySessionTypeId;
     }
 
-    public void setCardEnrollSessionTypesBySessionTypeId(Collection<CardEnrollSessionType> cardEnrollSessionTypesBySessionTypeId) {
+    public void setCardEnrollSessionTypesBySessionTypeId(final Collection<CardEnrollSessionType> cardEnrollSessionTypesBySessionTypeId) {
         this.cardEnrollSessionTypesBySessionTypeId = cardEnrollSessionTypesBySessionTypeId;
     }
 
@@ -123,7 +123,7 @@ public class SessionType {
         return cardSessionTypesBySessionTypeId;
     }
 
-    public void setCardSessionTypesBySessionTypeId(Collection<CardSessionType> cardSessionTypesBySessionTypeId) {
+    public void setCardSessionTypesBySessionTypeId(final Collection<CardSessionType> cardSessionTypesBySessionTypeId) {
         this.cardSessionTypesBySessionTypeId = cardSessionTypesBySessionTypeId;
     }
 
@@ -132,7 +132,7 @@ public class SessionType {
         return sessionsBySessionTypeId;
     }
 
-    public void setSessionsBySessionTypeId(Collection<Session> sessionsBySessionTypeId) {
+    public void setSessionsBySessionTypeId(final Collection<Session> sessionsBySessionTypeId) {
         this.sessionsBySessionTypeId = sessionsBySessionTypeId;
     }
 }

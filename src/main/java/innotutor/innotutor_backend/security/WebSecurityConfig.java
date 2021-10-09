@@ -36,6 +36,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,8 +51,14 @@ import java.util.Map;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private ObjectMapper objectMapper;
+
+    private final int ERROR_CODE = 403;
+
+    @Autowired
+    public WebSecurityConfig(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Bean
     public TokenFilter tokenAuthenticationFilter() {
@@ -62,23 +69,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new AuthenticationEntryPoint() {
             @Override
-            public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                 AuthenticationException exception) throws IOException, ServletException {
+            public void commence(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse,
+                                 final AuthenticationException exception) throws IOException, ServletException {
                 final Map<String, Object> errorObject = new HashMap<>();
-                final int errorCode = 403;
                 errorObject.put("message", "Access Denied");
                 errorObject.put("error", HttpStatus.FORBIDDEN);
-                errorObject.put("code", errorCode);
+                errorObject.put("code", ERROR_CODE);
                 errorObject.put("timestamp", new Timestamp(new Date().getTime()));
                 httpServletResponse.setContentType("application/json;charset=UTF-8");
-                httpServletResponse.setStatus(errorCode);
+                httpServletResponse.setStatus(ERROR_CODE);
                 httpServletResponse.getWriter().write(objectMapper.writeValueAsString(errorObject));
             }
         };
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.cors().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

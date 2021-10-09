@@ -52,7 +52,7 @@ public class SessionFormat {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -62,7 +62,7 @@ public class SessionFormat {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -73,7 +73,7 @@ public class SessionFormat {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -84,12 +84,12 @@ public class SessionFormat {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final SessionFormat that = (SessionFormat) object;
@@ -114,7 +114,7 @@ public class SessionFormat {
         return cardEnrollSessionFormatsBySessionFormatId;
     }
 
-    public void setCardEnrollSessionFormatsBySessionFormatId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsBySessionFormatId) {
+    public void setCardEnrollSessionFormatsBySessionFormatId(final Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsBySessionFormatId) {
         this.cardEnrollSessionFormatsBySessionFormatId = cardEnrollSessionFormatsBySessionFormatId;
     }
 
@@ -123,7 +123,7 @@ public class SessionFormat {
         return cardSessionFormatsBySessionFormatId;
     }
 
-    public void setCardSessionFormatsBySessionFormatId(Collection<CardSessionFormat> cardSessionFormatsBySessionFormatId) {
+    public void setCardSessionFormatsBySessionFormatId(final Collection<CardSessionFormat> cardSessionFormatsBySessionFormatId) {
         this.cardSessionFormatsBySessionFormatId = cardSessionFormatsBySessionFormatId;
     }
 
@@ -132,7 +132,7 @@ public class SessionFormat {
         return sessionsBySessionFormatId;
     }
 
-    public void setSessionsBySessionFormatId(Collection<Session> sessionsBySessionFormatId) {
+    public void setSessionsBySessionFormatId(final Collection<Session> sessionsBySessionFormatId) {
         this.sessionsBySessionFormatId = sessionsBySessionFormatId;
     }
 }

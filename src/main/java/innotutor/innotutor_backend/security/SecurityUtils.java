@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class SecurityUtils {
 
-    public String getTokenFromRequest(HttpServletRequest request) {
+    public String getTokenFromRequest(final HttpServletRequest request) {
         String token = null; //NOPMD - suppressed DataflowAnomalyAnalysis
         final Cookie cookieToken = WebUtils.getCookie(request, "token");
         if (cookieToken != null) {
