@@ -32,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -131,32 +132,32 @@ public class CardEnroll {
             return false;
         }
         final CardEnroll that = (CardEnroll) object;
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) {
+        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
             return false;
         }
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) {
+        if (!Objects.equals(cardId, that.cardId)) {
             return false;
         }
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+        if (!Objects.equals(userId, that.userId)) {
             return false;
         }
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+        if (!Objects.equals(statusId, that.statusId)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+        if (!Objects.equals(creationDate, that.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
-        result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (statusId != null ? statusId.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = cardEnrollId == null ? 0 : cardEnrollId.hashCode();
+        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        result = 31 * result + (userId == null ? 0 : userId.hashCode());
+        result = 31 * result + (statusId == null ? 0 : statusId.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

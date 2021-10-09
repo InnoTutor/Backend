@@ -27,6 +27,7 @@ import innotutor.innotutor_backend.entity.session.Session;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -85,20 +86,20 @@ public class SessionStudent {
             return false;
         }
         final SessionStudent that = (SessionStudent) object;
-        if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) {
+        if (!Objects.equals(sessionId, that.sessionId)) {
             return false;
         }
-        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) {
+        if (!Objects.equals(studentId, that.studentId)) {
             return false;
         }
-        return sessionStudentId != null ? sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId == null;
+        return Objects.equals(sessionStudentId, that.sessionStudentId);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionId != null ? sessionId.hashCode() : 0;
-        result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
-        result = 31 * result + (sessionStudentId != null ? sessionStudentId.hashCode() : 0);
+        int result = sessionId == null ? 0 : sessionId.hashCode();
+        result = 31 * result + (studentId == null ? 0 : studentId.hashCode());
+        result = 31 * result + (sessionStudentId == null ? 0 : sessionStudentId.hashCode());
         return result;
     }
 

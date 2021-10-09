@@ -27,6 +27,7 @@ import innotutor.innotutor_backend.entity.card.Card;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -85,20 +86,20 @@ public class Request {
             return false;
         }
         final Request request = (Request) object;
-        if (studentId != null ? !studentId.equals(request.studentId) : request.studentId != null) {
+        if (!Objects.equals(studentId, request.studentId)) {
             return false;
         }
-        if (cardId != null ? !cardId.equals(request.cardId) : request.cardId != null) {
+        if (!Objects.equals(cardId, request.cardId)) {
             return false;
         }
-        return requestId != null ? requestId.equals(request.requestId) : request.requestId == null;
+        return Objects.equals(requestId, request.requestId);
     }
 
     @Override
     public int hashCode() {
-        int result = studentId != null ? studentId.hashCode() : 0;
-        result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
-        result = 31 * result + (requestId != null ? requestId.hashCode() : 0);
+        int result = studentId == null ? 0 : studentId.hashCode();
+        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        result = 31 * result + (requestId == null ? 0 : requestId.hashCode());
         return result;
     }
 

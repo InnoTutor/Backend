@@ -33,6 +33,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -170,44 +171,44 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
             return false;
         }
         final User user = (User) object;
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
+        if (!Objects.equals(userId, user.userId)) {
             return false;
         }
-        if (name != null ? !name.equals(user.name) : user.name != null) {
+        if (!Objects.equals(name, user.name)) {
             return false;
         }
-        if (surname != null ? !surname.equals(user.surname) : user.surname != null) {
+        if (!Objects.equals(surname, user.surname)) {
             return false;
         }
-        if (email != null ? !email.equals(user.email) : user.email != null) {
+        if (!Objects.equals(email, user.email)) {
             return false;
         }
-        if (password != null ? !password.equals(user.password) : user.password != null) {
+        if (!Objects.equals(password, user.password)) {
             return false;
         }
-        if (contacts != null ? !contacts.equals(user.contacts) : user.contacts != null) {
+        if (!Objects.equals(contacts, user.contacts)) {
             return false;
         }
-        if (description != null ? !description.equals(user.description) : user.description != null) {
+        if (!Objects.equals(description, user.description)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(user.creationDate) : user.creationDate != null) {
+        if (!Objects.equals(creationDate, user.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(user.lastUpdate) : user.lastUpdate == null;
+        return Objects.equals(lastUpdate, user.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = userId == null ? 0 : userId.hashCode();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (surname == null ? 0 : surname.hashCode());
+        result = 31 * result + (email == null ? 0 : email.hashCode());
+        result = 31 * result + (password == null ? 0 : password.hashCode());
+        result = 31 * result + (contacts == null ? 0 : contacts.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

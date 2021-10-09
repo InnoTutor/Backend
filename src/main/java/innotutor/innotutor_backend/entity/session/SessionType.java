@@ -32,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -97,24 +98,24 @@ public class SessionType {
             return false;
         }
         final SessionType that = (SessionType) object;
-        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null) {
+        if (!Objects.equals(sessionTypeId, that.sessionTypeId)) {
             return false;
         }
-        if (name != null ? !name.equals(that.name) : that.name != null) {
+        if (!Objects.equals(name, that.name)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+        if (!Objects.equals(creationDate, that.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionTypeId != null ? sessionTypeId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = sessionTypeId == null ? 0 : sessionTypeId.hashCode();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

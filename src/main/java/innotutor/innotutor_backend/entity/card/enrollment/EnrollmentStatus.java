@@ -30,6 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -93,24 +94,24 @@ public class EnrollmentStatus {
             return false;
         }
         final EnrollmentStatus that = (EnrollmentStatus) object;
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+        if (!Objects.equals(statusId, that.statusId)) {
             return false;
         }
-        if (status != null ? !status.equals(that.status) : that.status != null) {
+        if (!Objects.equals(status, that.status)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+        if (!Objects.equals(creationDate, that.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = statusId != null ? statusId.hashCode() : 0;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = statusId == null ? 0 : statusId.hashCode();
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

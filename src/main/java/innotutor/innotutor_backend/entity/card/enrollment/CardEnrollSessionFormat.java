@@ -27,6 +27,7 @@ import innotutor.innotutor_backend.entity.session.SessionFormat;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -86,20 +87,20 @@ public class CardEnrollSessionFormat {
             return false;
         }
         final CardEnrollSessionFormat that = (CardEnrollSessionFormat) object;
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) {
+        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
             return false;
         }
-        if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null) {
+        if (!Objects.equals(sessionFormatId, that.sessionFormatId)) {
             return false;
         }
-        return cardEnrollSessionFormatId != null ? cardEnrollSessionFormatId.equals(that.cardEnrollSessionFormatId) : that.cardEnrollSessionFormatId == null;
+        return Objects.equals(cardEnrollSessionFormatId, that.cardEnrollSessionFormatId);
     }
 
     @Override
     public int hashCode() {
-        int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
-        result = 31 * result + (sessionFormatId != null ? sessionFormatId.hashCode() : 0);
-        result = 31 * result + (cardEnrollSessionFormatId != null ? cardEnrollSessionFormatId.hashCode() : 0);
+        int result = cardEnrollId == null ? 0 : cardEnrollId.hashCode();
+        result = 31 * result + (sessionFormatId == null ? 0 : sessionFormatId.hashCode());
+        result = 31 * result + (cardEnrollSessionFormatId == null ? 0 : cardEnrollSessionFormatId.hashCode());
         return result;
     }
 

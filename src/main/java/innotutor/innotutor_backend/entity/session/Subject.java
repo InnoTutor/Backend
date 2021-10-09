@@ -31,6 +31,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -95,24 +96,24 @@ public class Subject {
             return false;
         }
         final Subject subject = (Subject) object;
-        if (subjectId != null ? !subjectId.equals(subject.subjectId) : subject.subjectId != null) {
+        if (!Objects.equals(subjectId, subject.subjectId)) {
             return false;
         }
-        if (name != null ? !name.equals(subject.name) : subject.name != null) {
+        if (!Objects.equals(name, subject.name)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null) {
+        if (!Objects.equals(creationDate, subject.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(subject.lastUpdate) : subject.lastUpdate == null;
+        return Objects.equals(lastUpdate, subject.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = subjectId != null ? subjectId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = subjectId == null ? 0 : subjectId.hashCode();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

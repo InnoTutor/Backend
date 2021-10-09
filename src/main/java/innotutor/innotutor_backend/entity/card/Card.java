@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -129,28 +130,28 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
             return false;
         }
         final Card card = (Card) object;
-        if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) {
+        if (!Objects.equals(cardId, card.cardId)) {
             return false;
         }
-        if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) {
+        if (!Objects.equals(subjectId, card.subjectId)) {
             return false;
         }
-        if (description != null ? !description.equals(card.description) : card.description != null) {
+        if (!Objects.equals(description, card.description)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) {
+        if (!Objects.equals(creationDate, card.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(card.lastUpdate) : card.lastUpdate == null;
+        return Objects.equals(lastUpdate, card.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = cardId != null ? cardId.hashCode() : 0;
-        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = cardId == null ? 0 : cardId.hashCode();
+        result = 31 * result + (subjectId == null ? 0 : subjectId.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 

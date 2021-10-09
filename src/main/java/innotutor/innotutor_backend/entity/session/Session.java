@@ -34,6 +34,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -204,52 +205,52 @@ public class Session {
             return false;
         }
         final Session session = (Session) object;
-        if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) {
+        if (!Objects.equals(sessionId, session.sessionId)) {
             return false;
         }
-        if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) {
+        if (!Objects.equals(tutorId, session.tutorId)) {
             return false;
         }
-        if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) {
+        if (!Objects.equals(subjectId, session.subjectId)) {
             return false;
         }
-        if (sessionFormatId != null ? !sessionFormatId.equals(session.sessionFormatId) : session.sessionFormatId != null) {
+        if (!Objects.equals(sessionFormatId, session.sessionFormatId)) {
             return false;
         }
-        if (sessionTypeId != null ? !sessionTypeId.equals(session.sessionTypeId) : session.sessionTypeId != null) {
+        if (!Objects.equals(sessionTypeId, session.sessionTypeId)) {
             return false;
         }
-        if (date != null ? !date.equals(session.date) : session.date != null) {
+        if (!Objects.equals(date, session.date)) {
             return false;
         }
-        if (startTime != null ? !startTime.equals(session.startTime) : session.startTime != null) {
+        if (!Objects.equals(startTime, session.startTime)) {
             return false;
         }
-        if (endTime != null ? !endTime.equals(session.endTime) : session.endTime != null) {
+        if (!Objects.equals(endTime, session.endTime)) {
             return false;
         }
-        if (description != null ? !description.equals(session.description) : session.description != null) {
+        if (!Objects.equals(description, session.description)) {
             return false;
         }
-        if (creationDate != null ? !creationDate.equals(session.creationDate) : session.creationDate != null) {
+        if (!Objects.equals(creationDate, session.creationDate)) {
             return false;
         }
-        return lastUpdate != null ? lastUpdate.equals(session.lastUpdate) : session.lastUpdate == null;
+        return Objects.equals(lastUpdate, session.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionId != null ? sessionId.hashCode() : 0;
-        result = 31 * result + (tutorId != null ? tutorId.hashCode() : 0);
-        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
-        result = 31 * result + (sessionFormatId != null ? sessionFormatId.hashCode() : 0);
-        result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = sessionId == null ? 0 : sessionId.hashCode();
+        result = 31 * result + (tutorId == null ? 0 : tutorId.hashCode());
+        result = 31 * result + (subjectId == null ? 0 : subjectId.hashCode());
+        result = 31 * result + (sessionFormatId == null ? 0 : sessionFormatId.hashCode());
+        result = 31 * result + (sessionTypeId == null ? 0 : sessionTypeId.hashCode());
+        result = 31 * result + (date == null ? 0 : date.hashCode());
+        result = 31 * result + (startTime == null ? 0 : startTime.hashCode());
+        result = 31 * result + (endTime == null ? 0 : endTime.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
