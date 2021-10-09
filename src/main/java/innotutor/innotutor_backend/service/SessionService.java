@@ -152,6 +152,9 @@ public class SessionService {
         List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
                 card.getSubjectBySubjectId().getName(), sessionFormat.getName(), sessionType.getName());
         if (!students.isEmpty()) {
+            if (sessionType.getName().equals("private") && students.size() > 1) {
+                return null;
+            }
             Session session = sessionRepository.save(
                     new Session(tutor.getUserId(),
                             card.getSubjectId(),
