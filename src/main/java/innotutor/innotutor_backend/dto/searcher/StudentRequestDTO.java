@@ -44,7 +44,7 @@ public class StudentRequestDTO implements UserCard {
 
     @Override
     @JsonIgnore
-    @JsonProperty(value = "creatorId")
+    @JsonProperty("creatorId")
     public Long getCreatorId() {
         return studentId;
     }

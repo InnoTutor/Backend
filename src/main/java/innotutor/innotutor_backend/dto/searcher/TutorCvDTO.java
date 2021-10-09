@@ -46,7 +46,7 @@ public class TutorCvDTO implements UserCard {
 
     @Override
     @JsonIgnore
-    @JsonProperty(value = "creatorId")
+    @JsonProperty("creatorId")
     public Long getCreatorId() {
         return tutorId;
     }
