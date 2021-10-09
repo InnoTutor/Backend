@@ -44,7 +44,7 @@ public class SearcherController {
     private final SearcherService searcherService;
     private final UserService userService;
 
-    public SearcherController(SearcherService searcherService, UserService userService) {
+    public SearcherController(final SearcherService searcherService, final UserService userService) {
         this.searcherService = searcherService;
         this.userService = userService;
     }
@@ -55,7 +55,7 @@ public class SearcherController {
             @RequestParam(name = "format", required = false) final String format,
             @RequestParam(name = "type", required = false) final String type,
             @RequestParam(name = "sorting", required = false) final String sorting,
-            @AuthenticationPrincipal CustomPrincipal user) {
+            @AuthenticationPrincipal final CustomPrincipal user) {
         final List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, userService.getUserId(user));
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -67,7 +67,7 @@ public class SearcherController {
             @RequestParam(name = "subject", required = false) final String subject,
             @RequestParam(name = "format", required = false) final String format,
             @RequestParam(name = "type", required = false) final String type,
-            @AuthenticationPrincipal CustomPrincipal user) {
+            @AuthenticationPrincipal final CustomPrincipal user) {
         final List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type,
                 userService.getUserId(user));
         return students == null

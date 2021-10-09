@@ -51,7 +51,7 @@ public class CardController {
     }
 
     @GetMapping(value = "/card/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> getCard(@PathVariable final Long cardId, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> getCard(@PathVariable final Long cardId, @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardId == null) {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

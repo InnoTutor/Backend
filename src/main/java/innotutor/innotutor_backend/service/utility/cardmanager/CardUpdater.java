@@ -63,7 +63,17 @@ public class CardUpdater {
     private final CardSessionFormatRepository cardSessionFormatRepository;
     private final CardSessionTypeRepository cardSessionTypeRepository;
 
-    public CardUpdater(CardDTO cardDTO, CardType type, CardRepository cardRepository, UserRepository userRepository, SubjectRepository subjectRepository, SessionFormatRepository sessionFormatRepository, SessionTypeRepository sessionTypeRepository, ServiceRepository serviceRepository, RequestRepository requestRepository, CardSessionFormatRepository cardSessionFormatRepository, CardSessionTypeRepository cardSessionTypeRepository) {
+    public CardUpdater(final CardDTO cardDTO,
+                       final CardType type,
+                       final CardRepository cardRepository,
+                       final UserRepository userRepository,
+                       final SubjectRepository subjectRepository,
+                       final SessionFormatRepository sessionFormatRepository,
+                       final SessionTypeRepository sessionTypeRepository,
+                       final ServiceRepository serviceRepository,
+                       final RequestRepository requestRepository,
+                       final CardSessionFormatRepository cardSessionFormatRepository,
+                       final CardSessionTypeRepository cardSessionTypeRepository) {
         this.cardDTO = cardDTO;
         this.type = type;
         this.cardRepository = cardRepository;

@@ -56,18 +56,18 @@ public class Session {
     private SessionType sessionTypeBySessionTypeId;
     private Collection<SessionStudent> sessionStudentsBySessionId;
 
-    public Session(Long tutorId,
-                   Long subjectId,
-                   Long sessionFormatId,
-                   Long sessionTypeId,
-                   Date date,
-                   Time startTime,
-                   Time endTime,
-                   String description,
-                   User userByTutorId,
-                   Subject subjectBySubjectId,
-                   SessionFormat sessionFormatBySessionFormatId,
-                   SessionType sessionTypeBySessionTypeId) {
+    public Session(final Long tutorId,
+                   final Long subjectId,
+                   final Long sessionFormatId,
+                   final Long sessionTypeId,
+                   final Date date,
+                   final Time startTime,
+                   final Time endTime,
+                   final String description,
+                   final User userByTutorId,
+                   final Subject subjectBySubjectId,
+                   final SessionFormat sessionFormatBySessionFormatId,
+                   final SessionType sessionTypeBySessionTypeId) {
         this.tutorId = tutorId;
         this.subjectId = subjectId;
         this.sessionFormatId = sessionFormatId;
@@ -129,7 +129,7 @@ public class Session {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 

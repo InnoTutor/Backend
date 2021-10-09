@@ -66,7 +66,7 @@ public class ServicesController {
     }
 
     @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SubjectDTO>> getAvailableSubjects(@AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<List<SubjectDTO>> getAvailableSubjects(@AuthenticationPrincipal final CustomPrincipal user) {
         final List<SubjectDTO> result = sessionService.getAvailableServiceSubjects(userService.getUserId(user));
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
@@ -74,8 +74,8 @@ public class ServicesController {
     }
 
     @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getUserServicesById(@PathVariable Long userId,
-                                                             @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<List<CardDTO>> getUserServicesById(@PathVariable final Long userId,
+                                                             @AuthenticationPrincipal final CustomPrincipal user) {
         if (userService.getUserId(user).equals(userId)) {
             return this.getServices(user);
         }
@@ -120,8 +120,8 @@ public class ServicesController {
     }
 
     @DeleteMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCvCardById(@PathVariable Long cardId,
-                                              @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> deleteCvCardById(@PathVariable final Long cardId,
+                                              @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

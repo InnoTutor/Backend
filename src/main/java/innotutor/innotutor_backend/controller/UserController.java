@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable final Long userId, @AuthenticationPrincipal final CustomPrincipal user) {
         if (userService.getUserId(user).equals(userId)) {
             return this.getUserProfile(user);
         }
@@ -71,8 +71,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateUserProfile(@RequestBody UserDTO userDTO,
-                                                     @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<UserDTO> updateUserProfile(@RequestBody final UserDTO userDTO,
+                                                     @AuthenticationPrincipal final CustomPrincipal user) {
         if (userDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -42,7 +42,7 @@ public class MyStudentsController {
     private final CardEnrollService cardEnrollService;
     private final UserService userService;
 
-    public MyStudentsController(final StudentsService studentsService, final CardEnrollService cardEnrollService, UserService userService) {
+    public MyStudentsController(final StudentsService studentsService, final CardEnrollService cardEnrollService, final UserService userService) {
         this.studentsService = studentsService;
         this.cardEnrollService = cardEnrollService;
         this.userService = userService;
@@ -57,7 +57,7 @@ public class MyStudentsController {
     }
 
     @PutMapping(value = "accept/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> acceptStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> acceptStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal final CustomPrincipal user) {
         if (enrollmentId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +67,7 @@ public class MyStudentsController {
     }
 
     @DeleteMapping(value = "remove/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> removeStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> removeStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal final CustomPrincipal user) {
         if (enrollmentId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

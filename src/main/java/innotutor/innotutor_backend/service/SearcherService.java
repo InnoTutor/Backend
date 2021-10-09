@@ -76,10 +76,10 @@ public class SearcherService {
         return tutors;
     }
 
-    public List<StudentRequestDTO> getStudentRequestDTOList(String specifiedSubject,
-                                                            String specifiedFormat,
-                                                            String specifiedType,
-                                                            Long userId) {
+    public List<StudentRequestDTO> getStudentRequestDTOList(final String specifiedSubject,
+                                                            final String specifiedFormat,
+                                                            final String specifiedType,
+                                                            final Long userId) {
         final List<StudentRequestDTO> students = new ArrayList<>();
         for (final UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllStudentRequestDTOList()),

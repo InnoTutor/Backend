@@ -38,7 +38,7 @@ public class CardSessionFormat {
     private Card cardByCardId;
     private SessionFormat sessionFormatBySessionFormatId;
 
-    public CardSessionFormat(Long cardId, Long sessionFormatId, Card cardByCardId, SessionFormat sessionFormatBySessionFormatId) {
+    public CardSessionFormat(Long cardId, Long sessionFormatId, final Card cardByCardId, SessionFormat sessionFormatBySessionFormatId) {
         this.cardId = cardId;
         this.sessionFormatId = sessionFormatId;
         this.cardByCardId = cardByCardId;
@@ -77,10 +77,10 @@ public class CardSessionFormat {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        CardSessionFormat that = (CardSessionFormat) object;
+        final CardSessionFormat that = (CardSessionFormat) object;
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
             return false;

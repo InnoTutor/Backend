@@ -127,7 +127,7 @@ public class CardService {
                 cardSessionTypeRepository).putCard();
     }
 
-    public boolean deleteCardById(Long userId, Long cardId) {
+    public boolean deleteCardById(final Long userId, final Long cardId) {
         final Optional<Card> cardOptional = cardRepository.findById(cardId);
         final Optional<User> userOptional = userRepository.findById(userId);
         if (!cardOptional.isPresent() || !userOptional.isPresent()) {

@@ -73,14 +73,13 @@ public class InnotutorBackendApplication {
 
         return FirebaseApp.initializeApp(options);
     }
-
     /*
     @Bean
     @Primary
     public void firebaseInitialization() throws IOException {
-        Resource resource = new ClassPathResource(keyPath);
-        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        final Resource resource = new ClassPathResource(keyPath);
+        final FileInputStream serviceAccount = new FileInputStream(resource.getFile());
+        final FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
         if (FirebaseApp.getApps().isEmpty()) {

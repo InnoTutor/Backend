@@ -38,8 +38,8 @@ public class CardEnrollSessionFormat {
     private CardEnroll cardEnrollByCardEnrollId;
     private SessionFormat sessionFormatBySessionFormatId;
 
-    public CardEnrollSessionFormat(Long cardEnrollId, Long sessionFormatId, CardEnroll cardEnrollByCardEnrollId,
-                                   SessionFormat sessionFormatBySessionFormatId) {
+    public CardEnrollSessionFormat(final Long cardEnrollId, final Long sessionFormatId, final CardEnroll cardEnrollByCardEnrollId,
+                                   final SessionFormat sessionFormatBySessionFormatId) {
         this.cardEnrollId = cardEnrollId;
         this.sessionFormatId = sessionFormatId;
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;

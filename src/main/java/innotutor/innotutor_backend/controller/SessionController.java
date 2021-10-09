@@ -46,7 +46,7 @@ public class SessionController {
     private final SessionService sessionService;
     private final UserService userService;
 
-    public SessionController(SessionService sessionService, UserService userService) {
+    public SessionController(final SessionService sessionService, final UserService userService) {
         this.sessionService = sessionService;
         this.userService = userService;
     }
@@ -79,8 +79,8 @@ public class SessionController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SessionDTO> postTutorCardEnroll(@RequestBody SessionDTO sessionDTO,
-                                                          @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<SessionDTO> postTutorCardEnroll(@RequestBody final SessionDTO sessionDTO,
+                                                          @AuthenticationPrincipal final CustomPrincipal user) {
         if (sessionDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

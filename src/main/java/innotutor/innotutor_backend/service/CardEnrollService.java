@@ -105,7 +105,7 @@ public class CardEnrollService {
         return false;
     }
 
-    public boolean removeStudent(Long tutorId, Long enrollmentId) {
+    public boolean removeStudent(final Long tutorId, final Long enrollmentId) {
         final Optional<CardEnroll> cardEnrollOptional = cardEnrollRepository.findById(enrollmentId);
         if (cardEnrollOptional.isPresent()) {
             final CardEnroll cardEnroll = cardEnrollOptional.get();
@@ -189,7 +189,7 @@ public class CardEnrollService {
         }
     }
 
-    private List<String> getCommonSessionFormats(Card card, EnrollmentDTO enrollmentDTO) {
+    private List<String> getCommonSessionFormats(final Card card, final EnrollmentDTO enrollmentDTO) {
         return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
                 .stringList()
                 .stream()
@@ -198,7 +198,7 @@ public class CardEnrollService {
                 .collect(Collectors.toList());
     }
 
-    private List<String> getCommonSessionTypes(Card card, EnrollmentDTO enrollmentDTO) {
+    private List<String> getCommonSessionTypes(final Card card, final EnrollmentDTO enrollmentDTO) {
         return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
                 .stringList()
                 .stream()

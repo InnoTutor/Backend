@@ -62,7 +62,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -161,7 +161,7 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final User user = (User) object;
@@ -213,7 +213,7 @@ public class User {
         return requestsByUserId;
     }
 
-    public void setRequestsByUserId(Collection<Request> requestsByUserId) {
+    public void setRequestsByUserId(final Collection<Request> requestsByUserId) {
         this.requestsByUserId = requestsByUserId;
     }
 

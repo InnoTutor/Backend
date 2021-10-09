@@ -147,8 +147,8 @@ public class SessionService {
         return result;
     }
 
-    private SessionDTO createSession(User tutor, Card card, SessionDTO sessionDTO,
-                                     SessionFormat sessionFormat, SessionType sessionType) {
+    private SessionDTO createSession(final User tutor, final Card card, final SessionDTO sessionDTO,
+                                     final SessionFormat sessionFormat, final SessionType sessionType) {
         final List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
                 card.getSubjectBySubjectId().getName(), sessionFormat.getName(), sessionType.getName());
         if (!students.isEmpty()) {

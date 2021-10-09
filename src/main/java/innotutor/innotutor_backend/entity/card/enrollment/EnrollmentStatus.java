@@ -58,7 +58,7 @@ public class EnrollmentStatus {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 

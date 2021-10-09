@@ -51,7 +51,7 @@ public class Card {
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
 
-    public Card(Long subjectId, String description, Boolean hidden, Subject subjectBySubjectId) {
+    public Card(final Long subjectId, final String description, final Boolean hidden, final Subject subjectBySubjectId) {
         this.subjectId = subjectId;
         this.description = description;
         this.hidden = hidden;
@@ -147,7 +147,7 @@ public class Card {
         return subjectBySubjectId;
     }
 
-    public void setSubjectBySubjectId(Subject subjectBySubjectId) {
+    public void setSubjectBySubjectId(final Subject subjectBySubjectId) {
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
@@ -192,7 +192,7 @@ public class Card {
         return requestByCardId;
     }
 
-    public void setRequestByCardId(Request requestByCardId) {
+    public void setRequestByCardId(final Request requestByCardId) {
         this.requestByCardId = requestByCardId;
     }
 

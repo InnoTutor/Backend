@@ -49,7 +49,7 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(Long cardId, Long userId, Long statusId, Card cardByCardId, User userByUserId,
+    public CardEnroll(Long cardId, Long userId, Long statusId, final Card cardByCardId, User userByUserId,
                       EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;
@@ -118,12 +118,12 @@ public class CardEnroll {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final CardEnroll that = (CardEnroll) object;
