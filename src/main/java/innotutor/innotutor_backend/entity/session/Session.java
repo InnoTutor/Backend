@@ -25,6 +25,7 @@ package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.user.SessionStudent;
 import innotutor.innotutor_backend.entity.user.User;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -34,6 +35,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "session", schema = "public", catalog = "innotutor")
 public class Session {
@@ -53,6 +55,32 @@ public class Session {
     private SessionFormat sessionFormatBySessionFormatId;
     private SessionType sessionTypeBySessionTypeId;
     private Collection<SessionStudent> sessionStudentsBySessionId;
+
+    public Session(Long tutorId,
+                   Long subjectId,
+                   Long sessionFormatId,
+                   Long sessionTypeId,
+                   Date date,
+                   Time startTime,
+                   Time endTime,
+                   String description,
+                   User userByTutorId,
+                   Subject subjectBySubjectId,
+                   SessionFormat sessionFormatBySessionFormatId,
+                   SessionType sessionTypeBySessionTypeId) {
+        this.tutorId = tutorId;
+        this.subjectId = subjectId;
+        this.sessionFormatId = sessionFormatId;
+        this.sessionTypeId = sessionTypeId;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.description = description;
+        this.userByTutorId = userByTutorId;
+        this.subjectBySubjectId = subjectBySubjectId;
+        this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
+        this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

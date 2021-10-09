@@ -23,25 +23,32 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
+import innotutor.innotutor_backend.DTO.UserDTO;
 import innotutor.innotutor_backend.DTO.card.SubjectDTO;
+import innotutor.innotutor_backend.DTO.session.SessionDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionFormatDTO;
 import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionTypeDTO;
+import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.SessionService;
+import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class SessionController {
     private final SessionService sessionService;
+    private final UserService userService;
 
-    public SessionController(SessionService sessionService) {
+    public SessionController(SessionService sessionService, UserService userService) {
         this.sessionService = sessionService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,5 +64,30 @@ public class SessionController {
     @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SubjectDTO>> getSubjects() {
         return new ResponseEntity<>(sessionService.getSubjects(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/students", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> getStudents(
+            @RequestParam(name = "subject", required = false) String subject,
+            @RequestParam(name = "format", required = false) String format,
+            @RequestParam(name = "type", required = false) String type,
+            @AuthenticationPrincipal CustomPrincipal user) {
+        List<UserDTO> students = sessionService.filterStudentsForSession(userService.getUserId(user), subject, format, type);
+        return students == null
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SessionDTO> postTutorCardEnroll(@RequestBody SessionDTO sessionDTO,
+                                                          @AuthenticationPrincipal CustomPrincipal user) {
+        if (sessionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        sessionDTO.setTutorId(userService.getUserId(user));
+        SessionDTO result = sessionService.postSession(sessionDTO);
+        return result == null
+                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }

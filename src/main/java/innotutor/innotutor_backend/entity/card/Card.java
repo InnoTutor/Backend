@@ -27,11 +27,13 @@ import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.session.Subject;
 import innotutor.innotutor_backend.entity.user.Request;
 import innotutor.innotutor_backend.entity.user.Service;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "card", schema = "public", catalog = "innotutor")
 public class Card {
@@ -54,9 +56,6 @@ public class Card {
         this.description = description;
         this.hidden = hidden;
         this.subjectBySubjectId = subjectBySubjectId;
-    }
-
-    public Card() {
     }
 
     @Id

@@ -25,6 +25,7 @@ package innotutor.innotutor_backend.entity.card.enrollment;
 
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.user.User;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -32,6 +33,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "card_enroll", schema = "public", catalog = "innotutor")
 public class CardEnroll {
@@ -55,9 +57,6 @@ public class CardEnroll {
         this.cardByCardId = cardByCardId;
         this.userByUserId = userByUserId;
         this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
-    }
-
-    public CardEnroll() {
     }
 
     @Id

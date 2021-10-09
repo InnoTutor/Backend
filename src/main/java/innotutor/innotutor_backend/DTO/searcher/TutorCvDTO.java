@@ -23,6 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.DTO.searcher;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,8 @@ public class TutorCvDTO implements UserCard {
     private List<String> sessionType;
 
     @Override
+    @JsonIgnore
+    @JsonProperty(value = "creatorId")
     public Long getCreatorId() {
         return tutorId;
     }

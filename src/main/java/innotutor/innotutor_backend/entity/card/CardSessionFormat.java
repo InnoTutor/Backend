@@ -24,9 +24,11 @@ SOFTWARE.
 package innotutor.innotutor_backend.entity.card;
 
 import innotutor.innotutor_backend.entity.session.SessionFormat;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "card_session_format", schema = "public", catalog = "innotutor")
 public class CardSessionFormat {
@@ -41,9 +43,6 @@ public class CardSessionFormat {
         this.sessionFormatId = sessionFormatId;
         this.cardByCardId = cardByCardId;
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
-    }
-
-    public CardSessionFormat() {
     }
 
     @Basic
