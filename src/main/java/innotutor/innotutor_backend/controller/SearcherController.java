@@ -54,8 +54,9 @@ public class SearcherController {
             @RequestParam(name = "subject", required = false) String subject,
             @RequestParam(name = "format", required = false) String format,
             @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "sorting", required = false) String sorting,
             @AuthenticationPrincipal CustomPrincipal user) {
-        List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, userService.getUserId(user));
+        List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, userService.getUserId(user));
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(tutors, HttpStatus.OK);
