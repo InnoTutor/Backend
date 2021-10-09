@@ -73,13 +73,13 @@ public class ServicesController {
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getUserServicesById(@PathVariable Long id,
+    @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CardDTO>> getUserServicesById(@PathVariable Long userId,
                                                              @AuthenticationPrincipal CustomPrincipal user) {
-        if (userService.getUserId(user).equals(id)) {
+        if (userService.getUserId(user).equals(userId)) {
             return this.getServices(user);
         }
-        final List<CardDTO> result = cardsListService.getUserServices(id);
+        final List<CardDTO> result = cardsListService.getUserServices(userId);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(result, HttpStatus.OK);
@@ -119,13 +119,13 @@ public class ServicesController {
         );
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCvCardById(@PathVariable Long id,
+    @DeleteMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCvCardById(@PathVariable Long cardId,
                                               @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
+        if (cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return cardService.deleteCardById(userService.getUserId(user), id)
+        return cardService.deleteCardById(userService.getUserId(user), cardId)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

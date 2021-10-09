@@ -196,10 +196,10 @@ public class Session {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Session session = (Session) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final Session session = (Session) object;
         if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) return false;
         if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) return false;
         if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) return false;

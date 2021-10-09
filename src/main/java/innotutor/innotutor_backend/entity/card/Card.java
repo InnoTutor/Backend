@@ -120,10 +120,10 @@ public class Card {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Card card = (Card) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final Card card = (Card) object;
         if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) return false;
         if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
         if (description != null ? !description.equals(card.description) : card.description != null) return false;

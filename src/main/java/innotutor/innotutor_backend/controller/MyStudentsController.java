@@ -56,22 +56,22 @@ public class MyStudentsController {
                 : new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @PutMapping(value = "accept/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> acceptStudent(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
+    @PutMapping(value = "accept/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> acceptStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal CustomPrincipal user) {
+        if (enrollmentId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return cardEnrollService.acceptStudent(userService.getUserId(user), id)
+        return cardEnrollService.acceptStudent(userService.getUserId(user), enrollmentId)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value = "remove/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> removeStudent(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
+    @DeleteMapping(value = "remove/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> removeStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal CustomPrincipal user) {
+        if (enrollmentId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return cardEnrollService.removeStudent(userService.getUserId(user), id)
+        return cardEnrollService.removeStudent(userService.getUserId(user), enrollmentId)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

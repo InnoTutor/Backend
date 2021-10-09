@@ -87,10 +87,10 @@ public class Subject {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Subject subject = (Subject) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final Subject subject = (Subject) object;
         if (subjectId != null ? !subjectId.equals(subject.subjectId) : subject.subjectId != null) return false;
         if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
         if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null)

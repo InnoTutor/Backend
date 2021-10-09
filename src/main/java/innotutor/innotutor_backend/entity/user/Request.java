@@ -77,10 +77,10 @@ public class Request {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Request request = (Request) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final Request request = (Request) object;
         if (studentId != null ? !studentId.equals(request.studentId) : request.studentId != null) return false;
         if (cardId != null ? !cardId.equals(request.cardId) : request.cardId != null) return false;
         return requestId != null ? requestId.equals(request.requestId) : request.requestId == null;

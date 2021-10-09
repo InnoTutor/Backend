@@ -50,12 +50,12 @@ public class CardController {
         this.cardEnrollService = cardEnrollService;
     }
 
-    @GetMapping(value = "/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> getCard(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
+    @GetMapping(value = "/card/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CardDTO> getCard(@PathVariable final Long cardId, @AuthenticationPrincipal CustomPrincipal user) {
+        if (cardId == null) {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        final CardDTO card = cardService.getCardById(id, userService.getUserId(user));
+        final CardDTO card = cardService.getCardById(cardId, userService.getUserId(user));
         return card == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(card, HttpStatus.OK);

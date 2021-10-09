@@ -123,10 +123,10 @@ public class CardEnroll {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final CardEnroll that = (CardEnroll) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final CardEnroll that = (CardEnroll) object;
         if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;

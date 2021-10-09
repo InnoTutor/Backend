@@ -119,13 +119,13 @@ public class RequestsController {
         );
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteRequestCardById(@PathVariable final  Long id,
+    @DeleteMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteRequestCardById(@PathVariable final  Long cardId,
                                                    @AuthenticationPrincipal final CustomPrincipal user) {
-        if (id == null) {
+        if (cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return cardService.deleteCardById(userService.getUserId(user), id)
+        return cardService.deleteCardById(userService.getUserId(user), cardId)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

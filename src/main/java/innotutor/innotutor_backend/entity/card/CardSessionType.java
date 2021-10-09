@@ -77,10 +77,10 @@ public class CardSessionType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final CardSessionType that = (CardSessionType) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final CardSessionType that = (CardSessionType) object;
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;

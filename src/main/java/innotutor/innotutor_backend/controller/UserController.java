@@ -48,12 +48,12 @@ public class UserController {
         return this.getUserProfile(user);
     }
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id, @AuthenticationPrincipal CustomPrincipal user) {
-        if (userService.getUserId(user).equals(id)) {
+    @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId, @AuthenticationPrincipal CustomPrincipal user) {
+        if (userService.getUserId(user).equals(userId)) {
             return this.getUserProfile(user);
         }
-        final UserDTO userDTO = userService.getUserById(id);
+        final UserDTO userDTO = userService.getUserById(userId);
         return userDTO == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(userDTO, HttpStatus.OK);

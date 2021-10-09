@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AuthenticationEntryPoint() {
             @Override
             public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                 AuthenticationException e) throws IOException, ServletException {
+                                 AuthenticationException exception) throws IOException, ServletException {
                 final Map<String, Object> errorObject = new HashMap<>();
                 final int errorCode = 403;
                 errorObject.put("message", "Access Denied");

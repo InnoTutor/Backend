@@ -77,10 +77,10 @@ public class Service {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Service service = (Service) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final Service service = (Service) object;
         if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) return false;
         if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) return false;
         return serviceId != null ? serviceId.equals(service.serviceId) : service.serviceId == null;
