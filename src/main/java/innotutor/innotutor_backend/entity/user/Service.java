@@ -24,9 +24,11 @@ SOFTWARE.
 package innotutor.innotutor_backend.entity.user;
 
 import innotutor.innotutor_backend.entity.card.Card;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "service", schema = "public", catalog = "innotutor")
 public class Service {
@@ -41,9 +43,6 @@ public class Service {
         this.cardId = cardId;
         this.userByTutorId = userByTutorId;
         this.cardByCardId = cardByCardId;
-    }
-
-    public Service() {
     }
 
     @Basic

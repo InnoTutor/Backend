@@ -24,9 +24,11 @@ SOFTWARE.
 package innotutor.innotutor_backend.entity.user;
 
 import innotutor.innotutor_backend.entity.session.Session;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "session_student", schema = "public", catalog = "innotutor")
 public class SessionStudent {
@@ -35,6 +37,13 @@ public class SessionStudent {
     private Long sessionStudentId;
     private Session sessionBySessionId;
     private User userByStudentId;
+
+    public SessionStudent(Long sessionId, Long studentId, Session sessionBySessionId, User userByStudentId) {
+        this.sessionId = sessionId;
+        this.studentId = studentId;
+        this.sessionBySessionId = sessionBySessionId;
+        this.userByStudentId = userByStudentId;
+    }
 
     @Basic
     @Column(name = "session_id", nullable = false, insertable = false, updatable = false)
