@@ -35,9 +35,7 @@ import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +46,7 @@ public class SearcherService {
     public List<TutorCvDTO> getTutorCvDTOList(String specifiedSubject,
                                               String specifiedFormat,
                                               String specifiedType,
+                                              String sorting,
                                               Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (UserCard user : this.filterCards(
@@ -57,6 +56,20 @@ public class SearcherService {
                 specifiedFormat,
                 specifiedType)) {
             tutors.add((TutorCvDTO) user);
+        }
+        if (sorting != null) {
+            Map<Boolean, List<TutorCvDTO>> tutorsSplitted =
+                    tutors.stream().collect(Collectors.partitioningBy(tutor -> tutor.getRating() != null));
+            switch (sorting) {
+                case "ascending":
+                    tutorsSplitted.get(true).sort(Comparator.comparing(TutorCvDTO::getRating));
+                    break;
+                case "descending":
+                    tutorsSplitted.get(true).sort(Comparator.comparing(TutorCvDTO::getRating).reversed());
+                    break;
+            }
+            tutors = tutorsSplitted.get(true);
+            tutors.addAll(tutorsSplitted.get(false));
         }
         return tutors;
     }
