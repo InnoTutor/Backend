@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.user.Request;
 import innotutor.innotutor_backend.entity.user.User;
@@ -60,10 +60,10 @@ public class CardService {
     private final CardSessionTypeRepository cardSessionTypeRepository;
 
     public CardDTO getCardById(Long cardId, Long userId) {
-        Optional<Card> cardOptional = cardRepository.findById(cardId);
+        final Optional<Card> cardOptional = cardRepository.findById(cardId);
         if (cardOptional.isPresent()) {
-            Card card = cardOptional.get();
-            Long creatorId = new CardCreatorId(card).creatorId();
+            final Card card = cardOptional.get();
+            final Long creatorId = new CardCreatorId(card).creatorId();
             if (!card.getHidden() || userId.equals(creatorId)) {
                 return new CardDTOCreator(card, creatorId, subjectRepository).create();
             }
@@ -128,19 +128,19 @@ public class CardService {
     }
 
     public boolean deleteCardById(Long userId, Long cardId) {
-        Optional<Card> cardOptional = cardRepository.findById(cardId);
-        Optional<User> userOptional = userRepository.findById(userId);
+        final Optional<Card> cardOptional = cardRepository.findById(cardId);
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (!cardOptional.isPresent() || !userOptional.isPresent()) {
             return false;
         }
-        innotutor.innotutor_backend.entity.user.Service service = serviceRepository.findByCardId(cardId);
+        final innotutor.innotutor_backend.entity.user.Service service = serviceRepository.findByCardId(cardId);
         if (service != null) {
             if (service.getTutorId().equals(userId)) {
                 cardRepository.deleteById(cardId);
                 return true;
             }
         }
-        Request request = requestRepository.findByCardId(cardId);
+        final Request request = requestRepository.findByCardId(cardId);
         if (request != null) {
             if (request.getStudentId().equals(userId)) {
                 cardRepository.deleteById(cardId);

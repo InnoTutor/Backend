@@ -26,6 +26,7 @@ package innotutor.innotutor_backend.security;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@NoArgsConstructor
 @Slf4j
 public class TokenFilter extends OncePerRequestFilter {
 
@@ -48,7 +50,7 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String idToken = securityUtils.getTokenFromRequest(request);
+        final String idToken = securityUtils.getTokenFromRequest(request);
         FirebaseToken decodedToken = null; //NOPMD - suppressed DataflowAnomalyAnalysis
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -59,11 +61,11 @@ public class TokenFilter extends OncePerRequestFilter {
 
         }
         if (decodedToken != null) {
-            CustomPrincipal customPrincipal = new CustomPrincipal();
+            final CustomPrincipal customPrincipal = new CustomPrincipal();
             customPrincipal.setEmail((String) decodedToken.getClaims().get("email"));
             customPrincipal.setFullName((String) decodedToken.getClaims().get("name"));
             customPrincipal.setPicture((String) decodedToken.getClaims().get("picture"));
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+            final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     customPrincipal, decodedToken, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -37,8 +37,8 @@ public class SessionFormatConverter implements SessionConverter {
 
     @Override
     public List<String> stringList() {
-        List<String> formatsNames = new ArrayList<>();
-        for (SessionFormat format : sessionFormat) {
+        final List<String> formatsNames = new ArrayList<>();
+        for (final SessionFormat format : sessionFormat) {
             formatsNames.add(format.getName());
         }
         return formatsNames;

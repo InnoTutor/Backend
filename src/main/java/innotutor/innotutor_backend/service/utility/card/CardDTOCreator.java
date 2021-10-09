@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service.utility.card;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.repository.session.SubjectRepository;
@@ -44,7 +44,7 @@ public class CardDTOCreator {
     }
 
     public CardDTO create() {
-        Collection<CardRating> ratings = card.getCardRatingsByCardId();
+        final Collection<CardRating> ratings = card.getCardRatingsByCardId();
         return new CardDTO(
                 card.getCardId(),
                 creatorId,

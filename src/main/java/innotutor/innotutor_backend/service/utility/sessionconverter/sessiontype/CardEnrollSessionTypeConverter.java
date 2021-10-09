@@ -37,8 +37,8 @@ public class CardEnrollSessionTypeConverter implements SessionConverter {
 
     @Override
     public List<String> stringList() {
-        List<String> formatsNames = new ArrayList<>();
-        for (CardEnrollSessionType type : types) {
+        final List<String> formatsNames = new ArrayList<>();
+        for (final CardEnrollSessionType type : types) {
             formatsNames.add(type.getSessionTypeBySessionTypeId().getName());
         }
         return formatsNames;

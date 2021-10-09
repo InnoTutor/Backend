@@ -36,9 +36,9 @@ public class SessionFormatEntityConverter {
     private final SessionFormatRepository sessionFormatRepository;
 
     public List<SessionFormat> toEntityList() {
-        List<SessionFormat> sessionFormats = new ArrayList<>();
-        for (String formatName : formats) {
-            SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(formatName);
+        final List<SessionFormat> sessionFormats = new ArrayList<>();
+        for (final String formatName : formats) {
+            final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(formatName);
             if (sessionFormat != null) {
                 sessionFormats.add(sessionFormat);
             }

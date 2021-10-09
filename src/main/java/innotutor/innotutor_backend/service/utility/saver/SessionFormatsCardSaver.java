@@ -40,9 +40,9 @@ public class SessionFormatsCardSaver {
     private final CardSessionFormatRepository cardSessionFormatRepository;
 
     public Card save() {
-        Collection<CardSessionFormat> cardSessionFormatsByCardId = new ArrayList<>();
-        for (SessionFormat format : sessionFormats) {
-            CardSessionFormat cardSessionFormat = new CardSessionFormat(
+        final Collection<CardSessionFormat> cardSessionFormatsByCardId = new ArrayList<>();
+        for (final SessionFormat format : sessionFormats) {
+            final CardSessionFormat cardSessionFormat = new CardSessionFormat(
                     card.getCardId(), format.getSessionFormatId(), card, format
             );
             cardSessionFormatRepository.save(cardSessionFormat);

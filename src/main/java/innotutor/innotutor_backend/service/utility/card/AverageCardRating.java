@@ -38,7 +38,7 @@ public class AverageCardRating {
             return null;
         }
         double sum = 0;
-        for (CardRating rating : cardRatings) {
+        for (final CardRating rating : cardRatings) {
             sum += rating.getMark();
         }
         return sum / cardRatings.size();

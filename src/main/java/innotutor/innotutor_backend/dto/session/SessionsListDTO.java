@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.DTO.enrollment;
+package innotutor.innotutor_backend.dto.session;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +32,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestedStudentsListDTO {
-    private List<EnrollmentDTO> newStudentsList;
-    private List<EnrollmentDTO> acceptedStudentsList;
+public class SessionsListDTO {
+    private List<SessionDTO> studyingSessionsList;
+    private List<SessionDTO> teachingSessionsList;
 }

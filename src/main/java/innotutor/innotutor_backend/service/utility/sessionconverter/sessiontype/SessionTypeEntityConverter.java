@@ -37,9 +37,9 @@ public class SessionTypeEntityConverter {
     private final SessionTypeRepository sessionTypeRepository;
 
     public List<SessionType> toEntityList() {
-        List<SessionType> sessionTypes = new ArrayList<>();
-        for (String typeName : types) {
-            SessionType sessionType = sessionTypeRepository.findSessionTypeByName(typeName);
+        final List<SessionType> sessionTypes = new ArrayList<>();
+        for (final String typeName : types) {
+            final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(typeName);
             if (sessionType != null) {
                 sessionTypes.add(sessionType);
             }

@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service.utility.cardmanager;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
 import innotutor.innotutor_backend.entity.session.SessionType;

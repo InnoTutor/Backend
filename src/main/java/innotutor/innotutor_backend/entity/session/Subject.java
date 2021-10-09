@@ -24,6 +24,7 @@ SOFTWARE.
 package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.card.Card;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,6 +32,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "subject", schema = "public", catalog = "innotutor")
 public class Subject {
@@ -88,9 +90,7 @@ public class Subject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Subject subject = (Subject) o;
-
+        final Subject subject = (Subject) o;
         if (subjectId != null ? !subjectId.equals(subject.subjectId) : subject.subjectId != null) return false;
         if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
         if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null)

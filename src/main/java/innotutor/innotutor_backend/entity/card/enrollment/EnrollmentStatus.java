@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.entity.card.enrollment;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,6 +31,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "enrollment_status", schema = "public", catalog = "innotutor")
 public class EnrollmentStatus {
@@ -86,9 +88,7 @@ public class EnrollmentStatus {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        EnrollmentStatus that = (EnrollmentStatus) o;
-
+        final EnrollmentStatus that = (EnrollmentStatus) o;
         if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;

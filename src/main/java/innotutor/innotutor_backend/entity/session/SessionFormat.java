@@ -25,6 +25,7 @@ package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.card.CardSessionFormat;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnrollSessionFormat;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -32,6 +33,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "session_format", schema = "public", catalog = "innotutor")
 public class SessionFormat {
@@ -90,9 +92,7 @@ public class SessionFormat {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        SessionFormat that = (SessionFormat) o;
-
+        final SessionFormat that = (SessionFormat) o;
         if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
             return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;

@@ -126,9 +126,7 @@ public class CardEnroll {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        CardEnroll that = (CardEnroll) o;
-
+        final CardEnroll that = (CardEnroll) o;
         if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;

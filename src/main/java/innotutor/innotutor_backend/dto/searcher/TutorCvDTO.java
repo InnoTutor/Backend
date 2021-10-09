@@ -21,33 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package innotutor.innotutor_backend.DTO;
+package innotutor.innotutor_backend.dto.searcher;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
-    private Long userId;
-    private String name;
-    private String surname;
-    private String email;
-    private String contacts;
+public class TutorCvDTO implements UserCard {
+    private Long tutorId;
+    private Long cardId;
+    private Double rating;
+    private Integer countVoted;
     private String description;
-    private String picture;
-    // Upcoming events
-    //private SessionsListDTO sessionsList;
-    // You provide help via creating own CV cards
-    //private List<CardDTO> servicesList;
-    // Students who requested to your CV cards
-    //private RequestedStudentsListDTO myStudentsList;
-    // You ask for help via creating own Request Card
-    //private List<CardDTO> requestsList;
-    // Tutors who responded to your Request cards
-    //private RespondedTutorsListDTO myTutorsList;
-    // Cards to which you assigned or asked to be
-    //private AssignedCardsDTO assignedCardsList;
+    private String subject;
+    private List<String> sessionFormat;
+    private List<String> sessionType;
+
+    @Override
+    @JsonIgnore
+    @JsonProperty(value = "creatorId")
+    public Long getCreatorId() {
+        return tutorId;
+    }
 }

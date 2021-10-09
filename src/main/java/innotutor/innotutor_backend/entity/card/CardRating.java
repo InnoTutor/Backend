@@ -24,12 +24,14 @@ SOFTWARE.
 package innotutor.innotutor_backend.entity.card;
 
 import innotutor.innotutor_backend.entity.user.User;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "card_rating", schema = "public", catalog = "innotutor")
 public class CardRating {
@@ -79,7 +81,7 @@ public class CardRating {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(final Integer mark) {
         this.mark = mark;
     }
 
@@ -106,12 +108,10 @@ public class CardRating {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        CardRating that = (CardRating) o;
-
+        final CardRating that = (CardRating) o;
         if (cardRatingId != null ? !cardRatingId.equals(that.cardRatingId) : that.cardRatingId != null) return false;
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;

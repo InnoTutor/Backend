@@ -80,9 +80,7 @@ public class SessionStudent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        SessionStudent that = (SessionStudent) o;
-
+        final SessionStudent that = (SessionStudent) o;
         if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) return false;
         if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
         return sessionStudentId != null ? sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId == null;

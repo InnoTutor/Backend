@@ -41,9 +41,9 @@ public class SessionTypesCardSaver {
     private final CardSessionTypeRepository cardSessionTypeRepository;
 
     public Card save() {
-        Collection<CardSessionType> cardSessionTypesByCardId = new ArrayList<>();
-        for (SessionType type : sessionTypes) {
-            CardSessionType cardSessionType = new CardSessionType(card.getCardId(), type.getSessionTypeId(), card, type);
+        final Collection<CardSessionType> cardSessionTypesByCardId = new ArrayList<>();
+        for (final SessionType type : sessionTypes) {
+            final CardSessionType cardSessionType = new CardSessionType(card.getCardId(), type.getSessionTypeId(), card, type);
             cardSessionTypeRepository.save(cardSessionType);
             cardSessionTypesByCardId.add(cardSessionType);
         }

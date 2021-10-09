@@ -81,9 +81,7 @@ public class CardEnrollSessionType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        CardEnrollSessionType that = (CardEnrollSessionType) o;
-
+        final CardEnrollSessionType that = (CardEnrollSessionType) o;
         if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
         if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
             return false;

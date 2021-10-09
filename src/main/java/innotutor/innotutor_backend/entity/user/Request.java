@@ -80,9 +80,7 @@ public class Request {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Request request = (Request) o;
-
+        final Request request = (Request) o;
         if (studentId != null ? !studentId.equals(request.studentId) : request.studentId != null) return false;
         if (cardId != null ? !cardId.equals(request.cardId) : request.cardId != null) return false;
         return requestId != null ? requestId.equals(request.requestId) : request.requestId == null;

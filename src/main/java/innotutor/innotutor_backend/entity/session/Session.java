@@ -199,9 +199,7 @@ public class Session {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Session session = (Session) o;
-
+        final Session session = (Session) o;
         if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) return false;
         if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) return false;
         if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) return false;

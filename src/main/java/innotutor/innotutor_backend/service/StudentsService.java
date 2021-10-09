@@ -23,8 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
-import innotutor.innotutor_backend.DTO.enrollment.RequestedStudentsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.user.Request;
@@ -51,24 +51,24 @@ public class StudentsService {
     private final EnrollmentStatusRepository enrollmentStatusRepository;
 
     public RequestedStudentsListDTO getUserStudentsList(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Long requestedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("requested").getStatusId();
-            Long acceptedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted").getStatusId();
-            List<EnrollmentDTO> acceptedStudentsList = this.getStudentsListByStatusId(user, acceptedStatusId);
+            final User user = userOptional.get();
+            final Long requestedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("requested").getStatusId();
+            final Long acceptedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted").getStatusId();
+            final List<EnrollmentDTO> acceptedStudentsList = this.getStudentsListByStatusId(user, acceptedStatusId);
             acceptedStudentsList.addAll(this.getStudentsToWhomRequested(user, acceptedStatusId));
-            List<EnrollmentDTO> newStudentsList = this.getStudentsListByStatusId(user, requestedStatusId);
+            final List<EnrollmentDTO> newStudentsList = this.getStudentsListByStatusId(user, requestedStatusId);
             return new RequestedStudentsListDTO(newStudentsList, acceptedStudentsList);
         }
         return null;
     }
 
     private List<EnrollmentDTO> getStudentsListByStatusId(User user, Long statusId) {
-        List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
-            Card card = service.getCardByCardId();
-            for (CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
+        final List<EnrollmentDTO> studentsList = new ArrayList<>();
+        for (final innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
+            final Card card = service.getCardByCardId();
+            for (final CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
                 if (cardEnroll.getStatusId().equals(statusId)) {
                     studentsList.add(new EnrollmentDTO(
                             cardEnroll.getCardEnrollId(),
@@ -84,10 +84,10 @@ public class StudentsService {
     }
 
     private List<EnrollmentDTO> getStudentsToWhomRequested(User tutor, Long acceptedStatusId) {
-        List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (Request request : requestRepository.findAll()) {
-            Card card = request.getCardByCardId();
-            for (CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
+        final List<EnrollmentDTO> studentsList = new ArrayList<>();
+        for (final Request request : requestRepository.findAll()) {
+            final Card card = request.getCardByCardId();
+            for (final CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
                 if (cardEnroll.getUserId().equals(tutor.getUserId()) && cardEnroll.getStatusId().equals(acceptedStatusId)) {
                     studentsList.add(new EnrollmentDTO(
                             cardEnroll.getCardEnrollId(),

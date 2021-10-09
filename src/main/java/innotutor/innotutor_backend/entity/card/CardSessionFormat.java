@@ -80,9 +80,7 @@ public class CardSessionFormat {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CardSessionFormat that = (CardSessionFormat) o;
-
         if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
         if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
             return false;

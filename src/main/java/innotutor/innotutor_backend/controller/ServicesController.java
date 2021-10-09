@@ -23,8 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
-import innotutor.innotutor_backend.DTO.card.SubjectDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.SubjectDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardService;
 import innotutor.innotutor_backend.service.CardsListService;
@@ -49,8 +49,8 @@ public class ServicesController {
     private final UserService userService;
     private final SessionService sessionService;
 
-    public ServicesController(CardService cardService, CardsListService cardsListService,
-                              UserService userService, SessionService sessionService) {
+    public ServicesController(final CardService cardService, final CardsListService cardsListService,
+                              final UserService userService, final SessionService sessionService) {
         this.cardService = cardService;
         this.cardsListService = cardsListService;
         this.userService = userService;
@@ -58,8 +58,8 @@ public class ServicesController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getServices(@AuthenticationPrincipal CustomPrincipal user) {
-        List<CardDTO> services = cardsListService.getServices(userService.getUserId(user));
+    public ResponseEntity<List<CardDTO>> getServices(@AuthenticationPrincipal final CustomPrincipal user) {
+        final List<CardDTO> services = cardsListService.getServices(userService.getUserId(user));
         return services == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(services, HttpStatus.OK);
@@ -67,7 +67,7 @@ public class ServicesController {
 
     @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SubjectDTO>> getAvailableSubjects(@AuthenticationPrincipal CustomPrincipal user) {
-        List<SubjectDTO> result = sessionService.getAvailableServiceSubjects(userService.getUserId(user));
+        final List<SubjectDTO> result = sessionService.getAvailableServiceSubjects(userService.getUserId(user));
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.OK);
@@ -79,35 +79,35 @@ public class ServicesController {
         if (userService.getUserId(user).equals(id)) {
             return this.getServices(user);
         }
-        List<CardDTO> result = cardsListService.getUserServices(id);
+        final List<CardDTO> result = cardsListService.getUserServices(id);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postCvCard(@RequestBody CardDTO cardDTO,
-                                              @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> postCvCard(@RequestBody final CardDTO cardDTO,
+                                              @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         cardDTO.setCreatorId(userService.getUserId(user));
-        CardDTO result = cardService.postCvCard(cardDTO);
+        final CardDTO result = cardService.postCvCard(cardDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> putCvCard(@PathVariable Long cardId,
-                                             @RequestBody CardDTO cardDTO,
-                                             @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> putCvCard(@PathVariable final Long cardId,
+                                             @RequestBody final CardDTO cardDTO,
+                                             @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardDTO == null || cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         cardDTO.setCreatorId(userService.getUserId(user));
         cardDTO.setCardId(cardId);
-        CardDTO result = cardService.putCvCard(cardDTO);
+        final CardDTO result = cardService.putCvCard(cardDTO);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

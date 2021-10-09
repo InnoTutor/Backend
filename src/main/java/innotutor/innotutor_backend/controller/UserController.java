@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.UserDTO;
+import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -53,7 +53,7 @@ public class UserController {
         if (userService.getUserId(user).equals(id)) {
             return this.getUserProfile(user);
         }
-        UserDTO userDTO = userService.getUserById(id);
+        final UserDTO userDTO = userService.getUserById(id);
         return userDTO == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class UserController {
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal CustomPrincipal user) {
-        String email = user.getEmail();
+        final String email = user.getEmail();
         UserDTO userDTO = userService.getUserByEmail(email);
         if (userDTO == null) {
             userDTO = userService.addUserToDatabase(user) ? userService.getUserByEmail(email) : null;
@@ -78,7 +78,7 @@ public class UserController {
         }
         userDTO.setUserId(userService.getUserId(user));
         userDTO.setPicture(user.getPicture());
-        UserDTO result = userService.updateUserProfile(userDTO);
+        final UserDTO result = userService.updateUserProfile(userDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.OK);

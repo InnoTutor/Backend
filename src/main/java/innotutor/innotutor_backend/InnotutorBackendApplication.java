@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+@NoArgsConstructor
 @SpringBootApplication
 public class InnotutorBackendApplication {
 
@@ -48,7 +50,7 @@ public class InnotutorBackendApplication {
     @Value("${GOOGLE_CREDENTIALS}")
     private String gservicesConfig;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(InnotutorBackendApplication.class, args);
     }
 
@@ -59,9 +61,9 @@ public class InnotutorBackendApplication {
 
     @Bean
     public FirebaseApp provideFirebaseOptions() throws IOException {
-        JSONObject jsonObject = new JSONObject(gservicesConfig);
-        InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        final JSONObject jsonObject = new JSONObject(gservicesConfig);
+        final InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
+        final FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(is))
                 .build();
 
@@ -85,7 +87,7 @@ public class InnotutorBackendApplication {
 
     @Bean
     @Primary
-    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+    public ObjectMapper jacksonObjectMapper(final Jackson2ObjectMapperBuilder builder) {
         return builder.build();
     }
 }

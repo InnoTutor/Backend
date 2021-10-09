@@ -23,9 +23,9 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
-import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
-import innotutor.innotutor_backend.DTO.searcher.UserCard;
+import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
+import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
+import innotutor.innotutor_backend.dto.searcher.UserCard;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.repository.card.CardRepository;
@@ -49,7 +49,7 @@ public class SearcherService {
                                               String sorting,
                                               Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
-        for (UserCard user : this.filterCards(
+        for (final UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllTutorCvDTOList()),
                 userId,
                 specifiedSubject,
@@ -58,7 +58,7 @@ public class SearcherService {
             tutors.add((TutorCvDTO) user);
         }
         if (sorting != null) {
-            Map<Boolean, List<TutorCvDTO>> tutorsSplitted =
+            final Map<Boolean, List<TutorCvDTO>> tutorsSplitted =
                     tutors.stream().collect(Collectors.partitioningBy(tutor -> tutor.getRating() != null));
             switch (sorting) {
                 case "ascending":
@@ -80,8 +80,8 @@ public class SearcherService {
                                                             String specifiedFormat,
                                                             String specifiedType,
                                                             Long userId) {
-        List<StudentRequestDTO> students = new ArrayList<>();
-        for (UserCard user : this.filterCards(
+        final List<StudentRequestDTO> students = new ArrayList<>();
+        for (final UserCard user : this.filterCards(
                 new ArrayList<>(this.getAllStudentRequestDTOList()),
                 userId,
                 specifiedSubject,
@@ -93,10 +93,10 @@ public class SearcherService {
     }
 
     private List<TutorCvDTO> getAllTutorCvDTOList() {
-        List<TutorCvDTO> tutors = new ArrayList<>();
-        for (Card card : cardRepository.findByHidden(false)) {
+        final List<TutorCvDTO> tutors = new ArrayList<>();
+        for (final Card card : cardRepository.findByHidden(false)) {
             if (card.getServiceByCardId() != null) {
-                Collection<CardRating> ratings = card.getCardRatingsByCardId();
+                final Collection<CardRating> ratings = card.getCardRatingsByCardId();
                 tutors.add(
                         new TutorCvDTO(
                                 card.getServiceByCardId().getTutorId(),
@@ -115,8 +115,8 @@ public class SearcherService {
     }
 
     private List<StudentRequestDTO> getAllStudentRequestDTOList() {
-        List<StudentRequestDTO> students = new ArrayList<>();
-        for (Card card : cardRepository.findByHidden(false)) {
+        final List<StudentRequestDTO> students = new ArrayList<>();
+        for (final Card card : cardRepository.findByHidden(false)) {
             if (card.getRequestByCardId() != null) {
                 students.add(
                         new StudentRequestDTO(

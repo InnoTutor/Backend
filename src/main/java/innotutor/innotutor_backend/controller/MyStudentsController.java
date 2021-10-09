@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.enrollment.RequestedStudentsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.StudentsService;
@@ -42,22 +42,22 @@ public class MyStudentsController {
     private final CardEnrollService cardEnrollService;
     private final UserService userService;
 
-    public MyStudentsController(StudentsService studentsService, CardEnrollService cardEnrollService, UserService userService) {
+    public MyStudentsController(final StudentsService studentsService, final CardEnrollService cardEnrollService, UserService userService) {
         this.studentsService = studentsService;
         this.cardEnrollService = cardEnrollService;
         this.userService = userService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestedStudentsListDTO> getUserStudentsList(@AuthenticationPrincipal CustomPrincipal user) {
-        RequestedStudentsListDTO students = studentsService.getUserStudentsList(userService.getUserId(user));
+    public ResponseEntity<RequestedStudentsListDTO> getUserStudentsList(@AuthenticationPrincipal final CustomPrincipal user) {
+        final RequestedStudentsListDTO students = studentsService.getUserStudentsList(userService.getUserId(user));
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @PutMapping(value = "accept/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> acceptStudent(@PathVariable Long id, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> acceptStudent(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +67,7 @@ public class MyStudentsController {
     }
 
     @DeleteMapping(value = "remove/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> removeStudent(@PathVariable Long id, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<?> removeStudent(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service.utility.cardmanager;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
 import innotutor.innotutor_backend.entity.session.SessionType;
@@ -127,7 +127,7 @@ public class CardCreator {
         List<Card> cards = cardRepository.findBySubjectId(subject.getSubjectId()); //NOPMD - suppressed DataflowAnomalyAnalysis
         switch (type) {
             case SERVICE:
-                for (Card card : cards) {
+                for (final Card card : cards) {
                     if (card.getServiceByCardId() != null && card.getServiceByCardId().getTutorId().equals(creator.getUserId())) {
                         return false;
                     }

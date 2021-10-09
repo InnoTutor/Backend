@@ -23,8 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
-import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.CardService;
@@ -44,31 +44,31 @@ public class CardController {
     private final CardService cardService;
     private final CardEnrollService cardEnrollService;
 
-    public CardController(UserService userService, CardService cardService, CardEnrollService cardEnrollService) {
+    public CardController(final UserService userService, final CardService cardService, final CardEnrollService cardEnrollService) {
         this.userService = userService;
         this.cardService = cardService;
         this.cardEnrollService = cardEnrollService;
     }
 
     @GetMapping(value = "/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> getCard(@PathVariable Long id, @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> getCard(@PathVariable final Long id, @AuthenticationPrincipal CustomPrincipal user) {
         if (id == null) {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        CardDTO card = cardService.getCardById(id, userService.getUserId(user));
+        final CardDTO card = cardService.getCardById(id, userService.getUserId(user));
         return card == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(card, HttpStatus.OK);
     }
 
     @PostMapping(value = "/enroll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody EnrollmentDTO enrollmentDTO,
-                                                             @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody final EnrollmentDTO enrollmentDTO,
+                                                             @AuthenticationPrincipal final CustomPrincipal user) {
         if (enrollmentDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         enrollmentDTO.setEnrollerId(userService.getUserId(user));
-        EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
+        final EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.CREATED);

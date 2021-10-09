@@ -23,8 +23,8 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.searcher.StudentRequestDTO;
-import innotutor.innotutor_backend.DTO.searcher.TutorCvDTO;
+import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
+import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.SearcherService;
 import innotutor.innotutor_backend.service.UserService;
@@ -51,12 +51,12 @@ public class SearcherController {
 
     @GetMapping(value = "/tutors-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TutorCvDTO>> getTutorsList(
-            @RequestParam(name = "subject", required = false) String subject,
-            @RequestParam(name = "format", required = false) String format,
-            @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "sorting", required = false) String sorting,
+            @RequestParam(name = "subject", required = false) final String subject,
+            @RequestParam(name = "format", required = false) final String format,
+            @RequestParam(name = "type", required = false) final String type,
+            @RequestParam(name = "sorting", required = false) final String sorting,
             @AuthenticationPrincipal CustomPrincipal user) {
-        List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, userService.getUserId(user));
+        final List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, userService.getUserId(user));
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(tutors, HttpStatus.OK);
@@ -64,11 +64,11 @@ public class SearcherController {
 
     @GetMapping(value = "/students-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StudentRequestDTO>> getStudentsList(
-            @RequestParam(name = "subject", required = false) String subject,
-            @RequestParam(name = "format", required = false) String format,
-            @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "subject", required = false) final String subject,
+            @RequestParam(name = "format", required = false) final String format,
+            @RequestParam(name = "type", required = false) final String type,
             @AuthenticationPrincipal CustomPrincipal user) {
-        List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type,
+        final List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type,
                 userService.getUserId(user));
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)

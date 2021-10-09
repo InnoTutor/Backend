@@ -24,6 +24,7 @@ SOFTWARE.
 package innotutor.innotutor_backend.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -62,8 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                  AuthenticationException e) throws IOException, ServletException {
-                Map<String, Object> errorObject = new HashMap<>();
-                int errorCode = 403;
+                final Map<String, Object> errorObject = new HashMap<>();
+                final int errorCode = 403;
                 errorObject.put("message", "Access Denied");
                 errorObject.put("error", HttpStatus.FORBIDDEN);
                 errorObject.put("code", errorCode);

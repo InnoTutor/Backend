@@ -37,8 +37,8 @@ public class CardSessionFormatConverter implements SessionConverter {
 
     @Override
     public List<String> stringList() {
-        List<String> formatsNames = new ArrayList<>();
-        for (CardSessionFormat format : formats) {
+        final List<String> formatsNames = new ArrayList<>();
+        for (final CardSessionFormat format : formats) {
             formatsNames.add(format.getSessionFormatBySessionFormatId().getName());
         }
         return formatsNames;

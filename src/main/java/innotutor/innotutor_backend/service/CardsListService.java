@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
@@ -43,10 +43,10 @@ public class CardsListService {
     private final SubjectRepository subjectRepository;
 
     public List<CardDTO> getServices(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<CardDTO> services = new ArrayList<>();
+            final User user = userOptional.get();
+            final List<CardDTO> services = new ArrayList<>();
             user.getServicesByUserId().forEach(service ->
                     services.add(
                             new CardDTOCreator(service.getCardByCardId(), user.getUserId(), subjectRepository).create()
@@ -64,10 +64,10 @@ public class CardsListService {
     }
 
     public List<CardDTO> getRequests(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<CardDTO> requests = new ArrayList<>();
+            final User user = userOptional.get();
+            final List<CardDTO> requests = new ArrayList<>();
             user.getRequestsByUserId().forEach(request ->
                     requests.add(
                             new CardDTOCreator(request.getCardByCardId(), user.getUserId(), subjectRepository).create()

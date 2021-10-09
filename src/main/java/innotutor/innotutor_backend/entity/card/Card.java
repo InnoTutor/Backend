@@ -65,7 +65,7 @@ public class Card {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -123,9 +123,7 @@ public class Card {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Card card = (Card) o;
-
+        final Card card = (Card) o;
         if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) return false;
         if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
         if (description != null ? !description.equals(card.description) : card.description != null) return false;
@@ -185,7 +183,7 @@ public class Card {
         return cardSessionTypesByCardId;
     }
 
-    public void setCardSessionTypesByCardId(Collection<CardSessionType> cardSessionTypesByCardId) {
+    public void setCardSessionTypesByCardId(final Collection<CardSessionType> cardSessionTypesByCardId) {
         this.cardSessionTypesByCardId = cardSessionTypesByCardId;
     }
 

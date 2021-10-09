@@ -36,8 +36,8 @@ public class SessionTypeConverter implements SessionConverter {
 
     @Override
     public List<String> stringList() {
-        List<String> typesNames = new ArrayList<>();
-        for (SessionType type : sessionType) {
+        final List<String> typesNames = new ArrayList<>();
+        for (final SessionType type : sessionType) {
             typesNames.add(type.getName());
         }
         return typesNames;

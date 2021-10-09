@@ -80,9 +80,7 @@ public class Service {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Service service = (Service) o;
-
+        final Service service = (Service) o;
         if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) return false;
         if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) return false;
         return serviceId != null ? serviceId.equals(service.serviceId) : service.serviceId == null;

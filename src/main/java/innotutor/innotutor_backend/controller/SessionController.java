@@ -23,11 +23,11 @@ SOFTWARE.
  */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.UserDTO;
-import innotutor.innotutor_backend.DTO.card.SubjectDTO;
-import innotutor.innotutor_backend.DTO.session.SessionDTO;
-import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionFormatDTO;
-import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionTypeDTO;
+import innotutor.innotutor_backend.dto.UserDTO;
+import innotutor.innotutor_backend.dto.card.SubjectDTO;
+import innotutor.innotutor_backend.dto.session.SessionDTO;
+import innotutor.innotutor_backend.dto.session.sessionsettings.SessionFormatDTO;
+import innotutor.innotutor_backend.dto.session.sessionsettings.SessionTypeDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.SessionService;
 import innotutor.innotutor_backend.service.UserService;
@@ -68,11 +68,11 @@ public class SessionController {
 
     @GetMapping(value = "/students", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getStudents(
-            @RequestParam(name = "subject", required = false) String subject,
-            @RequestParam(name = "format", required = false) String format,
-            @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "subject", required = false) final String subject,
+            @RequestParam(name = "format", required = false) final String format,
+            @RequestParam(name = "type", required = false) final String type,
             @AuthenticationPrincipal CustomPrincipal user) {
-        List<UserDTO> students = sessionService.filterStudentsForSession(userService.getUserId(user), subject, format, type);
+        final List<UserDTO> students = sessionService.filterStudentsForSession(userService.getUserId(user), subject, format, type);
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(students, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class SessionController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         sessionDTO.setTutorId(userService.getUserId(user));
-        SessionDTO result = sessionService.postSession(sessionDTO);
+        final SessionDTO result = sessionService.postSession(sessionDTO);
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.CREATED);

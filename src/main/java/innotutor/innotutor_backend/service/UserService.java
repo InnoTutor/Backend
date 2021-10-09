@@ -24,7 +24,7 @@ SOFTWARE.
 
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.UserDTO;
+import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.security.CustomPrincipal;
@@ -50,20 +50,20 @@ public class UserService {
     }
 
     public Long getUserId(CustomPrincipal user) {
-        String email = user.getEmail();
-        UserDTO userDTO = getUserByEmail(email);
+        final String email = user.getEmail();
+        final UserDTO userDTO = getUserByEmail(email);
         return userDTO.getUserId();
     }
 
     public boolean addUserToDatabase(CustomPrincipal user) {
         if (user != null) {
-            String email = user.getEmail();
-            String fullName = user.getFullName();
-            String[] nameSurname = fullName.split(" ");
-            String name = nameSurname[0];
-            String surname = nameSurname[1];
-            String picture = user.getPicture();
-            User userToInsert = new User();
+            final String email = user.getEmail();
+            final String fullName = user.getFullName();
+            final String[] nameSurname = fullName.split(" ");
+            final String name = nameSurname[0];
+            final String surname = nameSurname[1];
+            final String picture = user.getPicture();
+            final User userToInsert = new User();
             userToInsert.setEmail(email);
             userToInsert.setName(name);
             userToInsert.setSurname(surname);
@@ -75,9 +75,9 @@ public class UserService {
     }
 
     public UserDTO updateUserProfile(UserDTO userDTO) {
-        Optional<User> userOptional = userRepository.findById(userDTO.getUserId());
+        final Optional<User> userOptional = userRepository.findById(userDTO.getUserId());
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            final User user = userOptional.get();
             user.setName(userDTO.getName());
             user.setSurname(userDTO.getSurname());
             user.setContacts(userDTO.getContacts());
