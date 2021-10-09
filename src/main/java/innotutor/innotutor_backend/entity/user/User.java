@@ -37,7 +37,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "user", schema = "public", catalog = "innotutor")
-public class User {
+public class User { //NOPMD - suppressed ShortClassName - It has the same database table name.
+    // So, we follow such convention
     private Long userId;
     private String name;
     private String surname;

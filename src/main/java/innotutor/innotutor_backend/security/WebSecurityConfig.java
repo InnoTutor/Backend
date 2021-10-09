@@ -53,10 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private ObjectMapper objectMapper;
 
-    private final int ERROR_CODE = 403;
+    private static final int ERROR_CODE = 403;
 
     @Autowired
-    public WebSecurityConfig(ObjectMapper objectMapper) {
+    public WebSecurityConfig(final ObjectMapper objectMapper) {
+        super();
         this.objectMapper = objectMapper;
     }
 

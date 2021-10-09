@@ -188,7 +188,7 @@ public class SessionService {
     private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
                                         final String sessionType) {
         final List<User> validStudents = new ArrayList<>();
-        List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType); //NOPMD - suppressed DataflowAnomalyAnalysis
+        final List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType);
         final List<User> students = new ArrayList<>();
         studentIDsList.forEach(studentId -> userRepository.findById(studentId).ifPresent(students::add));
         for (final User student : students) {
