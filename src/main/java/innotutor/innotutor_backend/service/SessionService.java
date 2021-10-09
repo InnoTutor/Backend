@@ -188,7 +188,7 @@ public class SessionService {
     private List<User> getValidStudents(Long tutorId, List<Long> studentIDsList, String subject, String sessionFormat,
                                         String sessionType) {
         List<User> validStudents = new ArrayList<>();
-        List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType);
+        List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType); //NOPMD - suppressed DataflowAnomalyAnalysis
         List<User> students = new ArrayList<>();
         studentIDsList.forEach(studentId -> userRepository.findById(studentId).ifPresent(students::add));
         for (User student : students) {
@@ -209,7 +209,7 @@ public class SessionService {
     private List<SubjectDTO> getAvailableSubjects(List<CardDTO> userCards) {
         List<SubjectDTO> result = new ArrayList<>();
         for (SubjectDTO subject : this.getSubjects()) {
-            boolean available = true;
+            boolean available = true; //NOPMD - suppressed DataflowAnomalyAnalysis
             for (CardDTO card : userCards) {
                 if (card.getSubject().equals(subject.getName())) {
                     available = false;

@@ -62,7 +62,7 @@ public class InnotutorBackendApplication {
         JSONObject jsonObject = new JSONObject(gservicesConfig);
         InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream((is)))
+                .setCredentials(GoogleCredentials.fromStream(is))
                 .build();
 
         return FirebaseApp.initializeApp(options);

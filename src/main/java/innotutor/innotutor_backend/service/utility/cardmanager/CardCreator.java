@@ -124,7 +124,7 @@ public class CardCreator {
     }
 
     private boolean isUniquePair() throws IllegalAccessException {
-        List<Card> cards = cardRepository.findBySubjectId(subject.getSubjectId());
+        List<Card> cards = cardRepository.findBySubjectId(subject.getSubjectId()); //NOPMD - suppressed DataflowAnomalyAnalysis
         switch (type) {
             case SERVICE:
                 for (Card card : cards) {

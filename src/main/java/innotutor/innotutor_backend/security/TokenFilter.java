@@ -49,7 +49,7 @@ public class TokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String idToken = securityUtils.getTokenFromRequest(request);
-        FirebaseToken decodedToken = null;
+        FirebaseToken decodedToken = null; //NOPMD - suppressed DataflowAnomalyAnalysis
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         } catch (FirebaseAuthException e) {
