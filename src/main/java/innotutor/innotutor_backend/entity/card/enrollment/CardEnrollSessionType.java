@@ -79,12 +79,19 @@ public class CardEnrollSessionType {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        final CardEnrollSessionType that = (CardEnrollSessionType) object;
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
-        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
+        }
+        final CardEnrollSessionType that = (CardEnrollSessionType) object;
+        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) {
+            return false;
+        }
+        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null) {
+            return false;
+        }
         return cardEnrollSessionTypeId != null ? cardEnrollSessionTypeId.equals(that.cardEnrollSessionTypeId) : that.cardEnrollSessionTypeId == null;
     }
 

@@ -78,11 +78,19 @@ public class SessionStudent {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final SessionStudent that = (SessionStudent) object;
-        if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) return false;
-        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
+        if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) {
+            return false;
+        }
+        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) {
+            return false;
+        }
         return sessionStudentId != null ? sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId == null;
     }
 

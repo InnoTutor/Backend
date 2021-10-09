@@ -33,6 +33,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestedStudentsListDTO {
-    private List<EnrollmentDTO> newStudentsList;
-    private List<EnrollmentDTO> acceptedStudentsList;
+    private List<EnrollmentDTO> newStudents;
+    private List<EnrollmentDTO> acceptedStudents;
 }

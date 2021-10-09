@@ -33,6 +33,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionsListDTO {
-    private List<SessionDTO> studyingSessionsList;
-    private List<SessionDTO> teachingSessionsList;
+    private List<SessionDTO> studyingSessions;
+    private List<SessionDTO> teachingSessions;
 }

@@ -120,7 +120,7 @@ public class RequestsController {
     }
 
     @DeleteMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteRequestCardById(@PathVariable final  Long cardId,
+    public ResponseEntity<?> deleteRequestCardById(@PathVariable final Long cardId,
                                                    @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -35,22 +35,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-// import org.springframework.core.io.ClassPathResource;
-// import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.ByteArrayInputStream;
-// import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 @NoArgsConstructor
 @SpringBootApplication
 public class InnotutorBackendApplication {
-
-//    @Value("${firebase.credential.resource-path}")
-//    private String keyPath;
-
     @Value("${GOOGLE_CREDENTIALS}")
     private String gservicesConfig;
 
@@ -73,20 +66,6 @@ public class InnotutorBackendApplication {
 
         return FirebaseApp.initializeApp(options);
     }
-    /*
-    @Bean
-    @Primary
-    public void firebaseInitialization() throws IOException {
-        final Resource resource = new ClassPathResource(keyPath);
-        final FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-        final FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .build();
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
-    }
-     */
 
     @Bean
     @Primary

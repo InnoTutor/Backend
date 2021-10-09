@@ -43,17 +43,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private ObjectMapper objectMapper;
-
     private static final int ERROR_CODE = 403;
+    private ObjectMapper objectMapper;
 
     @Autowired
     public WebSecurityConfig(final ObjectMapper objectMapper) {
@@ -72,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void commence(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse,
                                  final AuthenticationException exception) throws IOException, ServletException {
-                final Map<String, Object> errorObject = new HashMap<>();
+                final Map<String, Object> errorObject = new ConcurrentHashMap<>();
                 errorObject.put("message", "Access Denied");
                 errorObject.put("error", HttpStatus.FORBIDDEN);
                 errorObject.put("code", ERROR_CODE);

@@ -197,22 +197,43 @@ public class Session {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final Session session = (Session) object;
-        if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) return false;
-        if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) return false;
-        if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) return false;
-        if (sessionFormatId != null ? !sessionFormatId.equals(session.sessionFormatId) : session.sessionFormatId != null)
+        if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) {
             return false;
-        if (sessionTypeId != null ? !sessionTypeId.equals(session.sessionTypeId) : session.sessionTypeId != null)
+        }
+        if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) {
             return false;
-        if (date != null ? !date.equals(session.date) : session.date != null) return false;
-        if (startTime != null ? !startTime.equals(session.startTime) : session.startTime != null) return false;
-        if (endTime != null ? !endTime.equals(session.endTime) : session.endTime != null) return false;
-        if (description != null ? !description.equals(session.description) : session.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(session.creationDate) : session.creationDate != null)
+        }
+        if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) {
             return false;
+        }
+        if (sessionFormatId != null ? !sessionFormatId.equals(session.sessionFormatId) : session.sessionFormatId != null) {
+            return false;
+        }
+        if (sessionTypeId != null ? !sessionTypeId.equals(session.sessionTypeId) : session.sessionTypeId != null) {
+            return false;
+        }
+        if (date != null ? !date.equals(session.date) : session.date != null) {
+            return false;
+        }
+        if (startTime != null ? !startTime.equals(session.startTime) : session.startTime != null) {
+            return false;
+        }
+        if (endTime != null ? !endTime.equals(session.endTime) : session.endTime != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(session.description) : session.description != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(session.creationDate) : session.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(session.lastUpdate) : session.lastUpdate == null;
     }
 

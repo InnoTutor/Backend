@@ -124,14 +124,28 @@ public class CardEnroll {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final CardEnroll that = (CardEnroll) object;
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
+        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) {
+            return false;
+        }
+        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) {
+            return false;
+        }
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+            return false;
+        }
+        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
     }
 

@@ -78,11 +78,19 @@ public class Service {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final Service service = (Service) object;
-        if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) return false;
-        if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) return false;
+        if (tutorId != null ? !tutorId.equals(service.tutorId) : service.tutorId != null) {
+            return false;
+        }
+        if (cardId != null ? !cardId.equals(service.cardId) : service.cardId != null) {
+            return false;
+        }
         return serviceId != null ? serviceId.equals(service.serviceId) : service.serviceId == null;
     }
 

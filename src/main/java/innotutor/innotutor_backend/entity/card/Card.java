@@ -122,13 +122,25 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final Card card = (Card) object;
-        if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) return false;
-        if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
-        if (description != null ? !description.equals(card.description) : card.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) return false;
+        if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) {
+            return false;
+        }
+        if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(card.description) : card.description != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(card.lastUpdate) : card.lastUpdate == null;
     }
 

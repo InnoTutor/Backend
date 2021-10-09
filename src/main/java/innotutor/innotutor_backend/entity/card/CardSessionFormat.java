@@ -78,12 +78,19 @@ public class CardSessionFormat {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        final CardSessionFormat that = (CardSessionFormat) object;
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
-        if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
+        }
+        final CardSessionFormat that = (CardSessionFormat) object;
+        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) {
+            return false;
+        }
+        if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null) {
+            return false;
+        }
         return cardSessionFormatId != null ? cardSessionFormatId.equals(that.cardSessionFormatId) : that.cardSessionFormatId == null;
     }
 

@@ -86,12 +86,22 @@ public class EnrollmentStatus {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final EnrollmentStatus that = (EnrollmentStatus) object;
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
+        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+            return false;
+        }
+        if (status != null ? !status.equals(that.status) : that.status != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
     }
 

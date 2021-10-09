@@ -163,17 +163,37 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         final User user = (User) object;
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (contacts != null ? !contacts.equals(user.contacts) : user.contacts != null) return false;
-        if (description != null ? !description.equals(user.description) : user.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(user.creationDate) : user.creationDate != null) return false;
+        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
+            return false;
+        }
+        if (name != null ? !name.equals(user.name) : user.name != null) {
+            return false;
+        }
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(user.email) : user.email != null) {
+            return false;
+        }
+        if (password != null ? !password.equals(user.password) : user.password != null) {
+            return false;
+        }
+        if (contacts != null ? !contacts.equals(user.contacts) : user.contacts != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(user.description) : user.description != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(user.creationDate) : user.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(user.lastUpdate) : user.lastUpdate == null;
     }
 

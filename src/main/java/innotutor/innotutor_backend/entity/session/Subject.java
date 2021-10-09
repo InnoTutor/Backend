@@ -88,13 +88,22 @@ public class Subject {
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        final Subject subject = (Subject) object;
-        if (subjectId != null ? !subjectId.equals(subject.subjectId) : subject.subjectId != null) return false;
-        if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
-        if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null)
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
+        }
+        final Subject subject = (Subject) object;
+        if (subjectId != null ? !subjectId.equals(subject.subjectId) : subject.subjectId != null) {
+            return false;
+        }
+        if (name != null ? !name.equals(subject.name) : subject.name != null) {
+            return false;
+        }
+        if (creationDate != null ? !creationDate.equals(subject.creationDate) : subject.creationDate != null) {
+            return false;
+        }
         return lastUpdate != null ? lastUpdate.equals(subject.lastUpdate) : subject.lastUpdate == null;
     }
 

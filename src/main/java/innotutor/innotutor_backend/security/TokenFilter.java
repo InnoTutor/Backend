@@ -55,7 +55,7 @@ public class TokenFilter extends OncePerRequestFilter {
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         } catch (FirebaseAuthException e) {
-            if (log.isErrorEnabled()){
+            if (log.isErrorEnabled()) {
                 log.error("Firebase Exception {}", e.getLocalizedMessage());
             }
 

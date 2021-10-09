@@ -125,7 +125,7 @@ public class SessionService {
                                                   final String specifiedSubject,
                                                   final String specifiedFormat,
                                                   final String specifiedType) {
-        List<EnrollmentDTO> students = studentsService.getUserStudentsList(tutorId).getAcceptedStudentsList();
+        List<EnrollmentDTO> students = studentsService.getUserStudentsList(tutorId).getAcceptedStudents();
         if (specifiedSubject != null) {
             students = students.stream()
                     .filter(enrollmentDTO -> cardRepository.findById(enrollmentDTO.getCardId()).orElse(new Card())
