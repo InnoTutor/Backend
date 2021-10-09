@@ -35,8 +35,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+// import org.springframework.core.io.ClassPathResource;
+// import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
 import java.io.ByteArrayInputStream;
+// import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -62,28 +66,28 @@ public class InnotutorBackendApplication {
     @Bean
     public FirebaseApp provideFirebaseOptions() throws IOException {
         final JSONObject jsonObject = new JSONObject(gservicesConfig);
-        final InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
+        final InputStream inputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
         final FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(is))
+                .setCredentials(GoogleCredentials.fromStream(inputStream))
                 .build();
 
         return FirebaseApp.initializeApp(options);
     }
 
-
-//    @Bean
-//    @Primary
-//    public void firebaseInitialization() throws IOException {
-//        Resource resource = new ClassPathResource(keyPath);
-//        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-//                .build();
-//        if (FirebaseApp.getApps().isEmpty()) {
-//            FirebaseApp.initializeApp(options);
-//        }
-//    }
-
+    /*
+    @Bean
+    @Primary
+    public void firebaseInitialization() throws IOException {
+        Resource resource = new ClassPathResource(keyPath);
+        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
+        if (FirebaseApp.getApps().isEmpty()) {
+            FirebaseApp.initializeApp(options);
+        }
+    }
+     */
 
     @Bean
     @Primary
