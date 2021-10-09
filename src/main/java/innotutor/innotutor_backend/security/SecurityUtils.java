@@ -40,7 +40,6 @@ public class SecurityUtils {
             token = cookieToken.getValue();
         } else {
             String bearerToken = request.getHeader("Authorization");
-            System.out.println("bearerToken 1 " + bearerToken);
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
                 token = bearerToken.substring(7);
             }

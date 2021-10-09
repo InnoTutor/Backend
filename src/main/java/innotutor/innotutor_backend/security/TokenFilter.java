@@ -53,7 +53,10 @@ public class TokenFilter extends OncePerRequestFilter {
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
         } catch (FirebaseAuthException e) {
-            log.error("Firebase Exception {}", e.getLocalizedMessage());
+            if (log.isErrorEnabled()){
+                log.error("Firebase Exception {}", e.getLocalizedMessage());
+            }
+
         }
         if (decodedToken != null) {
             CustomPrincipal customPrincipal = new CustomPrincipal();
