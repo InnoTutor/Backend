@@ -67,6 +67,8 @@ public class SearcherService {
                 case "descending":
                     tutorsSplitted.get(true).sort(Comparator.comparing(TutorCvDTO::getRating).reversed());
                     break;
+                default:
+                    break;
             }
             tutors = tutorsSplitted.get(true);
             tutors.addAll(tutorsSplitted.get(false));

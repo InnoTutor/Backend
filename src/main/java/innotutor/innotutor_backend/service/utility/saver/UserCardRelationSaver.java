@@ -48,6 +48,8 @@ public class UserCardRelationSaver {
             case REQUEST:
                 requestRepository.save(new Request(creator.getUserId(), card.getCardId(), creator, card));
                 break;
+            default:
+                break;
         }
     }
 }
