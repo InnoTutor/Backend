@@ -47,7 +47,7 @@ If you want import our database, you can use restore.sql file with empty tables.
 
 # Google credentials
 To log in you need to provide your Google credentials created [here](https://firebase.google.com).
-Then open ![application.properties](/src/main/resources/application.properties) file and past your JSON Google credentials file in `GOOGLE_CREDENTIALS` filed.
+Then open [application.properties](/src/main/resources/application.properties) file and past your JSON Google credentials file in `GOOGLE_CREDENTIALS` filed.
 
 # Hosting
 
