@@ -11,7 +11,7 @@
 - [API](#api)
 - [Database](#database)
 - [Google credentials](#google-credentials)
-- [Hosting & CI](#hosting-ci)
+- [Hosting & CI](#hosting-&-ci)
 - [How to install locally](#how-to-install-locally)
 - [Code analysis](#code-analysis)
 - [Want to contribute?](#want-to-contribute)
