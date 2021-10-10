@@ -1,6 +1,6 @@
 # Backend
 
-![logo](https://user-images.githubusercontent.com/44948387/136674082-18921bd1-b4f5-40d3-81bf-f98028c159c6.png)   <br>
+![dark_logo](https://user-images.githubusercontent.com/69918609/136712595-77589669-b92d-4d69-bade-ccb2b95f0f56.png)  <br>
 
 <img src="https://img.shields.io/github/stars/InnoTutor/Backend?style=social">   ᅠ [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/InnoTutor/Backend/blob/main/LICENSE) ᅠ   [![Hits-of-Code](https://hitsofcode.com/github/InnoTutor/Backend?branch=main)](https://hitsofcode.com/github/InnoTutor/Backend/view?branch=main)<br><br><br>
 **Developers**: Daniil Livitn, Roman Soldatov
