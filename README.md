@@ -16,7 +16,7 @@
 - [Code analysis](#code)
 - [Want to contribute?](#contribution)
 
-This is the repository with Backend code for InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use Postman or Swagger.
+This is the repository with Backend code for InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use [Postman](https://www.postman.com) or [Swagger](https://swagger.io).
 The main description of the project is available [here](https://github.com/InnoTutor/README)
 
 # Requirements
@@ -42,10 +42,12 @@ You can read about API documentation [here](https://documenter.getpostman.com/vi
 
 # Database
 We use Docker and PostgreSQL for the database.
-Here is the database diagram
+Here is the database [diagram](https://github.com/InnoTutor/README/blob/main/UMLDiagrams/DatabaseDiagram.md)
 If you want import our database, you can use restore.sql file with empty tables.
 
 # Google credentials
+To log in you need to provide your Google credentials created [here](https://firebase.google.com).
+Then open ![application.properties](/src/main/resources/application.properties) file and past your JSON Google credentials file in `GOOGLE_CREDENTIALS` filed.
 
 # Hosting
 
