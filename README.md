@@ -50,21 +50,21 @@ Here is the database [diagram](https://github.com/InnoTutor/README/blob/main/UML
 > - Guide how to use PostgreSQL in Docker: [link](https://youtu.be/aHbE3pTyG-Q)
 
 # Google credentials
-To log in you need to provide your Google credentials created [here](https://firebase.google.com).
-Then open [application.properties](/src/main/resources/application.properties) file and input your JSON Google credentials file as a single string in `GOOGLE_CREDENTIALS` filed.
+To log in, you need to provide your Google credentials created [here](https://firebase.google.com).
+Then open [application.properties](/src/main/resources/application.properties) file and input your JSON Google credentials file as a single string in `GOOGLE_CREDENTIALS` field.
 You can use this online service to convert JSON into a string with escape characters: [link](https://www.freeformatter.com/json-escape.html)
 > In case of any problems refer to this [guide](https://medium.com/@renceabishek/how-to-add-google-api-credentials-key-on-heroku-spring-boot-16b03e2a2363)
 
 # Hosting & CI
 We use [Heroku](https://heroku.com/) to host the backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
-For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deploy a new version on the server.
+For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deployes a new version on the server.
 
-To build the project on Heroku's server you need to provide **config vars**: `DATABASE_URL`, `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_CREDENTIALS`. Also, add this buildpack `https://github.com/buyersight/heroku-google-application-credentials-buildpack.git`
+To build the project on Heroku's server you need to provide **config vars**: `DATABASE_URL` and `GOOGLE_CREDENTIALS`. Also, add this buildpack `https://github.com/buyersight/heroku-google-application-credentials-buildpack.git`
 > Guide how to work with config vars: [link](https://devcenter.heroku.com/articles/config-vars)
 
 # How to install locally
 - Download this project
-- Open in IntelliJ IDEA
+- Open it in IntelliJ IDEA
 - Set up database and Google credentials (check instructions above [Database](#database) and [Google credentials](#credentials))
 - Open `InnotutorBackendApplication` java class and press `ctrl+R`
 > Guide how to run Spring project: [link](https://www.jetbrains.com/help/idea/your-first-spring-application.html)
