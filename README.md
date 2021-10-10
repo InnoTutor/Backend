@@ -21,7 +21,7 @@ The main description of the project is available [here](https://github.com/InnoT
 
 # Requirements
 **Technical Stack**: <br>
-* **Java, [Spring Framework](https://spring.io/projects/spring-framework), Firebase, Docker, PostgreSQL (BackEnd)**: <br>
+* **Java, [Spring Framework](https://spring.io/projects/spring-framework), Firebase, Docker, PostgreSQL**: <br>
   * IntelliJ IDEA IDE
 > For this open-source project, we used the simplest registration way via Google [Firebase](https://firebase.google.com)
 > - as a website user, you need to have a Google account
@@ -45,7 +45,7 @@ We use Docker and PostgreSQL for the database.
 Here is the database [diagram](https://github.com/InnoTutor/README/blob/main/UMLDiagrams/DatabaseDiagram.md)
 
 - If you want to import our database, you can use [restore.sql](restore.sql) file with empty tables.
-- In [application.properties](/src/main/resources/application.properties) file specify your database's name, username and password.
+- In [application.properties](/src/main/resources/application.properties) file specify your database's `URL`, `username` and `password`.
 > - Guide how to import your database: [link](https://www.postgresql.org/docs/9.1/backup-dump.html)
 > - Guide how to use PostgreSQL in Docker: [link](https://youtu.be/aHbE3pTyG-Q)
 
