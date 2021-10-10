@@ -8,13 +8,13 @@
 
 ## Contents
 - [Requirements](#requirements)
-- [API](#API)
-- [Database](#Database)
-- [Google credentials](#Google credentials)
-- [Hosting & CI](#Hosting & CI)
-- [How to install locally](#How to install locally)
-- [Code analysis](#Code analysis)
-- [Want to contribute?](#Want to contribute?)
+- [API](#api)
+- [Database](#database)
+- [Google credentials](#google-credentials)
+- [Hosting & CI](#hosting-ci)
+- [How to install locally](#how-to-install-locally)
+- [Code analysis](#code-analysis)
+- [Want to contribute?](#want-to-contribute)
 
 This is the repository with Backend code for the InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use [Postman](https://www.postman.com) or [Swagger](https://swagger.io).
 The main description of the project is available [here](https://github.com/InnoTutor/README)
