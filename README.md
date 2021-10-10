@@ -17,7 +17,7 @@
 - [Want to contribute?](#contribution)
 
 This is the repository with Backend code for InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use Postman or Swagger.
-The main description of the project is available [here]()
+The main description of the project is available [here](https://github.com/InnoTutor/README)
 
 # Requirements
 **Technical Stack**: <br>
