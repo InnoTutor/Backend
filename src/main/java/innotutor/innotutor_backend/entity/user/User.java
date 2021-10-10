@@ -189,7 +189,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         return result;
     }
 
-    @OneToMany(mappedBy = "userByUserId")
+    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
     public Collection<CardEnroll> getCardEnrollsByUserId() {
         return cardEnrollsByUserId;
     }
@@ -198,7 +198,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardEnrollsByUserId = cardEnrollsByUserId;
     }
 
-    @OneToMany(mappedBy = "userByUserId")
+    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
     public Collection<CardRating> getCardRatingsByUserId() {
         return cardRatingsByUserId;
     }
@@ -207,7 +207,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardRatingsByUserId = cardRatingsByUserId;
     }
 
-    @OneToMany(mappedBy = "userByStudentId")
+    @OneToMany(mappedBy = "userByStudentId", cascade = CascadeType.ALL)
     public Collection<Request> getRequestsByUserId() {
         return requestsByUserId;
     }
@@ -216,7 +216,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.requestsByUserId = requestsByUserId;
     }
 
-    @OneToMany(mappedBy = "userByTutorId")
+    @OneToMany(mappedBy = "userByTutorId", cascade = CascadeType.ALL)
     public Collection<Service> getServicesByUserId() {
         return servicesByUserId;
     }
@@ -225,7 +225,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.servicesByUserId = servicesByUserId;
     }
 
-    @OneToMany(mappedBy = "userByTutorId")
+    @OneToMany(mappedBy = "userByTutorId", cascade = CascadeType.ALL)
     public Collection<Session> getSessionsByUserId() {
         return sessionsByUserId;
     }
@@ -234,7 +234,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.sessionsByUserId = sessionsByUserId;
     }
 
-    @OneToMany(mappedBy = "userByStudentId")
+    @OneToMany(mappedBy = "userByStudentId", cascade = CascadeType.ALL)
     public Collection<SessionStudent> getSessionStudentsByUserId() {
         return sessionStudentsByUserId;
     }
