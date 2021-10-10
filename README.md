@@ -11,7 +11,7 @@
 - [API](#api)
 - [Database](#database)
 - [Google credentials](#google-credentials)
-- [Hosting & CI](#hosting-&-ci)
+- [Hosting and CI](#hosting-and-ci)
 - [How to install locally](#how-to-install-locally)
 - [Code analysis](#code-analysis)
 - [Want to contribute?](#want-to-contribute)
@@ -65,7 +65,7 @@ To build the project on Heroku's server you need to provide **config vars**: `DA
 # How to install locally
 - Download this project
 - Open it in IntelliJ IDEA
-- Set up database and Google credentials (check instructions above [Database](#Database) and [Google credentials](#Google credentials))
+- Set up database and Google credentials (check instructions above [Database](#database) and [Google credentials](#google-credentials))
 - Open `InnotutorBackendApplication` java class and press `ctrl+R`
 > Guide how to run Spring project: [link](https://www.jetbrains.com/help/idea/your-first-spring-application.html)
 
