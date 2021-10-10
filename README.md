@@ -55,7 +55,7 @@ Then open [application.properties](/src/main/resources/application.properties) f
 You can use this online service to convert JSON into a string with escape characters: [link](https://www.freeformatter.com/json-escape.html)
 > In case of any problems refer to this [guide](https://medium.com/@renceabishek/how-to-add-google-api-credentials-key-on-heroku-spring-boot-16b03e2a2363)
 
-# Hosting & CI
+# Hosting and CI
 We use [Heroku](https://heroku.com/) to host the backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
 For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deployes a new version on the server.
 
