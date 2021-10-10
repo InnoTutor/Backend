@@ -8,13 +8,13 @@
 
 ## Contents
 - [Requirements](#requirements)
-- [API](#api)
-- [Database](#database)
-- [Google credentials](#credentials)
-- [Hosting & CI](#hosting)
-- [How to install locally](#installation)
-- [Code analysis](#code)
-- [Want to contribute?](#contribution)
+- [API](#API)
+- [Database](#Database)
+- [Google credentials](#Google credentials)
+- [Hosting & CI](#Hosting & CI)
+- [How to install locally](#How to install locally)
+- [Code analysis](#Code analysis)
+- [Want to contribute?](#Want to contribute?)
 
 This is the repository with Backend code for the InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use [Postman](https://www.postman.com) or [Swagger](https://swagger.io).
 The main description of the project is available [here](https://github.com/InnoTutor/README)
@@ -65,7 +65,7 @@ To build the project on Heroku's server you need to provide **config vars**: `DA
 # How to install locally
 - Download this project
 - Open it in IntelliJ IDEA
-- Set up database and Google credentials (check instructions above [Database](#database) and [Google credentials](#credentials))
+- Set up database and Google credentials (check instructions above [Database](#Database) and [Google credentials](#Google credentials))
 - Open `InnotutorBackendApplication` java class and press `ctrl+R`
 > Guide how to run Spring project: [link](https://www.jetbrains.com/help/idea/your-first-spring-application.html)
 
