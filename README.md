@@ -16,7 +16,7 @@
 - [Code analysis](#code)
 - [Want to contribute?](#contribution)
 
-This is the repository with Backend code for InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use [Postman](https://www.postman.com) or [Swagger](https://swagger.io).
+This is the repository with Backend code for the InnoTutor project. The backend is designed as REST API, so you need the frontend part to access it. Alternatively, you can use [Postman](https://www.postman.com) or [Swagger](https://swagger.io).
 The main description of the project is available [here](https://github.com/InnoTutor/README)
 
 # Requirements
@@ -37,30 +37,41 @@ The main description of the project is available [here](https://github.com/InnoT
  **Stake**: Development process
 
 # API
-There is a documentation with all requests which backend supports.
+There is documentation with all requests which backend supports.
 You can read about API documentation [here](https://documenter.getpostman.com/view/16213957/UUy65PgU)
 
 # Database
 We use Docker and PostgreSQL for the database.
 Here is the database [diagram](https://github.com/InnoTutor/README/blob/main/UMLDiagrams/DatabaseDiagram.md)
-If you want import our database, you can use restore.sql file with empty tables.
+
+- If you want to import our database, you can use [restore.sql](restore.sql) file with empty tables.
+- In [application.properties](/src/main/resources/application.properties) file specify your database's name, username and password.
+> - Guide how to import your database: [link](https://www.postgresql.org/docs/9.1/backup-dump.html)
+> - Guide how to use PostgreSQL in Docker: [link](https://youtu.be/aHbE3pTyG-Q)
 
 # Google credentials
 To log in you need to provide your Google credentials created [here](https://firebase.google.com).
-Then open [application.properties](/src/main/resources/application.properties) file and innput your JSON Google credentials file as a single string in `GOOGLE_CREDENTIALS` filed.
-You can use this service to convert JSON into string with escape characters: [link](https://www.freeformatter.com/json-escape.html)
-
-In case of any problems, refer to this [guide](https://medium.com/@renceabishek/how-to-add-google-api-credentials-key-on-heroku-spring-boot-16b03e2a2363)
+Then open [application.properties](/src/main/resources/application.properties) file and input your JSON Google credentials file as a single string in `GOOGLE_CREDENTIALS` filed.
+You can use this online service to convert JSON into a string with escape characters: [link](https://www.freeformatter.com/json-escape.html)
+> In case of any problems refer to this [guide](https://medium.com/@renceabishek/how-to-add-google-api-credentials-key-on-heroku-spring-boot-16b03e2a2363)
 
 # Hosting & CI
-We use [Heroku](https://heroku.com/) to host backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
-For the continious integration we have to make a pull request to the `main` branch. Then Heroku will automatically deploy new version on the server.
+We use [Heroku](https://heroku.com/) to host the backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
+For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deploy a new version on the server.
+
+To build the project on Heroku's server you need to provide **config vars**: `DATABASE_URL`, `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_CREDENTIALS`. Also, add this buildpack `https://github.com/buyersight/heroku-google-application-credentials-buildpack.git`
+> Guide how to work with config vars: [link](https://devcenter.heroku.com/articles/config-vars)
 
 # How to install locally
+- Download this project
+- Open in IntelliJ IDEA
+- Set up database and Google credentials (check instructions above [Database](#database) and [Google credentials](#credentials))
+- Open `InnotutorBackendApplication` java class and press `ctrl+R`
+> Guide how to run Spring project: [link](https://www.jetbrains.com/help/idea/your-first-spring-application.html)
 
 # Code analysis
 * [The result of PMD static analyzer](https://github.com/InnoTutor/README/blob/main/StaticAnaylyzer/result.md). Do not be scared by such a huge number of violations. We fixed all the violations that we could fix. Other violations can not be fixed due to spring framework-specific code which requires to follow special name convention, so the framework could understand fields and create particular [Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition).
 
 # Want to contribute?
-You can contribute in the frontend and backend. Just fork the repository from the `develop` branch, implement changes you want to propose and make a pull request.
-Also, there are issues in [backend](https://github.com/InnoTutor/Backend/issues) and [frontend](https://github.com/InnoTutor/Frontend/issues), feel free to submit a new one or participate in existing.
+You can contribute in this project. Just fork the repository from the `develop` branch, implement changes you want to propose and make a pull request.
+Also, there are [issues](https://github.com/InnoTutor/Backend/issues), so feel free to submit a new one or participate in existing.
