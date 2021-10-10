@@ -20,8 +20,8 @@ import java.util.List;
 @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class SessionController {
-    private final SessionService sessionService;
-    private final UserService userService;
+    private final transient SessionService sessionService;
+    private final transient UserService userService;
 
     public SessionController(final SessionService sessionService, final UserService userService) {
         this.sessionService = sessionService;
@@ -58,13 +58,16 @@ public class SessionController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SessionDTO> postTutorCardEnroll(@RequestBody final SessionDTO sessionDTO,
                                                           @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<SessionDTO> response;
         if (sessionDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            sessionDTO.setTutorId(userService.getUserId(user));
+            final SessionDTO result = sessionService.postSession(sessionDTO);
+            response = result == null
+                    ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                    : new ResponseEntity<>(result, HttpStatus.CREATED);
         }
-        sessionDTO.setTutorId(userService.getUserId(user));
-        final SessionDTO result = sessionService.postSession(sessionDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
+        return response;
     }
 }

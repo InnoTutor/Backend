@@ -18,13 +18,13 @@ public class SessionFormatsCardSaver {
 
     public Card save() {
         final Collection<CardSessionFormat> cardSessionFormatsByCardId = new ArrayList<>();
-        for (final SessionFormat format : sessionFormats) {
+        sessionFormats.forEach(format -> {
             final CardSessionFormat cardSessionFormat = new CardSessionFormat(
                     card.getCardId(), format.getSessionFormatId(), card, format
             );
             cardSessionFormatRepository.save(cardSessionFormat);
             cardSessionFormatsByCardId.add(cardSessionFormat);
-        }
+        });
         card.setCardSessionFormatsByCardId(cardSessionFormatsByCardId);
         return card;
     }

@@ -43,20 +43,18 @@ public class StudentsService {
 
     private List<EnrollmentDTO> getStudentsListByStatusId(final User user, final Long statusId) {
         final List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (final innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
-            final Card card = service.getCardByCardId();
-            for (final CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
-                if (cardEnroll.getStatusId().equals(statusId)) {
-                    studentsList.add(new EnrollmentDTO(
-                            cardEnroll.getCardEnrollId(),
-                            cardEnroll.getUserId(),
-                            cardEnroll.getCardId(),
-                            new CardEnrollSessionFormatConverter(cardEnroll.getCardEnrollSessionFormatsByCardId()).stringList(),
-                            new CardEnrollSessionTypeConverter(cardEnroll.getCardEnrollSessionTypesByCardId()).stringList()
-                    ));
-                }
-            }
-        }
+        user.getServicesByUserId().forEach(service -> service.getCardByCardId().getCardEnrollsByCardId()
+                .forEach(cardEnroll -> {
+                    if (cardEnroll.getStatusId().equals(statusId)) {
+                        studentsList.add(new EnrollmentDTO(
+                                cardEnroll.getCardEnrollId(),
+                                cardEnroll.getUserId(),
+                                cardEnroll.getCardId(),
+                                new CardEnrollSessionFormatConverter(cardEnroll.getCardEnrollSessionFormatsByCardId()).stringList(),
+                                new CardEnrollSessionTypeConverter(cardEnroll.getCardEnrollSessionTypesByCardId()).stringList()
+                        ));
+                    }
+                }));
         return studentsList;
     }
 

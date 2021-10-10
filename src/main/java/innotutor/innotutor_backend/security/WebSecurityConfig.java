@@ -10,14 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
@@ -44,19 +39,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
-        return new AuthenticationEntryPoint() {
-            @Override
-            public void commence(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse,
-                                 final AuthenticationException exception) throws IOException, ServletException {
-                final Map<String, Object> errorObject = new ConcurrentHashMap<>();
-                errorObject.put("message", "Access Denied");
-                errorObject.put("error", HttpStatus.FORBIDDEN);
-                errorObject.put("code", ERROR_CODE);
-                errorObject.put("timestamp", new Timestamp(new Date().getTime()));
-                httpServletResponse.setContentType("application/json;charset=UTF-8");
-                httpServletResponse.setStatus(ERROR_CODE);
-                httpServletResponse.getWriter().write(objectMapper.writeValueAsString(errorObject));
-            }
+        return (httpServletRequest, httpServletResponse, exception) -> {
+            final Map<String, Object> errorObject = new ConcurrentHashMap<>();
+            errorObject.put("message", "Access Denied");
+            errorObject.put("error", HttpStatus.FORBIDDEN);
+            errorObject.put("code", ERROR_CODE);
+            errorObject.put("timestamp", new Timestamp(new Date().getTime()));
+            httpServletResponse.setContentType("application/json;charset=UTF-8");
+            httpServletResponse.setStatus(ERROR_CODE);
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(errorObject));
         };
     }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.PUT})
 public class UserController {
 
-    private final UserService userService;
+    private final transient UserService userService;
 
     public UserController(final UserService userService) {
         this.userService = userService;
@@ -27,37 +27,49 @@ public class UserController {
 
     @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUserById(@PathVariable final Long userId, @AuthenticationPrincipal final CustomPrincipal user) {
-        if (userService.getUserId(user).equals(userId)) {
-            return this.getUserProfile(user);
+        ResponseEntity<UserDTO> response;
+        if (userService.isUserEqualsId(user, userId)) {
+            response = this.getUserProfile(user);
+        } else {
+            final UserDTO userDTO = userService.getUserById(userId);
+            response = userDTO == null
+                    ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                    : new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
-        final UserDTO userDTO = userService.getUserById(userId);
-        return userDTO == null
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return response;
     }
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<UserDTO> response;
         final String email = user.getEmail();
-        UserDTO userDTO = userService.getUserByEmail(email);
+        final UserDTO userDTO = userService.getUserByEmail(email);
         if (userDTO == null) {
-            userDTO = userService.addUserToDatabase(user) ? userService.getUserByEmail(email) : null;
-            return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+            if (userService.addUserToDatabase(user)) {
+                response = new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.CREATED);
+            } else {
+                response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            response = new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return response;
     }
 
     @PutMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> updateUserProfile(@RequestBody final UserDTO userDTO,
                                                      @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<UserDTO> response;
         if (userDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            userDTO.setUserId(userService.getUserId(user));
+            userDTO.setPicture(user.getPicture());
+            final UserDTO result = userService.updateUserProfile(userDTO);
+            response = result == null
+                    ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                    : new ResponseEntity<>(result, HttpStatus.OK);
         }
-        userDTO.setUserId(userService.getUserId(user));
-        userDTO.setPicture(user.getPicture());
-        final UserDTO result = userService.updateUserProfile(userDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.OK);
+        return response;
     }
 }

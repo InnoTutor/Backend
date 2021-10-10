@@ -10,9 +10,9 @@ import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.
 import java.util.Collection;
 
 public class CardDTOCreator {
-    private final Card card;
-    private final Long creatorId;
-    private final SubjectRepository subjectRepository;
+    private final transient Card card;
+    private final transient Long creatorId;
+    private final transient SubjectRepository subjectRepository;
 
     public CardDTOCreator(final Card card, final Long creatorId, final SubjectRepository subjectRepository) {
         this.card = card;

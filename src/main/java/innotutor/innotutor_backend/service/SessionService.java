@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SessionService {
+    private final static String PRIVATE_TYPE = "private";
     private final CardsListService cardsListService;
     private final UserService userService;
     private final SessionRepository sessionRepository;
@@ -67,14 +68,14 @@ public class SessionService {
         return subjects;
     }
 
-    public List<SubjectDTO> getAvailableServiceSubjects(final Long userId) {
+    public List<SubjectDTO> getAvailableServiceSubjects(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getServices(userId));
         }
         return null;
     }
 
-    public List<SubjectDTO> getAvailableRequestSubjects(final Long userId) {
+    public List<SubjectDTO> getAvailableRequestSubjects(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getRequests(userId));
         }
@@ -129,7 +130,7 @@ public class SessionService {
         final List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
                 card.getSubjectBySubjectId().getName(), sessionFormat.getName(), sessionType.getName());
         if (!students.isEmpty()) {
-            if ("private".equals(sessionType.getName()) && students.size() > 1) {
+            if (PRIVATE_TYPE.equals(sessionType.getName()) && students.size() > 1) {
                 return null;
             }
             final Session session = sessionRepository.save(
@@ -165,11 +166,11 @@ public class SessionService {
     private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
                                         final String sessionType) {
         final List<User> validStudents = new ArrayList<>();
-        final List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType);
         final List<User> students = new ArrayList<>();
         studentIDsList.forEach(studentId -> userRepository.findById(studentId).ifPresent(students::add));
         for (final User student : students) {
-            if (allTutorStudents.stream().anyMatch(studentDTO -> studentDTO.getUserId().equals(student.getUserId()))) {
+            if (this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType)
+                    .stream().anyMatch(studentDTO -> studentDTO.getUserId().equals(student.getUserId()))) {
                 validStudents.add(student);
             }
         }

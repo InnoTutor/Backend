@@ -25,20 +25,20 @@ import java.util.List;
 
 
 public class CardUpdater {
-    private final CardDTO cardDTO;
-    private final CardType type;
-    private final Card card;
-    private final List<SessionFormat> sessionFormats;
-    private final List<SessionType> sessionTypes;
-    private final CardRepository cardRepository;
-    private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
-    private final SessionFormatRepository sessionFormatRepository;
-    private final SessionTypeRepository sessionTypeRepository;
-    private final ServiceRepository serviceRepository;
-    private final RequestRepository requestRepository;
-    private final CardSessionFormatRepository cardSessionFormatRepository;
-    private final CardSessionTypeRepository cardSessionTypeRepository;
+    private final transient CardDTO cardDTO;
+    private final transient CardType type;
+    private final transient Card card;
+    private final transient List<SessionFormat> sessionFormats;
+    private final transient List<SessionType> sessionTypes;
+    private final transient CardRepository cardRepository;
+    private final transient UserRepository userRepository;
+    private final transient SubjectRepository subjectRepository;
+    private final transient SessionFormatRepository sessionFormatRepository;
+    private final transient SessionTypeRepository sessionTypeRepository;
+    private final transient ServiceRepository serviceRepository;
+    private final transient RequestRepository requestRepository;
+    private final transient CardSessionFormatRepository cardSessionFormatRepository;
+    private final transient CardSessionTypeRepository cardSessionTypeRepository;
 
     public CardUpdater(final CardDTO cardDTO,
                        final CardType type,

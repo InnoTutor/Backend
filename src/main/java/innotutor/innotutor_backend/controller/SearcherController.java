@@ -18,8 +18,8 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET})
 public class SearcherController {
 
-    private final SearcherService searcherService;
-    private final UserService userService;
+    private final transient SearcherService searcherService;
+    private final transient UserService userService;
 
     public SearcherController(final SearcherService searcherService, final UserService userService) {
         this.searcherService = searcherService;

@@ -36,7 +36,7 @@ public class InnotutorBackendApplication {
     @Bean
     public FirebaseApp provideFirebaseOptions() throws IOException {
         final JSONObject jsonObject = new JSONObject(gservicesConfig);
-        final InputStream inputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
+        final InputStream inputStream = new ByteArrayInputStream(jsonObject.toString().getBytes()); //NOPMD - suppressed LawOfDemeter - This is not our class implementation
         final FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(inputStream))
                 .build();

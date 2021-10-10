@@ -27,17 +27,17 @@ import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.
 import java.util.List;
 
 public class CardCreator {
-    private final CardDTO cardDTO;
-    private final CardType type;
-    private final User creator;
-    private final Subject subject;
-    private final List<SessionFormat> sessionFormats;
-    private final List<SessionType> sessionTypes;
-    private final CardRepository cardRepository;
-    private final ServiceRepository serviceRepository;
-    private final RequestRepository requestRepository;
-    private final CardSessionFormatRepository cardSessionFormatRepository;
-    private final CardSessionTypeRepository cardSessionTypeRepository;
+    private final transient CardDTO cardDTO;
+    private final transient CardType type;
+    private final transient User creator;
+    private final transient Subject subject;
+    private final transient List<SessionFormat> sessionFormats;
+    private final transient List<SessionType> sessionTypes;
+    private final transient CardRepository cardRepository;
+    private final transient ServiceRepository serviceRepository;
+    private final transient RequestRepository requestRepository;
+    private final transient CardSessionFormatRepository cardSessionFormatRepository;
+    private final transient CardSessionTypeRepository cardSessionTypeRepository;
 
     public CardCreator(final CardDTO cardDTO,
                        final CardType type,
@@ -101,10 +101,9 @@ public class CardCreator {
     }
 
     private boolean isUniquePair() throws IllegalAccessException {
-        final List<Card> cards = cardRepository.findBySubjectId(subject.getSubjectId());
         switch (type) {
             case SERVICE:
-                for (final Card card : cards) {
+                for (final Card card : cardRepository.findBySubjectId(subject.getSubjectId())) {
                     if (card.getServiceByCardId() != null && card.getServiceByCardId().getTutorId().equals(creator.getUserId())) {
                         return false;
                     }

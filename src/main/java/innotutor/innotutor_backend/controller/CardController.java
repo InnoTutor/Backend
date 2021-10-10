@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class CardController {
 
-    private final UserService userService;
-    private final CardService cardService;
-    private final CardEnrollService cardEnrollService;
+    private final transient UserService userService;
+    private final transient CardService cardService;
+    private final transient CardEnrollService cardEnrollService;
 
     public CardController(final UserService userService, final CardService cardService, final CardEnrollService cardEnrollService) {
         this.userService = userService;
@@ -41,13 +41,28 @@ public class CardController {
     @PostMapping(value = "/enroll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDTO> postTutorCardEnroll(@RequestBody final EnrollmentDTO enrollmentDTO,
                                                              @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<EnrollmentDTO> responseEntity;
         if (enrollmentDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            enrollmentDTO.setEnrollerId(userService.getUserId(user));
+            final EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
+            responseEntity = result == null
+                    ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                    : new ResponseEntity<>(result, HttpStatus.CREATED);
         }
-        enrollmentDTO.setEnrollerId(userService.getUserId(user));
-        final EnrollmentDTO result = cardEnrollService.postCardEnroll(enrollmentDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
+        return responseEntity;
+    }
+
+    public ResponseEntity<?> deleteCardById(final Long cardId, final CustomPrincipal user) {
+        ResponseEntity<?> response;
+        if (cardId == null) {
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            response = cardService.deleteCardById(userService.getUserId(user), cardId)
+                    ? new ResponseEntity<>(HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 }

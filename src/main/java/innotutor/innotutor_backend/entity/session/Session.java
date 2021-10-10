@@ -16,10 +16,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "session", schema = "public", catalog = "innotutor")
-// NOPMD - suppressed GodClass
-// NOPMD - suppressed TooManyFields
-// It's not a GodClass since it represents only entity from DB
-public class Session {
+public class Session { // NOPMD - suppressed GodClass
+    // NOPMD - suppressed TooManyFields
+    // It's not a GodClass since it represents only entity from DB
     private Long sessionId;
     private Long tutorId;
     private Long subjectId;

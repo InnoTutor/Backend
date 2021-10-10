@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/my-students", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 public class MyStudentsController {
-    private final StudentsService studentsService;
-    private final CardEnrollService cardEnrollService;
-    private final UserService userService;
+    private final transient StudentsService studentsService;
+    private final transient CardEnrollService cardEnrollService;
+    private final transient UserService userService;
 
     public MyStudentsController(final StudentsService studentsService, final CardEnrollService cardEnrollService, final UserService userService) {
         this.studentsService = studentsService;
@@ -35,21 +35,27 @@ public class MyStudentsController {
 
     @PutMapping(value = "accept/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> acceptStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<?> response;
         if (enrollmentId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            response = cardEnrollService.acceptStudent(userService.getUserId(user), enrollmentId)
+                    ? new ResponseEntity<>(HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return cardEnrollService.acceptStudent(userService.getUserId(user), enrollmentId)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return response;
     }
 
     @DeleteMapping(value = "remove/{enrollmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> removeStudent(@PathVariable final Long enrollmentId, @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<?> response;
         if (enrollmentId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            response = cardEnrollService.removeStudent(userService.getUserId(user), enrollmentId)
+                    ? new ResponseEntity<>(HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return cardEnrollService.removeStudent(userService.getUserId(user), enrollmentId)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return response;
     }
 }

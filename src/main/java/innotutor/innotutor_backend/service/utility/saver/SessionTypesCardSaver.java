@@ -19,11 +19,11 @@ public class SessionTypesCardSaver {
 
     public Card save() {
         final Collection<CardSessionType> cardSessionTypesByCardId = new ArrayList<>();
-        for (final SessionType type : sessionTypes) {
+        sessionTypes.forEach(type -> {
             final CardSessionType cardSessionType = new CardSessionType(card.getCardId(), type.getSessionTypeId(), card, type);
             cardSessionTypeRepository.save(cardSessionType);
             cardSessionTypesByCardId.add(cardSessionType);
-        }
+        });
         card.setCardSessionTypesByCardId(cardSessionTypesByCardId);
         return card;
     }

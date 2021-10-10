@@ -15,6 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "card", schema = "public", catalog = "innotutor")
 public class Card { //NOPMD - suppressed ShortClassName - It has the same database table name.
+    private final static String CARD_BY_CARD_ID = "cardByCardId";
     // So, we follow such convention
     private Long cardId;
     private Long subjectId;
@@ -142,7 +143,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardEnroll> getCardEnrollsByCardId() {
         return cardEnrollsByCardId;
     }
@@ -151,7 +152,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardEnrollsByCardId = cardEnrollsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardRating> getCardRatingsByCardId() {
         return cardRatingsByCardId;
     }
@@ -160,7 +161,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardRatingsByCardId = cardRatingsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardSessionFormat> getCardSessionFormatsByCardId() {
         return cardSessionFormatsByCardId;
     }
@@ -169,7 +170,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardSessionFormatsByCardId = cardSessionFormatsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardSessionType> getCardSessionTypesByCardId() {
         return cardSessionTypesByCardId;
     }
@@ -178,7 +179,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.cardSessionTypesByCardId = cardSessionTypesByCardId;
     }
 
-    @OneToOne(mappedBy = "cardByCardId")
+    @OneToOne(mappedBy = CARD_BY_CARD_ID)
     public Request getRequestByCardId() {
         return requestByCardId;
     }
@@ -187,7 +188,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.requestByCardId = requestByCardId;
     }
 
-    @OneToOne(mappedBy = "cardByCardId")
+    @OneToOne(mappedBy = CARD_BY_CARD_ID)
     public Service getServiceByCardId() {
         return serviceByCardId;
     }

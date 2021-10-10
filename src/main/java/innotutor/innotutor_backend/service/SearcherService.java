@@ -3,7 +3,6 @@ package innotutor.innotutor_backend.service;
 import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.dto.searcher.UserCard;
-import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.repository.card.CardRepository;
 import innotutor.innotutor_backend.service.utility.card.AverageCardRating;
@@ -71,7 +70,7 @@ public class SearcherService {
 
     private List<TutorCvDTO> getAllTutorCvDTOList() {
         final List<TutorCvDTO> tutors = new ArrayList<>();
-        for (final Card card : cardRepository.findByHidden(false)) {
+        cardRepository.findByHidden(false).forEach(card -> {
             if (card.getServiceByCardId() != null) {
                 final Collection<CardRating> ratings = card.getCardRatingsByCardId();
                 tutors.add(
@@ -87,13 +86,13 @@ public class SearcherService {
                         )
                 );
             }
-        }
+        });
         return tutors;
     }
 
     private List<StudentRequestDTO> getAllStudentRequestDTOList() {
         final List<StudentRequestDTO> students = new ArrayList<>();
-        for (final Card card : cardRepository.findByHidden(false)) {
+        cardRepository.findByHidden(false).forEach(card -> {
             if (card.getRequestByCardId() != null) {
                 students.add(
                         new StudentRequestDTO(
@@ -106,7 +105,7 @@ public class SearcherService {
                         )
                 );
             }
-        }
+        });
         return students;
     }
 

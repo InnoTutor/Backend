@@ -25,7 +25,8 @@ public class TokenFilter extends OncePerRequestFilter {
     private SecurityUtils securityUtils;
 
     @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+                                    final FilterChain filterChain)
             throws ServletException, IOException {
         final String idToken = securityUtils.getTokenFromRequest(request);
         FirebaseToken decodedToken = null; //NOPMD - suppressed DataflowAnomalyAnalysis

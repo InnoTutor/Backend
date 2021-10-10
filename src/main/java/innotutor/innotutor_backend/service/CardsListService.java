@@ -19,7 +19,7 @@ public class CardsListService {
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
 
-    public List<CardDTO> getServices(final Long userId) {
+    public List<CardDTO> getServices(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();
@@ -40,7 +40,7 @@ public class CardsListService {
                 : null;
     }
 
-    public List<CardDTO> getRequests(final Long userId) {
+    public List<CardDTO> getRequests(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();

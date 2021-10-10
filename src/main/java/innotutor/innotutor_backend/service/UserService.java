@@ -31,6 +31,10 @@ public class UserService {
         return userDTO.getUserId();
     }
 
+    public Boolean isUserEqualsId(final CustomPrincipal user, final Long userId) {
+        return this.getUserId(user).equals(userId);
+    }
+
     public boolean addUserToDatabase(final CustomPrincipal user) {
         if (user != null) {
             final String email = user.getEmail();
