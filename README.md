@@ -57,7 +57,7 @@ You can use this online service to convert JSON into a string with escape charac
 
 # Hosting and CI
 We use [Heroku](https://heroku.com/) to host the backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
-For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deployes a new version on the server.
+For continuous integration, we have to make a pull request into the `main` branch. Then Heroku will automatically deploy a new version on the server.
 
 To build the project on Heroku's server you need to provide **config vars**: `DATABASE_URL` and `GOOGLE_CREDENTIALS`. Also, add this buildpack `https://github.com/buyersight/heroku-google-application-credentials-buildpack.git`
 > Guide how to work with config vars: [link](https://devcenter.heroku.com/articles/config-vars)
@@ -68,9 +68,9 @@ To build the project on Heroku's server you need to provide **config vars**: `DA
 - Set up database and Google credentials (check instructions above [Database](#database) and [Google credentials](#google-credentials))
 - Open `InnotutorBackendApplication` java class and press `ctrl+R`
 > Guide how to run Spring project: [link](https://www.jetbrains.com/help/idea/your-first-spring-application.html)
-## Another way of install project but without IDE (note: you should have maven installed)
+## Another way of install project but without IDE (note: you should have Maven installed)
 1) Clone this repository to your machine using: `https://github.com/InnoTutor/Backend.git`
-2) You need to create a database and specify the path to it in the `application.properties`. Besides this, you need to specify your username,password and google credentials. <br><br> Note: Path to `application.properties`: [application.properties](/src/main/resources/application.properties)
+2) You need to create a database and specify the path to it in the `application.properties`. Besides this, you need to specify your username, password and google credentials. <br><br> Note: Path to `application.properties`: [application.properties](/src/main/resources/application.properties)
 ```
 spring.datasource.url=${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/innotutor}
 spring.datasource.username=${SPRING_DATASOURCE_USERNAME:postgres}
@@ -78,11 +78,11 @@ spring.datasource.password=${SPRING_DATASOURCE_PASSWORD:root}
 ...
 GOOGLE_CREDENTIALS=<Your Google Credentials>
 ```
-3) Using command line, navigate to the root folder of the project and run command:
+3) Using the command line, navigate to the root folder of the project and run the command:
 ```
 mvn clean install
 ``` 
-4) After a successful build, you need to run command:
+4) After a successful build, you need to run the command:
 ```
 java -jar .target/innotutor_backend-0.0.1-SNAPSHOT.jar
 
@@ -95,5 +95,5 @@ java -jar target/innotutor_backend-0.0.1-SNAPSHOT.jar
 * [The result of PMD static analyzer](https://github.com/InnoTutor/README/blob/main/StaticAnaylyzer/result.md). Do not be scared by such a huge number of violations. We fixed all the violations that we could fix. Other violations can not be fixed due to spring framework-specific code which requires to follow special name convention, so the framework could understand fields and create particular [Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition).
 
 # Want to contribute?
-You can contribute in this project. Just fork the repository from the `develop` branch, implement changes you want to propose and make a pull request.
+You can contribute to this project. Just fork the repository from the `develop` branch, implement changes you want to propose and make a pull request.
 Also, there are [issues](https://github.com/InnoTutor/Backend/issues), so feel free to submit a new one or participate in existing.
