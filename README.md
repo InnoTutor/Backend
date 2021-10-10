@@ -11,7 +11,7 @@
 - [API](#api)
 - [Database](#database)
 - [Google credentials](#credentials)
-- [Hosting](#hosting)
+- [Hosting & CI](#hosting)
 - [How to install locally](#installation)
 - [Code analysis](#code)
 - [Want to contribute?](#contribution)
@@ -47,10 +47,14 @@ If you want import our database, you can use restore.sql file with empty tables.
 
 # Google credentials
 To log in you need to provide your Google credentials created [here](https://firebase.google.com).
-Then open [application.properties](/src/main/resources/application.properties) file and past your JSON Google credentials file in `GOOGLE_CREDENTIALS` filed.
+Then open [application.properties](/src/main/resources/application.properties) file and innput your JSON Google credentials file as a single string in `GOOGLE_CREDENTIALS` filed.
+You can use this service to convert JSON into string with escape characters: [link](https://www.freeformatter.com/json-escape.html)
 
-# Hosting
+In case of any problems, refer to this [guide](https://medium.com/@renceabishek/how-to-add-google-api-credentials-key-on-heroku-spring-boot-16b03e2a2363)
 
+# Hosting & CI
+We use [Heroku](https://heroku.com/) to host backend. [Here](https://innotutor.herokuapp.com) is the deployed version of it.
+For the continious integration we have to make a pull request to the `main` branch. Then Heroku will automatically deploy new version on the server.
 
 # How to install locally
 
