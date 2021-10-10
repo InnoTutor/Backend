@@ -1,32 +1,10 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card.enrollment;
 
 import innotutor.innotutor_backend.entity.session.SessionFormat;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -38,8 +16,8 @@ public class CardEnrollSessionFormat {
     private CardEnroll cardEnrollByCardEnrollId;
     private SessionFormat sessionFormatBySessionFormatId;
 
-    public CardEnrollSessionFormat(Long cardEnrollId, Long sessionFormatId, CardEnroll cardEnrollByCardEnrollId,
-                                   SessionFormat sessionFormatBySessionFormatId) {
+    public CardEnrollSessionFormat(final Long cardEnrollId, final Long sessionFormatId, final CardEnroll cardEnrollByCardEnrollId,
+                                   final SessionFormat sessionFormatBySessionFormatId) {
         this.cardEnrollId = cardEnrollId;
         this.sessionFormatId = sessionFormatId;
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
@@ -52,7 +30,7 @@ public class CardEnrollSessionFormat {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -62,7 +40,7 @@ public class CardEnrollSessionFormat {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -73,28 +51,33 @@ public class CardEnrollSessionFormat {
         return cardEnrollSessionFormatId;
     }
 
-    public void setCardEnrollSessionFormatId(Long cardEnrollSessionFormatId) {
+    public void setCardEnrollSessionFormatId(final Long cardEnrollSessionFormatId) {
         this.cardEnrollSessionFormatId = cardEnrollSessionFormatId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CardEnrollSessionFormat that = (CardEnrollSessionFormat) o;
-
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
-        if (sessionFormatId != null ? !sessionFormatId.equals(that.sessionFormatId) : that.sessionFormatId != null)
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
-        return cardEnrollSessionFormatId != null ? cardEnrollSessionFormatId.equals(that.cardEnrollSessionFormatId) : that.cardEnrollSessionFormatId == null;
+        }
+        final CardEnrollSessionFormat that = (CardEnrollSessionFormat) object;
+        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
+            return false;
+        }
+        if (!Objects.equals(sessionFormatId, that.sessionFormatId)) {
+            return false;
+        }
+        return Objects.equals(cardEnrollSessionFormatId, that.cardEnrollSessionFormatId);
     }
 
     @Override
     public int hashCode() {
-        int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
-        result = 31 * result + (sessionFormatId != null ? sessionFormatId.hashCode() : 0);
-        result = 31 * result + (cardEnrollSessionFormatId != null ? cardEnrollSessionFormatId.hashCode() : 0);
+        int result = cardEnrollId == null ? 0 : cardEnrollId.hashCode();
+        result = 31 * result + (sessionFormatId == null ? 0 : sessionFormatId.hashCode());
+        result = 31 * result + (cardEnrollSessionFormatId == null ? 0 : cardEnrollSessionFormatId.hashCode());
         return result;
     }
 
@@ -104,7 +87,7 @@ public class CardEnrollSessionFormat {
         return cardEnrollByCardEnrollId;
     }
 
-    public void setCardEnrollByCardEnrollId(CardEnroll cardEnrollByCardEnrollId) {
+    public void setCardEnrollByCardEnrollId(final CardEnroll cardEnrollByCardEnrollId) {
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
     }
 
@@ -114,7 +97,7 @@ public class CardEnrollSessionFormat {
         return sessionFormatBySessionFormatId;
     }
 
-    public void setSessionFormatBySessionFormatId(SessionFormat sessionFormatBySessionFormatId) {
+    public void setSessionFormatBySessionFormatId(final SessionFormat sessionFormatBySessionFormatId) {
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
     }
 }

@@ -1,32 +1,10 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card;
 
 import innotutor.innotutor_backend.entity.session.SessionType;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -38,7 +16,7 @@ public class CardSessionType {
     private Card cardByCardId;
     private SessionType sessionTypeBySessionTypeId;
 
-    public CardSessionType(Long cardId, Long sessionTypeId, Card cardByCardId, SessionType sessionTypeBySessionTypeId) {
+    public CardSessionType(final Long cardId, final Long sessionTypeId, final Card cardByCardId, final SessionType sessionTypeBySessionTypeId) {
         this.cardId = cardId;
         this.sessionTypeId = sessionTypeId;
         this.cardByCardId = cardByCardId;
@@ -51,7 +29,7 @@ public class CardSessionType {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -61,7 +39,7 @@ public class CardSessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -72,28 +50,33 @@ public class CardSessionType {
         return cardSessionTypeId;
     }
 
-    public void setCardSessionTypeId(Long cardSessionTypeId) {
+    public void setCardSessionTypeId(final Long cardSessionTypeId) {
         this.cardSessionTypeId = cardSessionTypeId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CardSessionType that = (CardSessionType) o;
-
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
-        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
-        return cardSessionTypeId != null ? cardSessionTypeId.equals(that.cardSessionTypeId) : that.cardSessionTypeId == null;
+        }
+        final CardSessionType that = (CardSessionType) object;
+        if (!Objects.equals(cardId, that.cardId)) {
+            return false;
+        }
+        if (!Objects.equals(sessionTypeId, that.sessionTypeId)) {
+            return false;
+        }
+        return Objects.equals(cardSessionTypeId, that.cardSessionTypeId);
     }
 
     @Override
     public int hashCode() {
-        int result = cardId != null ? cardId.hashCode() : 0;
-        result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
-        result = 31 * result + (cardSessionTypeId != null ? cardSessionTypeId.hashCode() : 0);
+        int result = cardId == null ? 0 : cardId.hashCode();
+        result = 31 * result + (sessionTypeId == null ? 0 : sessionTypeId.hashCode());
+        result = 31 * result + (cardSessionTypeId == null ? 0 : cardSessionTypeId.hashCode());
         return result;
     }
 
@@ -103,7 +86,7 @@ public class CardSessionType {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -113,7 +96,7 @@ public class CardSessionType {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 }

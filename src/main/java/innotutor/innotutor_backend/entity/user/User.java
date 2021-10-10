@@ -1,41 +1,22 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.user;
 
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.session.Session;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "user", schema = "public", catalog = "innotutor")
-public class User {
+public class User { //NOPMD - suppressed ShortClassName - It has the same database table name.
+    // So, we follow such convention
     private Long userId;
     private String name;
     private String surname;
@@ -60,7 +41,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -71,7 +52,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -81,7 +62,7 @@ public class User {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(final String surname) {
         this.surname = surname;
     }
 
@@ -91,7 +72,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -102,7 +83,7 @@ public class User {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(final String picture) {
         this.picture = picture;
     }
 
@@ -112,7 +93,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -122,7 +103,7 @@ public class User {
         return contacts;
     }
 
-    public void setContacts(String contacts) {
+    public void setContacts(final String contacts) {
         this.contacts = contacts;
     }
 
@@ -132,7 +113,7 @@ public class User {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -143,7 +124,7 @@ public class User {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -154,39 +135,57 @@ public class User {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (contacts != null ? !contacts.equals(user.contacts) : user.contacts != null) return false;
-        if (description != null ? !description.equals(user.description) : user.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(user.creationDate) : user.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(user.lastUpdate) : user.lastUpdate == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final User user = (User) object;
+        if (!Objects.equals(userId, user.userId)) {
+            return false;
+        }
+        if (!Objects.equals(name, user.name)) {
+            return false;
+        }
+        if (!Objects.equals(surname, user.surname)) {
+            return false;
+        }
+        if (!Objects.equals(email, user.email)) {
+            return false;
+        }
+        if (!Objects.equals(password, user.password)) {
+            return false;
+        }
+        if (!Objects.equals(contacts, user.contacts)) {
+            return false;
+        }
+        if (!Objects.equals(description, user.description)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, user.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, user.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = userId == null ? 0 : userId.hashCode();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (surname == null ? 0 : surname.hashCode());
+        result = 31 * result + (email == null ? 0 : email.hashCode());
+        result = 31 * result + (password == null ? 0 : password.hashCode());
+        result = 31 * result + (contacts == null ? 0 : contacts.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -195,7 +194,7 @@ public class User {
         return cardEnrollsByUserId;
     }
 
-    public void setCardEnrollsByUserId(Collection<CardEnroll> cardEnrollsByUserId) {
+    public void setCardEnrollsByUserId(final Collection<CardEnroll> cardEnrollsByUserId) {
         this.cardEnrollsByUserId = cardEnrollsByUserId;
     }
 
@@ -204,7 +203,7 @@ public class User {
         return cardRatingsByUserId;
     }
 
-    public void setCardRatingsByUserId(Collection<CardRating> cardRatingsByUserId) {
+    public void setCardRatingsByUserId(final Collection<CardRating> cardRatingsByUserId) {
         this.cardRatingsByUserId = cardRatingsByUserId;
     }
 
@@ -213,7 +212,7 @@ public class User {
         return requestsByUserId;
     }
 
-    public void setRequestsByUserId(Collection<Request> requestsByUserId) {
+    public void setRequestsByUserId(final Collection<Request> requestsByUserId) {
         this.requestsByUserId = requestsByUserId;
     }
 
@@ -222,7 +221,7 @@ public class User {
         return servicesByUserId;
     }
 
-    public void setServicesByUserId(Collection<Service> servicesByUserId) {
+    public void setServicesByUserId(final Collection<Service> servicesByUserId) {
         this.servicesByUserId = servicesByUserId;
     }
 
@@ -231,7 +230,7 @@ public class User {
         return sessionsByUserId;
     }
 
-    public void setSessionsByUserId(Collection<Session> sessionsByUserId) {
+    public void setSessionsByUserId(final Collection<Session> sessionsByUserId) {
         this.sessionsByUserId = sessionsByUserId;
     }
 
@@ -240,7 +239,7 @@ public class User {
         return sessionStudentsByUserId;
     }
 
-    public void setSessionStudentsByUserId(Collection<SessionStudent> sessionStudentsByUserId) {
+    public void setSessionStudentsByUserId(final Collection<SessionStudent> sessionStudentsByUserId) {
         this.sessionStudentsByUserId = sessionStudentsByUserId;
     }
 }

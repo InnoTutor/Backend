@@ -1,32 +1,10 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card.enrollment;
 
 import innotutor.innotutor_backend.entity.session.SessionType;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -38,8 +16,8 @@ public class CardEnrollSessionType {
     private CardEnroll cardEnrollByCardEnrollId;
     private SessionType sessionTypeBySessionTypeId;
 
-    public CardEnrollSessionType(Long cardEnrollId, Long sessionTypeId, CardEnroll cardEnrollByCardEnrollId,
-                                 SessionType sessionTypeBySessionTypeId) {
+    public CardEnrollSessionType(final Long cardEnrollId, final Long sessionTypeId, final CardEnroll cardEnrollByCardEnrollId,
+                                 final SessionType sessionTypeBySessionTypeId) {
         this.cardEnrollId = cardEnrollId;
         this.sessionTypeId = sessionTypeId;
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
@@ -52,7 +30,7 @@ public class CardEnrollSessionType {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -62,7 +40,7 @@ public class CardEnrollSessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -73,28 +51,33 @@ public class CardEnrollSessionType {
         return cardEnrollSessionTypeId;
     }
 
-    public void setCardEnrollSessionTypeId(Long cardEnrollSessionTypeId) {
+    public void setCardEnrollSessionTypeId(final Long cardEnrollSessionTypeId) {
         this.cardEnrollSessionTypeId = cardEnrollSessionTypeId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CardEnrollSessionType that = (CardEnrollSessionType) o;
-
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
-        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
-        return cardEnrollSessionTypeId != null ? cardEnrollSessionTypeId.equals(that.cardEnrollSessionTypeId) : that.cardEnrollSessionTypeId == null;
+        }
+        final CardEnrollSessionType that = (CardEnrollSessionType) object;
+        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
+            return false;
+        }
+        if (!Objects.equals(sessionTypeId, that.sessionTypeId)) {
+            return false;
+        }
+        return Objects.equals(cardEnrollSessionTypeId, that.cardEnrollSessionTypeId);
     }
 
     @Override
     public int hashCode() {
-        int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
-        result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
-        result = 31 * result + (cardEnrollSessionTypeId != null ? cardEnrollSessionTypeId.hashCode() : 0);
+        int result = cardEnrollId == null ? 0 : cardEnrollId.hashCode();
+        result = 31 * result + (sessionTypeId == null ? 0 : sessionTypeId.hashCode());
+        result = 31 * result + (cardEnrollSessionTypeId == null ? 0 : cardEnrollSessionTypeId.hashCode());
         return result;
     }
 
@@ -104,7 +87,7 @@ public class CardEnrollSessionType {
         return cardEnrollByCardEnrollId;
     }
 
-    public void setCardEnrollByCardEnrollId(CardEnroll cardEnrollByCardEnrollId) {
+    public void setCardEnrollByCardEnrollId(final CardEnroll cardEnrollByCardEnrollId) {
         this.cardEnrollByCardEnrollId = cardEnrollByCardEnrollId;
     }
 
@@ -114,7 +97,7 @@ public class CardEnrollSessionType {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 }

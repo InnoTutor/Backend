@@ -1,29 +1,6 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.service.utility.cardmanager;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
 import innotutor.innotutor_backend.entity.session.SessionType;
@@ -48,22 +25,32 @@ import java.util.List;
 
 
 public class CardUpdater {
-    private final CardDTO cardDTO;
-    private final CardType type;
-    private final Card card;
-    private final List<SessionFormat> sessionFormats;
-    private final List<SessionType> sessionTypes;
-    private final CardRepository cardRepository;
-    private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
-    private final SessionFormatRepository sessionFormatRepository;
-    private final SessionTypeRepository sessionTypeRepository;
-    private final ServiceRepository serviceRepository;
-    private final RequestRepository requestRepository;
-    private final CardSessionFormatRepository cardSessionFormatRepository;
-    private final CardSessionTypeRepository cardSessionTypeRepository;
+    private final transient CardDTO cardDTO;
+    private final transient CardType type;
+    private final transient Card card;
+    private final transient List<SessionFormat> sessionFormats;
+    private final transient List<SessionType> sessionTypes;
+    private final transient CardRepository cardRepository;
+    private final transient UserRepository userRepository;
+    private final transient SubjectRepository subjectRepository;
+    private final transient SessionFormatRepository sessionFormatRepository;
+    private final transient SessionTypeRepository sessionTypeRepository;
+    private final transient ServiceRepository serviceRepository;
+    private final transient RequestRepository requestRepository;
+    private final transient CardSessionFormatRepository cardSessionFormatRepository;
+    private final transient CardSessionTypeRepository cardSessionTypeRepository;
 
-    public CardUpdater(CardDTO cardDTO, CardType type, CardRepository cardRepository, UserRepository userRepository, SubjectRepository subjectRepository, SessionFormatRepository sessionFormatRepository, SessionTypeRepository sessionTypeRepository, ServiceRepository serviceRepository, RequestRepository requestRepository, CardSessionFormatRepository cardSessionFormatRepository, CardSessionTypeRepository cardSessionTypeRepository) {
+    public CardUpdater(final CardDTO cardDTO,
+                       final CardType type,
+                       final CardRepository cardRepository,
+                       final UserRepository userRepository,
+                       final SubjectRepository subjectRepository,
+                       final SessionFormatRepository sessionFormatRepository,
+                       final SessionTypeRepository sessionTypeRepository,
+                       final ServiceRepository serviceRepository,
+                       final RequestRepository requestRepository,
+                       final CardSessionFormatRepository cardSessionFormatRepository,
+                       final CardSessionTypeRepository cardSessionTypeRepository) {
         this.cardDTO = cardDTO;
         this.type = type;
         this.cardRepository = cardRepository;
@@ -116,12 +103,12 @@ public class CardUpdater {
         return new CardDTOCreator(savedCard, cardDTO.getCreatorId(), subjectRepository).create();
     }
 
-    private Card updateSessionFormats(Card card) {
+    private Card updateSessionFormats(final Card card) {
         cardSessionFormatRepository.deleteAll(card.getCardSessionFormatsByCardId());
         return new SessionFormatsCardSaver(card, sessionFormats, cardSessionFormatRepository).save();
     }
 
-    private Card updateSessionTypes(Card card) {
+    private Card updateSessionTypes(final Card card) {
         cardSessionTypeRepository.deleteAll(card.getCardSessionTypesByCardId());
         return new SessionTypesCardSaver(card, sessionTypes, cardSessionTypeRepository).save();
     }

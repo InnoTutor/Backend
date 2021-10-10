@@ -1,26 +1,3 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card.enrollment;
 
 import innotutor.innotutor_backend.entity.card.Card;
@@ -32,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -49,8 +27,8 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(Long cardId, Long userId, Long statusId, Card cardByCardId, User userByUserId,
-                      EnrollmentStatus enrollmentStatusByStatusId) {
+    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final Card cardByCardId, final User userByUserId,
+                      final EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;
         this.statusId = statusId;
@@ -66,7 +44,7 @@ public class CardEnroll {
         return cardEnrollId;
     }
 
-    public void setCardEnrollId(Long cardEnrollId) {
+    public void setCardEnrollId(final Long cardEnrollId) {
         this.cardEnrollId = cardEnrollId;
     }
 
@@ -76,7 +54,7 @@ public class CardEnroll {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -86,7 +64,7 @@ public class CardEnroll {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -96,7 +74,7 @@ public class CardEnroll {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
+    public void setStatusId(final Long statusId) {
         this.statusId = statusId;
     }
 
@@ -107,7 +85,7 @@ public class CardEnroll {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -118,33 +96,45 @@ public class CardEnroll {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CardEnroll that = (CardEnroll) o;
-
-        if (cardEnrollId != null ? !cardEnrollId.equals(that.cardEnrollId) : that.cardEnrollId != null) return false;
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final CardEnroll that = (CardEnroll) object;
+        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
+            return false;
+        }
+        if (!Objects.equals(cardId, that.cardId)) {
+            return false;
+        }
+        if (!Objects.equals(userId, that.userId)) {
+            return false;
+        }
+        if (!Objects.equals(statusId, that.statusId)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, that.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = cardEnrollId != null ? cardEnrollId.hashCode() : 0;
-        result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (statusId != null ? statusId.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = cardEnrollId == null ? 0 : cardEnrollId.hashCode();
+        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        result = 31 * result + (userId == null ? 0 : userId.hashCode());
+        result = 31 * result + (statusId == null ? 0 : statusId.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -154,7 +144,7 @@ public class CardEnroll {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -164,7 +154,7 @@ public class CardEnroll {
         return userByUserId;
     }
 
-    public void setUserByUserId(User userByUserId) {
+    public void setUserByUserId(final User userByUserId) {
         this.userByUserId = userByUserId;
     }
 
@@ -174,7 +164,7 @@ public class CardEnroll {
         return enrollmentStatusByStatusId;
     }
 
-    public void setEnrollmentStatusByStatusId(EnrollmentStatus enrollmentStatusByStatusId) {
+    public void setEnrollmentStatusByStatusId(final EnrollmentStatus enrollmentStatusByStatusId) {
         this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
     }
 
@@ -183,7 +173,7 @@ public class CardEnroll {
         return cardEnrollSessionFormatsByCardId;
     }
 
-    public void setCardEnrollSessionFormatsByCardId(Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
+    public void setCardEnrollSessionFormatsByCardId(final Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId) {
         this.cardEnrollSessionFormatsByCardId = cardEnrollSessionFormatsByCardId;
     }
 
@@ -192,7 +182,7 @@ public class CardEnroll {
         return cardEnrollSessionTypesByCardId;
     }
 
-    public void setCardEnrollSessionTypesByCardId(Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
+    public void setCardEnrollSessionTypesByCardId(final Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId) {
         this.cardEnrollSessionTypesByCardId = cardEnrollSessionTypesByCardId;
     }
 }

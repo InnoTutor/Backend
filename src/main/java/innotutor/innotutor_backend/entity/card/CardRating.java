@@ -1,35 +1,15 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card;
 
 import innotutor.innotutor_backend.entity.user.User;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "card_rating", schema = "public", catalog = "innotutor")
 public class CardRating {
@@ -49,7 +29,7 @@ public class CardRating {
         return cardRatingId;
     }
 
-    public void setCardRatingId(Long cardRatingId) {
+    public void setCardRatingId(final Long cardRatingId) {
         this.cardRatingId = cardRatingId;
     }
 
@@ -59,7 +39,7 @@ public class CardRating {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -69,7 +49,7 @@ public class CardRating {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -79,7 +59,7 @@ public class CardRating {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(final Integer mark) {
         this.mark = mark;
     }
 
@@ -90,7 +70,7 @@ public class CardRating {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -101,33 +81,45 @@ public class CardRating {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CardRating that = (CardRating) o;
-
-        if (cardRatingId != null ? !cardRatingId.equals(that.cardRatingId) : that.cardRatingId != null) return false;
-        if (cardId != null ? !cardId.equals(that.cardId) : that.cardId != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-        if (mark != null ? !mark.equals(that.mark) : that.mark != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final CardRating that = (CardRating) object;
+        if (!Objects.equals(cardRatingId, that.cardRatingId)) {
+            return false;
+        }
+        if (!Objects.equals(cardId, that.cardId)) {
+            return false;
+        }
+        if (!Objects.equals(userId, that.userId)) {
+            return false;
+        }
+        if (!Objects.equals(mark, that.mark)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, that.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = cardRatingId != null ? cardRatingId.hashCode() : 0;
-        result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (mark != null ? mark.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = cardRatingId == null ? 0 : cardRatingId.hashCode();
+        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        result = 31 * result + (userId == null ? 0 : userId.hashCode());
+        result = 31 * result + (mark == null ? 0 : mark.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -137,7 +129,7 @@ public class CardRating {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 
@@ -147,7 +139,7 @@ public class CardRating {
         return userByUserId;
     }
 
-    public void setUserByUserId(User userByUserId) {
+    public void setUserByUserId(final User userByUserId) {
         this.userByUserId = userByUserId;
     }
 }

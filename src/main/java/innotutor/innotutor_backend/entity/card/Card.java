@@ -1,26 +1,3 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card;
 
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
@@ -32,11 +9,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
 @Table(name = "card", schema = "public", catalog = "innotutor")
-public class Card {
+public class Card { //NOPMD - suppressed ShortClassName - It has the same database table name.
+    private final static String CARD_BY_CARD_ID = "cardByCardId";
+    // So, we follow such convention
     private Long cardId;
     private Long subjectId;
     private String description;
@@ -51,7 +31,7 @@ public class Card {
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
 
-    public Card(Long subjectId, String description, Boolean hidden, Subject subjectBySubjectId) {
+    public Card(final Long subjectId, final String description, final Boolean hidden, final Subject subjectBySubjectId) {
         this.subjectId = subjectId;
         this.description = description;
         this.hidden = hidden;
@@ -65,7 +45,7 @@ public class Card {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -75,7 +55,7 @@ public class Card {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(final Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -85,7 +65,7 @@ public class Card {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -95,7 +75,7 @@ public class Card {
         return hidden;
     }
 
-    public void setHidden(Boolean hidden) {
+    public void setHidden(final Boolean hidden) {
         this.hidden = hidden;
     }
 
@@ -105,7 +85,7 @@ public class Card {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -115,31 +95,41 @@ public class Card {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Card card = (Card) o;
-
-        if (cardId != null ? !cardId.equals(card.cardId) : card.cardId != null) return false;
-        if (subjectId != null ? !subjectId.equals(card.subjectId) : card.subjectId != null) return false;
-        if (description != null ? !description.equals(card.description) : card.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(card.creationDate) : card.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(card.lastUpdate) : card.lastUpdate == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final Card card = (Card) object;
+        if (!Objects.equals(cardId, card.cardId)) {
+            return false;
+        }
+        if (!Objects.equals(subjectId, card.subjectId)) {
+            return false;
+        }
+        if (!Objects.equals(description, card.description)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, card.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, card.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = cardId != null ? cardId.hashCode() : 0;
-        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = cardId == null ? 0 : cardId.hashCode();
+        result = 31 * result + (subjectId == null ? 0 : subjectId.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -149,61 +139,61 @@ public class Card {
         return subjectBySubjectId;
     }
 
-    public void setSubjectBySubjectId(Subject subjectBySubjectId) {
+    public void setSubjectBySubjectId(final Subject subjectBySubjectId) {
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardEnroll> getCardEnrollsByCardId() {
         return cardEnrollsByCardId;
     }
 
-    public void setCardEnrollsByCardId(Collection<CardEnroll> cardEnrollsByCardId) {
+    public void setCardEnrollsByCardId(final Collection<CardEnroll> cardEnrollsByCardId) {
         this.cardEnrollsByCardId = cardEnrollsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardRating> getCardRatingsByCardId() {
         return cardRatingsByCardId;
     }
 
-    public void setCardRatingsByCardId(Collection<CardRating> cardRatingsByCardId) {
+    public void setCardRatingsByCardId(final Collection<CardRating> cardRatingsByCardId) {
         this.cardRatingsByCardId = cardRatingsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardSessionFormat> getCardSessionFormatsByCardId() {
         return cardSessionFormatsByCardId;
     }
 
-    public void setCardSessionFormatsByCardId(Collection<CardSessionFormat> cardSessionFormatsByCardId) {
+    public void setCardSessionFormatsByCardId(final Collection<CardSessionFormat> cardSessionFormatsByCardId) {
         this.cardSessionFormatsByCardId = cardSessionFormatsByCardId;
     }
 
-    @OneToMany(mappedBy = "cardByCardId")
+    @OneToMany(mappedBy = CARD_BY_CARD_ID)
     public Collection<CardSessionType> getCardSessionTypesByCardId() {
         return cardSessionTypesByCardId;
     }
 
-    public void setCardSessionTypesByCardId(Collection<CardSessionType> cardSessionTypesByCardId) {
+    public void setCardSessionTypesByCardId(final Collection<CardSessionType> cardSessionTypesByCardId) {
         this.cardSessionTypesByCardId = cardSessionTypesByCardId;
     }
 
-    @OneToOne(mappedBy = "cardByCardId")
+    @OneToOne(mappedBy = CARD_BY_CARD_ID)
     public Request getRequestByCardId() {
         return requestByCardId;
     }
 
-    public void setRequestByCardId(Request requestByCardId) {
+    public void setRequestByCardId(final Request requestByCardId) {
         this.requestByCardId = requestByCardId;
     }
 
-    @OneToOne(mappedBy = "cardByCardId")
+    @OneToOne(mappedBy = CARD_BY_CARD_ID)
     public Service getServiceByCardId() {
         return serviceByCardId;
     }
 
-    public void setServiceByCardId(Service serviceByCardId) {
+    public void setServiceByCardId(final Service serviceByCardId) {
         this.serviceByCardId = serviceByCardId;
     }
 }

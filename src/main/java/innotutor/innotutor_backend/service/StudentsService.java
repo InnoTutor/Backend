@@ -1,30 +1,7 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
-import innotutor.innotutor_backend.DTO.enrollment.RequestedStudentsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.user.Request;
@@ -50,44 +27,42 @@ public class StudentsService {
     private final RequestRepository requestRepository;
     private final EnrollmentStatusRepository enrollmentStatusRepository;
 
-    public RequestedStudentsListDTO getUserStudentsList(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public RequestedStudentsListDTO getUserStudentsList(final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Long requestedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("requested").getStatusId();
-            Long acceptedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted").getStatusId();
-            List<EnrollmentDTO> acceptedStudentsList = this.getStudentsListByStatusId(user, acceptedStatusId);
+            final User user = userOptional.get();
+            final Long requestedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("requested").getStatusId();
+            final Long acceptedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted").getStatusId();
+            final List<EnrollmentDTO> acceptedStudentsList = this.getStudentsListByStatusId(user, acceptedStatusId);
             acceptedStudentsList.addAll(this.getStudentsToWhomRequested(user, acceptedStatusId));
-            List<EnrollmentDTO> newStudentsList = this.getStudentsListByStatusId(user, requestedStatusId);
+            final List<EnrollmentDTO> newStudentsList = this.getStudentsListByStatusId(user, requestedStatusId);
             return new RequestedStudentsListDTO(newStudentsList, acceptedStudentsList);
         }
         return null;
     }
 
-    private List<EnrollmentDTO> getStudentsListByStatusId(User user, Long statusId) {
-        List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (innotutor.innotutor_backend.entity.user.Service service : user.getServicesByUserId()) {
-            Card card = service.getCardByCardId();
-            for (CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
-                if (cardEnroll.getStatusId().equals(statusId)) {
-                    studentsList.add(new EnrollmentDTO(
-                            cardEnroll.getCardEnrollId(),
-                            cardEnroll.getUserId(),
-                            cardEnroll.getCardId(),
-                            new CardEnrollSessionFormatConverter(cardEnroll.getCardEnrollSessionFormatsByCardId()).stringList(),
-                            new CardEnrollSessionTypeConverter(cardEnroll.getCardEnrollSessionTypesByCardId()).stringList()
-                    ));
-                }
-            }
-        }
+    private List<EnrollmentDTO> getStudentsListByStatusId(final User user, final Long statusId) {
+        final List<EnrollmentDTO> studentsList = new ArrayList<>();
+        user.getServicesByUserId().forEach(service -> service.getCardByCardId().getCardEnrollsByCardId()
+                .forEach(cardEnroll -> {
+                    if (cardEnroll.getStatusId().equals(statusId)) {
+                        studentsList.add(new EnrollmentDTO(
+                                cardEnroll.getCardEnrollId(),
+                                cardEnroll.getUserId(),
+                                cardEnroll.getCardId(),
+                                new CardEnrollSessionFormatConverter(cardEnroll.getCardEnrollSessionFormatsByCardId()).stringList(),
+                                new CardEnrollSessionTypeConverter(cardEnroll.getCardEnrollSessionTypesByCardId()).stringList()
+                        ));
+                    }
+                }));
         return studentsList;
     }
 
-    private List<EnrollmentDTO> getStudentsToWhomRequested(User tutor, Long acceptedStatusId) {
-        List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (Request request : requestRepository.findAll()) {
-            Card card = request.getCardByCardId();
-            for (CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
+    private List<EnrollmentDTO> getStudentsToWhomRequested(final User tutor, final Long acceptedStatusId) {
+        final List<EnrollmentDTO> studentsList = new ArrayList<>();
+        for (final Request request : requestRepository.findAll()) {
+            final Card card = request.getCardByCardId();
+            for (final CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
                 if (cardEnroll.getUserId().equals(tutor.getUserId()) && cardEnroll.getStatusId().equals(acceptedStatusId)) {
                     studentsList.add(new EnrollmentDTO(
                             cardEnroll.getCardEnrollId(),

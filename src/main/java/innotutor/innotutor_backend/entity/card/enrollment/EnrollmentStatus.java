@@ -1,35 +1,15 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.card.enrollment;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "enrollment_status", schema = "public", catalog = "innotutor")
 public class EnrollmentStatus {
@@ -46,7 +26,7 @@ public class EnrollmentStatus {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
+    public void setStatusId(final Long statusId) {
         this.statusId = statusId;
     }
 
@@ -56,7 +36,7 @@ public class EnrollmentStatus {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 
@@ -67,7 +47,7 @@ public class EnrollmentStatus {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -78,29 +58,37 @@ public class EnrollmentStatus {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EnrollmentStatus that = (EnrollmentStatus) o;
-
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final EnrollmentStatus that = (EnrollmentStatus) object;
+        if (!Objects.equals(statusId, that.statusId)) {
+            return false;
+        }
+        if (!Objects.equals(status, that.status)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, that.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = statusId != null ? statusId.hashCode() : 0;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = statusId == null ? 0 : statusId.hashCode();
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -109,7 +97,7 @@ public class EnrollmentStatus {
         return cardEnrollsByStatusId;
     }
 
-    public void setCardEnrollsByStatusId(Collection<CardEnroll> cardEnrollsByStatusId) {
+    public void setCardEnrollsByStatusId(final Collection<CardEnroll> cardEnrollsByStatusId) {
         this.cardEnrollsByStatusId = cardEnrollsByStatusId;
     }
 }

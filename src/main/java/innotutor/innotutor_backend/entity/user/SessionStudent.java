@@ -1,32 +1,10 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.user;
 
 import innotutor.innotutor_backend.entity.session.Session;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -38,7 +16,7 @@ public class SessionStudent {
     private Session sessionBySessionId;
     private User userByStudentId;
 
-    public SessionStudent(Long sessionId, Long studentId, Session sessionBySessionId, User userByStudentId) {
+    public SessionStudent(final Long sessionId, final Long studentId, final Session sessionBySessionId, final User userByStudentId) {
         this.sessionId = sessionId;
         this.studentId = studentId;
         this.sessionBySessionId = sessionBySessionId;
@@ -51,7 +29,7 @@ public class SessionStudent {
         return sessionId;
     }
 
-    public void setSessionId(Long sessionId) {
+    public void setSessionId(final Long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -61,7 +39,7 @@ public class SessionStudent {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(final Long studentId) {
         this.studentId = studentId;
     }
 
@@ -72,27 +50,33 @@ public class SessionStudent {
         return sessionStudentId;
     }
 
-    public void setSessionStudentId(Long sessionStudentId) {
+    public void setSessionStudentId(final Long sessionStudentId) {
         this.sessionStudentId = sessionStudentId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SessionStudent that = (SessionStudent) o;
-
-        if (sessionId != null ? !sessionId.equals(that.sessionId) : that.sessionId != null) return false;
-        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
-        return sessionStudentId != null ? sessionStudentId.equals(that.sessionStudentId) : that.sessionStudentId == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final SessionStudent that = (SessionStudent) object;
+        if (!Objects.equals(sessionId, that.sessionId)) {
+            return false;
+        }
+        if (!Objects.equals(studentId, that.studentId)) {
+            return false;
+        }
+        return Objects.equals(sessionStudentId, that.sessionStudentId);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionId != null ? sessionId.hashCode() : 0;
-        result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
-        result = 31 * result + (sessionStudentId != null ? sessionStudentId.hashCode() : 0);
+        int result = sessionId == null ? 0 : sessionId.hashCode();
+        result = 31 * result + (studentId == null ? 0 : studentId.hashCode());
+        result = 31 * result + (sessionStudentId == null ? 0 : sessionStudentId.hashCode());
         return result;
     }
 
@@ -102,7 +86,7 @@ public class SessionStudent {
         return sessionBySessionId;
     }
 
-    public void setSessionBySessionId(Session sessionBySessionId) {
+    public void setSessionBySessionId(final Session sessionBySessionId) {
         this.sessionBySessionId = sessionBySessionId;
     }
 
@@ -112,7 +96,7 @@ public class SessionStudent {
         return userByStudentId;
     }
 
-    public void setUserByStudentId(User userByStudentId) {
+    public void setUserByStudentId(final User userByStudentId) {
         this.userByStudentId = userByStudentId;
     }
 }

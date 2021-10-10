@@ -1,37 +1,17 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.card.CardSessionType;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnrollSessionType;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "session_type", schema = "public", catalog = "innotutor")
 public class SessionType {
@@ -50,7 +30,7 @@ public class SessionType {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -60,7 +40,7 @@ public class SessionType {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -71,7 +51,7 @@ public class SessionType {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -82,30 +62,37 @@ public class SessionType {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SessionType that = (SessionType) o;
-
-        if (sessionTypeId != null ? !sessionTypeId.equals(that.sessionTypeId) : that.sessionTypeId != null)
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
-        return lastUpdate != null ? lastUpdate.equals(that.lastUpdate) : that.lastUpdate == null;
+        }
+        final SessionType that = (SessionType) object;
+        if (!Objects.equals(sessionTypeId, that.sessionTypeId)) {
+            return false;
+        }
+        if (!Objects.equals(name, that.name)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, that.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionTypeId != null ? sessionTypeId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = sessionTypeId == null ? 0 : sessionTypeId.hashCode();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -114,7 +101,7 @@ public class SessionType {
         return cardEnrollSessionTypesBySessionTypeId;
     }
 
-    public void setCardEnrollSessionTypesBySessionTypeId(Collection<CardEnrollSessionType> cardEnrollSessionTypesBySessionTypeId) {
+    public void setCardEnrollSessionTypesBySessionTypeId(final Collection<CardEnrollSessionType> cardEnrollSessionTypesBySessionTypeId) {
         this.cardEnrollSessionTypesBySessionTypeId = cardEnrollSessionTypesBySessionTypeId;
     }
 
@@ -123,7 +110,7 @@ public class SessionType {
         return cardSessionTypesBySessionTypeId;
     }
 
-    public void setCardSessionTypesBySessionTypeId(Collection<CardSessionType> cardSessionTypesBySessionTypeId) {
+    public void setCardSessionTypesBySessionTypeId(final Collection<CardSessionType> cardSessionTypesBySessionTypeId) {
         this.cardSessionTypesBySessionTypeId = cardSessionTypesBySessionTypeId;
     }
 
@@ -132,7 +119,7 @@ public class SessionType {
         return sessionsBySessionTypeId;
     }
 
-    public void setSessionsBySessionTypeId(Collection<Session> sessionsBySessionTypeId) {
+    public void setSessionsBySessionTypeId(final Collection<Session> sessionsBySessionTypeId) {
         this.sessionsBySessionTypeId = sessionsBySessionTypeId;
     }
 }

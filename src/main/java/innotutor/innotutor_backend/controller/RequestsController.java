@@ -1,30 +1,7 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.DTO.card.CardDTO;
-import innotutor.innotutor_backend.DTO.card.SubjectDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.SubjectDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardService;
 import innotutor.innotutor_backend.service.CardsListService;
@@ -44,13 +21,16 @@ import java.util.List;
         RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class RequestsController {
 
-    private final CardService cardService;
-    private final CardsListService cardsListService;
-    private final UserService userService;
-    private final SessionService sessionService;
+    private final transient CardController cardController;
+    private final transient CardService cardService;
+    private final transient CardsListService cardsListService;
+    private final transient UserService userService;
+    private final transient SessionService sessionService;
 
-    public RequestsController(CardService cardService, CardsListService cardsListService,
-                              UserService userService, SessionService sessionService) {
+    public RequestsController(final CardController cardController, final CardService cardService,
+                              final CardsListService cardsListService, final UserService userService,
+                              final SessionService sessionService) {
+        this.cardController = cardController;
         this.cardService = cardService;
         this.cardsListService = cardsListService;
         this.userService = userService;
@@ -58,75 +38,80 @@ public class RequestsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getRequests(@AuthenticationPrincipal CustomPrincipal user) {
-        List<CardDTO> requests = cardsListService.getRequests(userService.getUserId(user));
+    public ResponseEntity<List<CardDTO>> getRequests(@AuthenticationPrincipal final CustomPrincipal user) {
+        final List<CardDTO> requests = cardsListService.getRequests(userService.getUserId(user));
         return requests == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/subjects", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SubjectDTO>> getAvailableRequestSubjects(@AuthenticationPrincipal CustomPrincipal user) {
-        List<SubjectDTO> result = sessionService.getAvailableRequestSubjects(userService.getUserId(user));
+    public ResponseEntity<List<SubjectDTO>> getAvailableRequestSubjects(@AuthenticationPrincipal final CustomPrincipal user) {
+        final List<SubjectDTO> result = sessionService.getAvailableRequestSubjects(userService.getUserId(user));
         return result == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CardDTO>> getUserRequestsById(@PathVariable Long id,
-                                                             @AuthenticationPrincipal CustomPrincipal user) {
-        if (userService.getUserId(user).equals(id)) {
-            return this.getRequests(user);
+    @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CardDTO>> getUserRequestsById(@PathVariable final Long userId,
+                                                             @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<List<CardDTO>> response;
+        if (userService.isUserEqualsId(user, userId)) {
+            response = this.getRequests(user);
+        } else {
+            final List<CardDTO> result = cardsListService.getUserRequests(userId);
+            response = result == null
+                    ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                    : new ResponseEntity<>(result, HttpStatus.OK);
         }
-        List<CardDTO> result = cardsListService.getUserRequests(id);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(result, HttpStatus.OK);
+        return response;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> postRequestCard(@RequestBody CardDTO cardDTO,
-                                                   @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> postRequestCard(@RequestBody final CardDTO cardDTO,
+                                                   @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<CardDTO> response;
         if (cardDTO == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            cardDTO.setCreatorId(userService.getUserId(user));
+            final CardDTO result = cardService.postRequestCard(cardDTO);
+            response = result == null
+                    ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                    : new ResponseEntity<>(result, HttpStatus.CREATED);
         }
-        cardDTO.setCreatorId(userService.getUserId(user));
-        CardDTO result = cardService.postRequestCard(cardDTO);
-        return result == null
-                ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
+        return response;
     }
 
     @PutMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> putRequestCard(@PathVariable Long cardId,
-                                                  @RequestBody CardDTO cardDTO,
-                                                  @AuthenticationPrincipal CustomPrincipal user) {
+    public ResponseEntity<CardDTO> putRequestCard(@PathVariable final Long cardId,
+                                                  @RequestBody final CardDTO cardDTO,
+                                                  @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<CardDTO> response;
         if (cardDTO == null || cardId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            cardDTO.setCreatorId(userService.getUserId(user));
+            cardDTO.setCardId(cardId);
+            final CardDTO result = cardService.putRequestCard(cardDTO);
+            if (result == null) {
+                response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                response = new ResponseEntity<>(
+                        result,
+                        result.getCardId().equals(cardDTO.getCardId())
+                                ? HttpStatus.OK
+                                : HttpStatus.CREATED
+                );
+            }
         }
-        cardDTO.setCreatorId(userService.getUserId(user));
-        cardDTO.setCardId(cardId);
-        CardDTO result = cardService.putRequestCard(cardDTO);
-        if (result == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(
-                result,
-                result.getCardId().equals(cardDTO.getCardId())
-                        ? HttpStatus.OK
-                        : HttpStatus.CREATED
-        );
+        return response;
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteRequestCardById(@PathVariable Long id,
-                                                   @AuthenticationPrincipal CustomPrincipal user) {
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return cardService.deleteCardById(userService.getUserId(user), id)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @DeleteMapping(value = "/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteRequestCardById(@PathVariable final Long cardId,
+                                                   @AuthenticationPrincipal final CustomPrincipal user) {
+        return cardController.deleteCardById(cardId, user);
     }
 }

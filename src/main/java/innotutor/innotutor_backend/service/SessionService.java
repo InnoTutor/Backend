@@ -1,35 +1,12 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.service;
 
-import innotutor.innotutor_backend.DTO.UserDTO;
-import innotutor.innotutor_backend.DTO.card.CardDTO;
-import innotutor.innotutor_backend.DTO.card.SubjectDTO;
-import innotutor.innotutor_backend.DTO.enrollment.EnrollmentDTO;
-import innotutor.innotutor_backend.DTO.session.SessionDTO;
-import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionFormatDTO;
-import innotutor.innotutor_backend.DTO.session.sessionsettings.SessionTypeDTO;
+import innotutor.innotutor_backend.dto.UserDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.SubjectDTO;
+import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.session.SessionDTO;
+import innotutor.innotutor_backend.dto.session.sessionsettings.SessionFormatDTO;
+import innotutor.innotutor_backend.dto.session.sessionsettings.SessionTypeDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.session.Session;
 import innotutor.innotutor_backend.entity.session.SessionFormat;
@@ -55,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SessionService {
+    private final static String PRIVATE_TYPE = "private";
     private final CardsListService cardsListService;
     private final UserService userService;
     private final SessionRepository sessionRepository;
@@ -67,50 +45,50 @@ public class SessionService {
     private final StudentsService studentsService;
 
     public List<SessionFormatDTO> getSessionFormats() {
-        List<SessionFormatDTO> sessionFormats = new ArrayList<>();
-        for (SessionFormat format : sessionFormatRepository.findAll()) {
+        final List<SessionFormatDTO> sessionFormats = new ArrayList<>();
+        for (final SessionFormat format : sessionFormatRepository.findAll()) {
             sessionFormats.add(new SessionFormatDTO(format.getSessionFormatId(), format.getName()));
         }
         return sessionFormats;
     }
 
     public List<SessionTypeDTO> getSessionTypes() {
-        List<SessionTypeDTO> sessionTypes = new ArrayList<>();
-        for (SessionType type : sessionTypeRepository.findAll()) {
+        final List<SessionTypeDTO> sessionTypes = new ArrayList<>();
+        for (final SessionType type : sessionTypeRepository.findAll()) {
             sessionTypes.add(new SessionTypeDTO(type.getSessionTypeId(), type.getName()));
         }
         return sessionTypes;
     }
 
     public List<SubjectDTO> getSubjects() {
-        List<SubjectDTO> subjects = new ArrayList<>();
-        for (Subject subject : subjectRepository.findAll()) {
+        final List<SubjectDTO> subjects = new ArrayList<>();
+        for (final Subject subject : subjectRepository.findAll()) {
             subjects.add(new SubjectDTO(subject.getSubjectId(), subject.getName()));
         }
         return subjects;
     }
 
-    public List<SubjectDTO> getAvailableServiceSubjects(Long userId) {
+    public List<SubjectDTO> getAvailableServiceSubjects(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getServices(userId));
         }
         return null;
     }
 
-    public List<SubjectDTO> getAvailableRequestSubjects(Long userId) {
+    public List<SubjectDTO> getAvailableRequestSubjects(final Long userId) { //NOPMD - suppressed ReturnEmptyCollectionRatherThanNull - null indicates that such collection doesn't exist
         if (userRepository.findById(userId).isPresent()) {
             return this.getAvailableSubjects(cardsListService.getRequests(userId));
         }
         return null;
     }
 
-    public SessionDTO postSession(SessionDTO sessionDTO) {
-        SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
-        SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
-        Optional<User> userOptional = userRepository.findById(sessionDTO.getTutorId());
+    public SessionDTO postSession(final SessionDTO sessionDTO) {
+        final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
+        final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
+        final Optional<User> userOptional = userRepository.findById(sessionDTO.getTutorId());
         if (userOptional.isPresent() && sessionFormat != null && sessionType != null) {
-            User tutor = userOptional.get();
-            Optional<Card> cardOptional = tutor.getServicesByUserId().stream()
+            final User tutor = userOptional.get();
+            final Optional<Card> cardOptional = tutor.getServicesByUserId().stream()
                     .map(innotutor.innotutor_backend.entity.user.Service::getCardByCardId)
                     .filter(card -> card.getSubjectBySubjectId().getName().equals(sessionDTO.getSubject()))
                     .findAny();
@@ -121,11 +99,11 @@ public class SessionService {
         return null;
     }
 
-    public List<UserDTO> filterStudentsForSession(Long tutorId,
-                                                  String specifiedSubject,
-                                                  String specifiedFormat,
-                                                  String specifiedType) {
-        List<EnrollmentDTO> students = studentsService.getUserStudentsList(tutorId).getAcceptedStudentsList();
+    public List<UserDTO> filterStudentsForSession(final Long tutorId,
+                                                  final String specifiedSubject,
+                                                  final String specifiedFormat,
+                                                  final String specifiedType) {
+        List<EnrollmentDTO> students = studentsService.getUserStudentsList(tutorId).getAcceptedStudents();
         if (specifiedSubject != null) {
             students = students.stream()
                     .filter(enrollmentDTO -> cardRepository.findById(enrollmentDTO.getCardId()).orElse(new Card())
@@ -142,20 +120,20 @@ public class SessionService {
                     .filter(enrollmentDTO -> enrollmentDTO.getSessionType().contains(specifiedType))
                     .collect(Collectors.toList());
         }
-        List<UserDTO> result = new ArrayList<>();
+        final List<UserDTO> result = new ArrayList<>();
         students.forEach(student -> result.add(userService.getUserById(student.getEnrollerId())));
         return result;
     }
 
-    private SessionDTO createSession(User tutor, Card card, SessionDTO sessionDTO,
-                                     SessionFormat sessionFormat, SessionType sessionType) {
-        List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
+    private SessionDTO createSession(final User tutor, final Card card, final SessionDTO sessionDTO,
+                                     final SessionFormat sessionFormat, final SessionType sessionType) {
+        final List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
                 card.getSubjectBySubjectId().getName(), sessionFormat.getName(), sessionType.getName());
         if (!students.isEmpty()) {
-            if (sessionType.getName().equals("private") && students.size() > 1) {
+            if (PRIVATE_TYPE.equals(sessionType.getName()) && students.size() > 1) {
                 return null;
             }
-            Session session = sessionRepository.save(
+            final Session session = sessionRepository.save(
                     new Session(tutor.getUserId(),
                             card.getSubjectId(),
                             sessionFormat.getSessionFormatId(),
@@ -169,7 +147,7 @@ public class SessionService {
                             sessionFormat,
                             sessionType));
             this.saveSessionStudentList(session, students);
-            List<Long> studentIDsList = new ArrayList<>();
+            final List<Long> studentIDsList = new ArrayList<>();
             students.forEach(student -> studentIDsList.add(student.getUserId()));
             return new SessionDTO(session.getSessionId(),
                     tutor.getUserId(),
@@ -185,32 +163,32 @@ public class SessionService {
         return null;
     }
 
-    private List<User> getValidStudents(Long tutorId, List<Long> studentIDsList, String subject, String sessionFormat,
-                                        String sessionType) {
-        List<User> validStudents = new ArrayList<>();
-        List<UserDTO> allTutorStudents = this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType);
-        List<User> students = new ArrayList<>();
+    private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
+                                        final String sessionType) {
+        final List<User> validStudents = new ArrayList<>();
+        final List<User> students = new ArrayList<>();
         studentIDsList.forEach(studentId -> userRepository.findById(studentId).ifPresent(students::add));
-        for (User student : students) {
-            if (allTutorStudents.stream().anyMatch(studentDTO -> studentDTO.getUserId().equals(student.getUserId()))) {
+        for (final User student : students) {
+            if (this.filterStudentsForSession(tutorId, subject, sessionFormat, sessionType)
+                    .stream().anyMatch(studentDTO -> studentDTO.getUserId().equals(student.getUserId()))) {
                 validStudents.add(student);
             }
         }
         return validStudents;
     }
 
-    private void saveSessionStudentList(Session session, List<User> students) {
-        List<SessionStudent> sessionStudentList = new ArrayList<>();
+    private void saveSessionStudentList(final Session session, final List<User> students) {
+        final List<SessionStudent> sessionStudentList = new ArrayList<>();
         students.forEach(student -> sessionStudentList.add(new SessionStudent(session.getSessionId(), student.getUserId(),
                 session, student)));
         sessionStudentRepository.saveAll(sessionStudentList);
     }
 
-    private List<SubjectDTO> getAvailableSubjects(List<CardDTO> userCards) {
-        List<SubjectDTO> result = new ArrayList<>();
-        for (SubjectDTO subject : this.getSubjects()) {
-            boolean available = true;
-            for (CardDTO card : userCards) {
+    private List<SubjectDTO> getAvailableSubjects(final List<CardDTO> userCards) {
+        final List<SubjectDTO> result = new ArrayList<>();
+        for (final SubjectDTO subject : this.getSubjects()) {
+            boolean available = true; //NOPMD - suppressed DataflowAnomalyAnalysis
+            for (final CardDTO card : userCards) {
                 if (card.getSubject().equals(subject.getName())) {
                     available = false;
                     break;

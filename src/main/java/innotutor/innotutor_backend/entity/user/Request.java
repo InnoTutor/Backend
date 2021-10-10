@@ -1,32 +1,10 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.user;
 
 import innotutor.innotutor_backend.entity.card.Card;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -38,7 +16,7 @@ public class Request {
     private User userByStudentId;
     private Card cardByCardId;
 
-    public Request(Long studentId, Long cardId, User userByStudentId, Card cardByCardId) {
+    public Request(final Long studentId, final Long cardId, final User userByStudentId, final Card cardByCardId) {
         this.studentId = studentId;
         this.cardId = cardId;
         this.userByStudentId = userByStudentId;
@@ -51,7 +29,7 @@ public class Request {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(final Long studentId) {
         this.studentId = studentId;
     }
 
@@ -61,7 +39,7 @@ public class Request {
         return cardId;
     }
 
-    public void setCardId(Long cardId) {
+    public void setCardId(final Long cardId) {
         this.cardId = cardId;
     }
 
@@ -72,27 +50,33 @@ public class Request {
         return requestId;
     }
 
-    public void setRequestId(Long requestId) {
+    public void setRequestId(final Long requestId) {
         this.requestId = requestId;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Request request = (Request) o;
-
-        if (studentId != null ? !studentId.equals(request.studentId) : request.studentId != null) return false;
-        if (cardId != null ? !cardId.equals(request.cardId) : request.cardId != null) return false;
-        return requestId != null ? requestId.equals(request.requestId) : request.requestId == null;
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final Request request = (Request) object;
+        if (!Objects.equals(studentId, request.studentId)) {
+            return false;
+        }
+        if (!Objects.equals(cardId, request.cardId)) {
+            return false;
+        }
+        return Objects.equals(requestId, request.requestId);
     }
 
     @Override
     public int hashCode() {
-        int result = studentId != null ? studentId.hashCode() : 0;
-        result = 31 * result + (cardId != null ? cardId.hashCode() : 0);
-        result = 31 * result + (requestId != null ? requestId.hashCode() : 0);
+        int result = studentId == null ? 0 : studentId.hashCode();
+        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        result = 31 * result + (requestId == null ? 0 : requestId.hashCode());
         return result;
     }
 
@@ -102,7 +86,7 @@ public class Request {
         return userByStudentId;
     }
 
-    public void setUserByStudentId(User userByStudentId) {
+    public void setUserByStudentId(final User userByStudentId) {
         this.userByStudentId = userByStudentId;
     }
 
@@ -112,7 +96,7 @@ public class Request {
         return cardByCardId;
     }
 
-    public void setCardByCardId(Card cardByCardId) {
+    public void setCardByCardId(final Card cardByCardId) {
         this.cardByCardId = cardByCardId;
     }
 }

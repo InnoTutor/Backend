@@ -1,26 +1,3 @@
-/*
-MIT License
-
-Copyright (c) 2021 InnoTutor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.user.SessionStudent;
@@ -34,11 +11,14 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
 @Table(name = "session", schema = "public", catalog = "innotutor")
-public class Session {
+public class Session { // NOPMD - suppressed GodClass
+    // NOPMD - suppressed TooManyFields
+    // It's not a GodClass since it represents only entity from DB
     private Long sessionId;
     private Long tutorId;
     private Long subjectId;
@@ -56,18 +36,18 @@ public class Session {
     private SessionType sessionTypeBySessionTypeId;
     private Collection<SessionStudent> sessionStudentsBySessionId;
 
-    public Session(Long tutorId,
-                   Long subjectId,
-                   Long sessionFormatId,
-                   Long sessionTypeId,
-                   Date date,
-                   Time startTime,
-                   Time endTime,
-                   String description,
-                   User userByTutorId,
-                   Subject subjectBySubjectId,
-                   SessionFormat sessionFormatBySessionFormatId,
-                   SessionType sessionTypeBySessionTypeId) {
+    public Session(final Long tutorId,
+                   final Long subjectId,
+                   final Long sessionFormatId,
+                   final Long sessionTypeId,
+                   final Date date,
+                   final Time startTime,
+                   final Time endTime,
+                   final String description,
+                   final User userByTutorId,
+                   final Subject subjectBySubjectId,
+                   final SessionFormat sessionFormatBySessionFormatId,
+                   final SessionType sessionTypeBySessionTypeId) {
         this.tutorId = tutorId;
         this.subjectId = subjectId;
         this.sessionFormatId = sessionFormatId;
@@ -89,7 +69,7 @@ public class Session {
         return sessionId;
     }
 
-    public void setSessionId(Long sessionId) {
+    public void setSessionId(final Long sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -99,7 +79,7 @@ public class Session {
         return tutorId;
     }
 
-    public void setTutorId(Long tutorId) {
+    public void setTutorId(final Long tutorId) {
         this.tutorId = tutorId;
     }
 
@@ -109,7 +89,7 @@ public class Session {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(final Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -119,7 +99,7 @@ public class Session {
         return sessionFormatId;
     }
 
-    public void setSessionFormatId(Long sessionFormatId) {
+    public void setSessionFormatId(final Long sessionFormatId) {
         this.sessionFormatId = sessionFormatId;
     }
 
@@ -129,7 +109,7 @@ public class Session {
         return sessionTypeId;
     }
 
-    public void setSessionTypeId(Long sessionTypeId) {
+    public void setSessionTypeId(final Long sessionTypeId) {
         this.sessionTypeId = sessionTypeId;
     }
 
@@ -139,7 +119,7 @@ public class Session {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -149,7 +129,7 @@ public class Session {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(final Time startTime) {
         this.startTime = startTime;
     }
 
@@ -159,7 +139,7 @@ public class Session {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(final Time endTime) {
         this.endTime = endTime;
     }
 
@@ -169,7 +149,7 @@ public class Session {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -180,7 +160,7 @@ public class Session {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(final Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -191,46 +171,65 @@ public class Session {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(final Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Session session = (Session) o;
-
-        if (sessionId != null ? !sessionId.equals(session.sessionId) : session.sessionId != null) return false;
-        if (tutorId != null ? !tutorId.equals(session.tutorId) : session.tutorId != null) return false;
-        if (subjectId != null ? !subjectId.equals(session.subjectId) : session.subjectId != null) return false;
-        if (sessionFormatId != null ? !sessionFormatId.equals(session.sessionFormatId) : session.sessionFormatId != null)
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
-        if (sessionTypeId != null ? !sessionTypeId.equals(session.sessionTypeId) : session.sessionTypeId != null)
+        }
+        final Session session = (Session) object;
+        if (!Objects.equals(sessionId, session.sessionId)) {
             return false;
-        if (date != null ? !date.equals(session.date) : session.date != null) return false;
-        if (startTime != null ? !startTime.equals(session.startTime) : session.startTime != null) return false;
-        if (endTime != null ? !endTime.equals(session.endTime) : session.endTime != null) return false;
-        if (description != null ? !description.equals(session.description) : session.description != null) return false;
-        if (creationDate != null ? !creationDate.equals(session.creationDate) : session.creationDate != null)
+        }
+        if (!Objects.equals(tutorId, session.tutorId)) {
             return false;
-        return lastUpdate != null ? lastUpdate.equals(session.lastUpdate) : session.lastUpdate == null;
+        }
+        if (!Objects.equals(subjectId, session.subjectId)) {
+            return false;
+        }
+        if (!Objects.equals(sessionFormatId, session.sessionFormatId)) {
+            return false;
+        }
+        if (!Objects.equals(sessionTypeId, session.sessionTypeId)) {
+            return false;
+        }
+        if (!Objects.equals(date, session.date)) {
+            return false;
+        }
+        if (!Objects.equals(startTime, session.startTime)) {
+            return false;
+        }
+        if (!Objects.equals(endTime, session.endTime)) {
+            return false;
+        }
+        if (!Objects.equals(description, session.description)) {
+            return false;
+        }
+        if (!Objects.equals(creationDate, session.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, session.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = sessionId != null ? sessionId.hashCode() : 0;
-        result = 31 * result + (tutorId != null ? tutorId.hashCode() : 0);
-        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
-        result = 31 * result + (sessionFormatId != null ? sessionFormatId.hashCode() : 0);
-        result = 31 * result + (sessionTypeId != null ? sessionTypeId.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        int result = sessionId == null ? 0 : sessionId.hashCode();
+        result = 31 * result + (tutorId == null ? 0 : tutorId.hashCode());
+        result = 31 * result + (subjectId == null ? 0 : subjectId.hashCode());
+        result = 31 * result + (sessionFormatId == null ? 0 : sessionFormatId.hashCode());
+        result = 31 * result + (sessionTypeId == null ? 0 : sessionTypeId.hashCode());
+        result = 31 * result + (date == null ? 0 : date.hashCode());
+        result = 31 * result + (startTime == null ? 0 : startTime.hashCode());
+        result = 31 * result + (endTime == null ? 0 : endTime.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
+        result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
@@ -240,7 +239,7 @@ public class Session {
         return userByTutorId;
     }
 
-    public void setUserByTutorId(User userByTutorId) {
+    public void setUserByTutorId(final User userByTutorId) {
         this.userByTutorId = userByTutorId;
     }
 
@@ -250,7 +249,7 @@ public class Session {
         return subjectBySubjectId;
     }
 
-    public void setSubjectBySubjectId(Subject subjectBySubjectId) {
+    public void setSubjectBySubjectId(final Subject subjectBySubjectId) {
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
@@ -260,7 +259,7 @@ public class Session {
         return sessionFormatBySessionFormatId;
     }
 
-    public void setSessionFormatBySessionFormatId(SessionFormat sessionFormatBySessionFormatId) {
+    public void setSessionFormatBySessionFormatId(final SessionFormat sessionFormatBySessionFormatId) {
         this.sessionFormatBySessionFormatId = sessionFormatBySessionFormatId;
     }
 
@@ -270,7 +269,7 @@ public class Session {
         return sessionTypeBySessionTypeId;
     }
 
-    public void setSessionTypeBySessionTypeId(SessionType sessionTypeBySessionTypeId) {
+    public void setSessionTypeBySessionTypeId(final SessionType sessionTypeBySessionTypeId) {
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 
@@ -279,7 +278,7 @@ public class Session {
         return sessionStudentsBySessionId;
     }
 
-    public void setSessionStudentsBySessionId(Collection<SessionStudent> sessionStudentsBySessionId) {
+    public void setSessionStudentsBySessionId(final Collection<SessionStudent> sessionStudentsBySessionId) {
         this.sessionStudentsBySessionId = sessionStudentsBySessionId;
     }
 }
