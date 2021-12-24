@@ -1,6 +1,6 @@
 package innotutor.innotutor_backend.controller;
 
-import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListInfoDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.StudentsService;
@@ -26,8 +26,8 @@ public class MyStudentsController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestedStudentsListDTO> getUserStudentsList(@AuthenticationPrincipal final CustomPrincipal user) {
-        final RequestedStudentsListDTO students = studentsService.getUserStudentsList(userService.getUserId(user));
+    public ResponseEntity<RequestedStudentsListInfoDTO> getUserStudentsList(@AuthenticationPrincipal final CustomPrincipal user) {
+        final RequestedStudentsListInfoDTO students = studentsService.getUserStudentsListFullInfo(userService.getUserId(user));
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(students, HttpStatus.OK);
