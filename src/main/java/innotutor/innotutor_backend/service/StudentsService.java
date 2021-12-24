@@ -1,7 +1,11 @@
 package innotutor.innotutor_backend.service;
 
+import innotutor.innotutor_backend.dto.UserDTO;
+import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.enrollment.MyStudentDTO;
 import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.RequestedStudentsListInfoDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.user.Request;
@@ -18,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +32,8 @@ public class StudentsService {
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
     private final EnrollmentStatusRepository enrollmentStatusRepository;
+    private final UserService userService;
+    private final CardService cardService;
 
     public RequestedStudentsListDTO getUserStudentsList(final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
@@ -37,6 +45,50 @@ public class StudentsService {
             acceptedStudentsList.addAll(this.getStudentsToWhomRequested(user, acceptedStatusId));
             final List<EnrollmentDTO> newStudentsList = this.getStudentsListByStatusId(user, requestedStatusId);
             return new RequestedStudentsListDTO(newStudentsList, acceptedStudentsList);
+        }
+        return null;
+    }
+
+    public RequestedStudentsListInfoDTO getUserStudentsListFullInfo(final Long userId) {
+        RequestedStudentsListDTO students = this.getUserStudentsList(userId);
+        if (students != null) {
+            List<MyStudentDTO> newStudents = students.getNewStudents().stream()
+                    .map(this::convertEnrollmentDTOToEnrollmentInfoDTO)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            List<MyStudentDTO> acceptedStudents = students.getAcceptedStudents().stream()
+                    .map(this::convertEnrollmentDTOToEnrollmentInfoDTO)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            return new RequestedStudentsListInfoDTO(newStudents, acceptedStudents);
+        }
+        return null;
+    }
+
+    private MyStudentDTO convertEnrollmentDTOToEnrollmentInfoDTO(EnrollmentDTO enrollmentDTO) {
+        Long enrollerId = enrollmentDTO.getEnrollerId();
+        Long cardId = enrollmentDTO.getCardId();
+        UserDTO enroller = userService.getUserById(enrollerId);
+        CardDTO card = cardService.getCardById(cardId, enrollerId);
+        if (enroller != null && card != null) {
+            return new MyStudentDTO(
+                    enrollmentDTO.getEnrollmentId(),
+                    enrollerId,
+                    enroller.getName(),
+                    enroller.getSurname(),
+                    enroller.getEmail(),
+                    enroller.getContacts(),
+                    enroller.getDescription(),
+                    enroller.getPicture(),
+                    cardId,
+                    card.getSubject(),
+                    card.getRating(),
+                    card.getCountVoted(),
+                    card.getDescription(),
+                    card.isHidden(),
+                    enrollmentDTO.getSessionFormat(),
+                    enrollmentDTO.getSessionType()
+            );
         }
         return null;
     }
