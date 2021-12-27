@@ -4,6 +4,7 @@ import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.dto.searcher.UserCard;
 import innotutor.innotutor_backend.entity.card.CardRating;
+import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.CardRepository;
 import innotutor.innotutor_backend.service.utility.card.AverageCardRating;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
@@ -73,9 +74,12 @@ public class SearcherService {
         cardRepository.findByHidden(false).forEach(card -> {
             if (card.getServiceByCardId() != null) {
                 final Collection<CardRating> ratings = card.getCardRatingsByCardId();
+                final User tutor = card.getServiceByCardId().getUserByTutorId();
                 tutors.add(
                         new TutorCvDTO(
-                                card.getServiceByCardId().getTutorId(),
+                                tutor.getUserId(),
+                                tutor.getName(),
+                                tutor.getSurname(),
                                 card.getCardId(),
                                 new AverageCardRating(ratings).averageRating(),
                                 ratings.size(),
@@ -94,9 +98,12 @@ public class SearcherService {
         final List<StudentRequestDTO> students = new ArrayList<>();
         cardRepository.findByHidden(false).forEach(card -> {
             if (card.getRequestByCardId() != null) {
+                final User student = card.getRequestByCardId().getUserByStudentId();
                 students.add(
                         new StudentRequestDTO(
-                                card.getRequestByCardId().getStudentId(),
+                                student.getUserId(),
+                                student.getName(),
+                                student.getSurname(),
                                 card.getCardId(),
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),

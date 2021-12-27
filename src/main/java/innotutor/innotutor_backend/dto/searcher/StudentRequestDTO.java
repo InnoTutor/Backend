@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentRequestDTO implements UserCard {
     private Long studentId;
+    private String studentName;
+    private String studentSurname;
     private Long cardId;
     private String description;
     private String subject;
