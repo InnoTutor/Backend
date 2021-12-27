@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class TutorCvDTO implements UserCard {
     private Long tutorId;
+    private String tutorName;
+    private String tutorSurname;
     private Long cardId;
     private Double rating;
     private Integer countVoted;
