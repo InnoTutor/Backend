@@ -143,7 +143,7 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
         this.subjectBySubjectId = subjectBySubjectId;
     }
 
-    @OneToMany(mappedBy = CARD_BY_CARD_ID)
+    @OneToMany(mappedBy = CARD_BY_CARD_ID, cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<CardEnroll> getCardEnrollsByCardId() {
         return cardEnrollsByCardId;
     }

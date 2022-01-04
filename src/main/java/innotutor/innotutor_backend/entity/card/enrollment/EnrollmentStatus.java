@@ -92,7 +92,7 @@ public class EnrollmentStatus {
         return result;
     }
 
-    @OneToMany(mappedBy = "enrollmentStatusByStatusId")
+    @OneToMany(mappedBy = "enrollmentStatusByStatusId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<CardEnroll> getCardEnrollsByStatusId() {
         return cardEnrollsByStatusId;
     }

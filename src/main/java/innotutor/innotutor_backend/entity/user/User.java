@@ -188,7 +188,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         return result;
     }
 
-    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<CardEnroll> getCardEnrollsByUserId() {
         return cardEnrollsByUserId;
     }

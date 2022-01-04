@@ -53,12 +53,7 @@ public class CardEnrollService {
                 final List<String> sessionFormats = this.getCommonSessionFormats(card, enrollmentDTO);
                 final List<String> sessionTypes = this.getCommonSessionTypes(card, enrollmentDTO);
                 if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
-                    final CardEnroll cardEnroll = this.saveCardEnroll(
-                            card,
-                            userOptional.get(),
-                            enrollmentDTO.getDescription(),
-                            enrollmentStatusRepository.findEnrollmentStatusByStatus(REQUESTED)
-                    );
+                    final CardEnroll cardEnroll = this.saveCardEnroll(card, userOptional.get(), enrollmentDTO.getDescription(), enrollmentStatusRepository.findEnrollmentStatusByStatus(REQUESTED));
                     this.saveCardEnrollSessionFormat(cardEnroll, sessionFormats);
                     this.saveCardEnrollSessionType(cardEnroll, sessionTypes);
                     return new EnrollmentDTO(cardEnroll.getCardEnrollId(), enrollerId, cardId, cardEnroll.getDescription(), sessionFormats, sessionTypes);
@@ -66,6 +61,23 @@ public class CardEnrollService {
             }
         }
         return null;
+    }
+
+    public boolean deleteCardEnrollByCardId(final Long userId, final Long cardId) {
+        final Optional<Card> cardOptional = cardRepository.findById(cardId);
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (!cardOptional.isPresent() || !userOptional.isPresent()) {
+            return false;
+        }
+        CardEnroll cardEnroll = this.getCardEnrolment(cardId, userId);
+        if (cardEnroll == null) {
+            return false;
+        }
+        //cardEnrollSessionFormatRepository.deleteByCardEnrollId(cardId);
+        //cardEnrollSessionTypeRepository.deleteByCardEnrollId(cardId);
+        cardEnrollRepository.deleteById(cardEnroll.getCardEnrollId());
+
+        return true;
     }
 
     public boolean acceptStudent(final Long tutorId, final Long enrollmentId) {
@@ -98,16 +110,7 @@ public class CardEnrollService {
     }
 
     public boolean isEnrolled(final Long cardId, final Long userId) {
-        final Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            for (CardEnroll cardEnroll : user.getCardEnrollsByUserId()) {
-                if (cardEnroll.getCardId().equals(cardId)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return this.getCardEnrolment(cardId, userId) != null;
     }
 
     private boolean removeStudentCvCard(final Long tutorId, final CardEnroll cardEnroll) {
@@ -131,6 +134,32 @@ public class CardEnrollService {
         return false;
     }
 
+    private CardEnroll saveCardEnroll(final Card card, final User tutor, final String description, final EnrollmentStatus enrollmentStatus) {
+        return cardEnrollRepository.save(new CardEnroll(card.getCardId(), tutor.getUserId(), enrollmentStatus.getStatusId(), description, card, tutor, enrollmentStatus));
+    }
+
+    private void saveCardEnrollSessionFormat(final CardEnroll cardEnroll, final List<String> sessionFormats) {
+        sessionFormats.forEach(format -> {
+            final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(format);
+            cardEnrollSessionFormatRepository.save(new CardEnrollSessionFormat(cardEnroll.getCardEnrollId(), sessionFormat.getSessionFormatId(), cardEnroll, sessionFormat));
+        });
+    }
+
+    private void saveCardEnrollSessionType(final CardEnroll cardEnroll, final List<String> sessionTypes) {
+        sessionTypes.forEach(type -> {
+            final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(type);
+            cardEnrollSessionTypeRepository.save(new CardEnrollSessionType(cardEnroll.getCardEnrollId(), sessionType.getSessionTypeId(), cardEnroll, sessionType));
+        });
+    }
+
+    private List<String> getCommonSessionFormats(final Card card, final EnrollmentDTO enrollmentDTO) {
+        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList().stream().distinct().filter(enrollmentDTO.getSessionFormat()::contains).collect(Collectors.toList());
+    }
+
+    private List<String> getCommonSessionTypes(final Card card, final EnrollmentDTO enrollmentDTO) {
+        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList().stream().distinct().filter(enrollmentDTO.getSessionType()::contains).collect(Collectors.toList());
+    }
+
     private boolean isUniquePair(final Long enrollerId, final Long cardId) {
         final List<CardEnroll> cards = cardEnrollRepository.findByUserId(enrollerId);
         for (final CardEnroll cardEnroll : cards) {
@@ -141,63 +170,16 @@ public class CardEnrollService {
         return true;
     }
 
-    private CardEnroll saveCardEnroll(final Card card, final User tutor, final String description, final EnrollmentStatus enrollmentStatus) {
-        return cardEnrollRepository.save(
-                new CardEnroll(
-                        card.getCardId(),
-                        tutor.getUserId(),
-                        enrollmentStatus.getStatusId(),
-                        description,
-                        card,
-                        tutor,
-                        enrollmentStatus
-                )
-        );
-    }
-
-    private void saveCardEnrollSessionFormat(final CardEnroll cardEnroll, final List<String> sessionFormats) {
-        sessionFormats.forEach(format -> {
-            final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(format);
-            cardEnrollSessionFormatRepository.save(
-                    new CardEnrollSessionFormat(
-                            cardEnroll.getCardEnrollId(),
-                            sessionFormat.getSessionFormatId(),
-                            cardEnroll,
-                            sessionFormat
-                    )
-            );
-        });
-    }
-
-    private void saveCardEnrollSessionType(final CardEnroll cardEnroll, final List<String> sessionTypes) {
-        sessionTypes.forEach(type -> {
-            final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(type);
-            cardEnrollSessionTypeRepository.save(
-                    new CardEnrollSessionType(
-                            cardEnroll.getCardEnrollId(),
-                            sessionType.getSessionTypeId(),
-                            cardEnroll,
-                            sessionType
-                    )
-            );
-        });
-    }
-
-    private List<String> getCommonSessionFormats(final Card card, final EnrollmentDTO enrollmentDTO) {
-        return new CardSessionFormatConverter(card.getCardSessionFormatsByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionFormat()::contains)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getCommonSessionTypes(final Card card, final EnrollmentDTO enrollmentDTO) {
-        return new CardSessionTypeConverter(card.getCardSessionTypesByCardId())
-                .stringList()
-                .stream()
-                .distinct()
-                .filter(enrollmentDTO.getSessionType()::contains)
-                .collect(Collectors.toList());
+    private CardEnroll getCardEnrolment(final Long cardId, final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            for (CardEnroll cardEnroll : user.getCardEnrollsByUserId()) {
+                if (cardEnroll.getCardId().equals(cardId)) {
+                    return cardEnroll;
+                }
+            }
+        }
+        return null;
     }
 }
