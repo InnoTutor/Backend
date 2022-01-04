@@ -86,6 +86,7 @@ public class StudentsService {
                     card.getCountVoted(),
                     card.getDescription(),
                     card.isHidden(),
+                    enrollmentDTO.getDescription(),
                     enrollmentDTO.getSessionFormat(),
                     enrollmentDTO.getSessionType()
             );
@@ -102,6 +103,7 @@ public class StudentsService {
                                 cardEnroll.getCardEnrollId(),
                                 cardEnroll.getUserId(),
                                 cardEnroll.getCardId(),
+                                cardEnroll.getDescription(),
                                 new CardEnrollSessionFormatConverter(cardEnroll.getCardEnrollSessionFormatsByCardId()).stringList(),
                                 new CardEnrollSessionTypeConverter(cardEnroll.getCardEnrollSessionTypesByCardId()).stringList()
                         ));
@@ -120,6 +122,7 @@ public class StudentsService {
                             cardEnroll.getCardEnrollId(),
                             request.getStudentId(),
                             card.getCardId(),
+                            cardEnroll.getDescription(),
                             new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
                             new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
                     ));

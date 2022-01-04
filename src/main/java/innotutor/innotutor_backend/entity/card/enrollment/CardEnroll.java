@@ -19,6 +19,7 @@ public class CardEnroll {
     private Long cardId;
     private Long userId;
     private Long statusId;
+    private String description;
     private Timestamp creationDate;
     private Timestamp lastUpdate;
     private Card cardByCardId;
@@ -27,11 +28,12 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final Card cardByCardId, final User userByUserId,
+    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final String description, final Card cardByCardId, final User userByUserId,
                       final EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;
         this.statusId = statusId;
+        this.description = description;
         this.cardByCardId = cardByCardId;
         this.userByUserId = userByUserId;
         this.enrollmentStatusByStatusId = enrollmentStatusByStatusId;
@@ -79,6 +81,16 @@ public class CardEnroll {
     }
 
     @Basic
+    @Column(name = "description", length = 1024)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    @Basic
     @CreationTimestamp
     @Column(name = "creation_date", insertable = false, updatable = false)
     public Timestamp getCreationDate() {
@@ -108,23 +120,26 @@ public class CardEnroll {
         if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        final CardEnroll that = (CardEnroll) object;
-        if (!Objects.equals(cardEnrollId, that.cardEnrollId)) {
+        final CardEnroll cardEnroll = (CardEnroll) object;
+        if (!Objects.equals(cardEnrollId, cardEnroll.cardEnrollId)) {
             return false;
         }
-        if (!Objects.equals(cardId, that.cardId)) {
+        if (!Objects.equals(cardId, cardEnroll.cardId)) {
             return false;
         }
-        if (!Objects.equals(userId, that.userId)) {
+        if (!Objects.equals(userId, cardEnroll.userId)) {
             return false;
         }
-        if (!Objects.equals(statusId, that.statusId)) {
+        if (!Objects.equals(statusId, cardEnroll.statusId)) {
             return false;
         }
-        if (!Objects.equals(creationDate, that.creationDate)) {
+        if (!Objects.equals(description, cardEnroll.description)) {
             return false;
         }
-        return Objects.equals(lastUpdate, that.lastUpdate);
+        if (!Objects.equals(creationDate, cardEnroll.creationDate)) {
+            return false;
+        }
+        return Objects.equals(lastUpdate, cardEnroll.lastUpdate);
     }
 
     @Override
@@ -133,6 +148,7 @@ public class CardEnroll {
         result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
         result = 31 * result + (userId == null ? 0 : userId.hashCode());
         result = 31 * result + (statusId == null ? 0 : statusId.hashCode());
+        result = 31 * result + (description == null ? 0 : description.hashCode());
         result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
         result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;

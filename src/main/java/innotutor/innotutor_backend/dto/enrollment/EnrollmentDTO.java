@@ -13,6 +13,7 @@ public class EnrollmentDTO {
     private Long enrollmentId;
     private Long enrollerId;
     private Long cardId;
+    private String description;
     private List<String> sessionFormat;
     private List<String> sessionType;
 }

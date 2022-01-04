@@ -20,10 +20,11 @@ public class MyStudentDTO {
     private String studentPicture;
     private Long cardId;
     private String subject;
-    private Double rating;
-    private Integer countVoted;
-    private String description;
+    private Double cardRating;
+    private Integer cardCountVoted;
+    private String cardDescription;
     private boolean hidden;
+    private String enrollmentDescription;
     private List<String> sessionFormat;
     private List<String> sessionType;
 }

@@ -56,11 +56,12 @@ public class CardEnrollService {
                     final CardEnroll cardEnroll = this.saveCardEnroll(
                             card,
                             userOptional.get(),
+                            enrollmentDTO.getDescription(),
                             enrollmentStatusRepository.findEnrollmentStatusByStatus(REQUESTED)
                     );
                     this.saveCardEnrollSessionFormat(cardEnroll, sessionFormats);
                     this.saveCardEnrollSessionType(cardEnroll, sessionTypes);
-                    return new EnrollmentDTO(cardEnroll.getCardEnrollId(), enrollerId, cardId, sessionFormats, sessionTypes);
+                    return new EnrollmentDTO(cardEnroll.getCardEnrollId(), enrollerId, cardId, cardEnroll.getDescription(), sessionFormats, sessionTypes);
                 }
             }
         }
@@ -127,12 +128,13 @@ public class CardEnrollService {
         return true;
     }
 
-    private CardEnroll saveCardEnroll(final Card card, final User tutor, final EnrollmentStatus enrollmentStatus) {
+    private CardEnroll saveCardEnroll(final Card card, final User tutor, final String description, final EnrollmentStatus enrollmentStatus) {
         return cardEnrollRepository.save(
                 new CardEnroll(
                         card.getCardId(),
                         tutor.getUserId(),
                         enrollmentStatus.getStatusId(),
+                        description,
                         card,
                         tutor,
                         enrollmentStatus
