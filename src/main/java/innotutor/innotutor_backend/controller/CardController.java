@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class CardController {
 
     private final transient UserService userService;
@@ -52,6 +52,20 @@ public class CardController {
                     : new ResponseEntity<>(result, HttpStatus.CREATED);
         }
         return responseEntity;
+    }
+
+    @DeleteMapping(value = "/unenroll/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCardEnrollByCardId(@PathVariable final Long cardId,
+                                                             @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<?> response;
+        if (cardId == null) {
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            response = cardEnrollService.deleteCardEnrollByCardId(userService.getUserId(user), cardId)
+                    ? new ResponseEntity<>(HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     public ResponseEntity<?> deleteCardById(final Long cardId, final CustomPrincipal user) {

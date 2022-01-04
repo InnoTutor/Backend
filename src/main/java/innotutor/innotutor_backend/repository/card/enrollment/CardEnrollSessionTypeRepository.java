@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CardEnrollSessionTypeRepository extends JpaRepository<CardEnrollSessionType, Long> {
+    void deleteByCardEnrollId(Long cardEnrollId);
 }
