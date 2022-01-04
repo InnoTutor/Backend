@@ -76,7 +76,6 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.email = email;
     }
 
-
     @Basic
     @Column(name = "picture", nullable = false, length = 512)
     public String getPicture() {
