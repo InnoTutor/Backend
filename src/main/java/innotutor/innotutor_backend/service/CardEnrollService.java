@@ -97,6 +97,19 @@ public class CardEnrollService {
         return false;
     }
 
+    public boolean isEnrolled(final Long cardId, final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            for (CardEnroll cardEnroll : user.getCardEnrollsByUserId()) {
+                if (cardEnroll.getCardId().equals(cardId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean removeStudentCvCard(final Long tutorId, final CardEnroll cardEnroll) {
         final innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
         if (service != null && service.getTutorId().equals(tutorId)) {

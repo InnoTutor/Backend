@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SearcherService {
+    private final CardEnrollService cardEnrollService;
     private final CardRepository cardRepository;
 
     public List<TutorCvDTO> getTutorCvDTOList(final String specifiedSubject,
@@ -27,7 +28,7 @@ public class SearcherService {
                                               final Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (final UserCard user : this.filterCards(
-                new ArrayList<>(this.getAllTutorCvDTOList()),
+                new ArrayList<>(this.getAllTutorCvDTOList(userId)),
                 userId,
                 specifiedSubject,
                 specifiedFormat,
@@ -59,7 +60,7 @@ public class SearcherService {
                                                             final Long userId) {
         final List<StudentRequestDTO> students = new ArrayList<>();
         for (final UserCard user : this.filterCards(
-                new ArrayList<>(this.getAllStudentRequestDTOList()),
+                new ArrayList<>(this.getAllStudentRequestDTOList(userId)),
                 userId,
                 specifiedSubject,
                 specifiedFormat,
@@ -69,24 +70,26 @@ public class SearcherService {
         return students;
     }
 
-    private List<TutorCvDTO> getAllTutorCvDTOList() {
+    private List<TutorCvDTO> getAllTutorCvDTOList(final Long userId) {
         final List<TutorCvDTO> tutors = new ArrayList<>();
         cardRepository.findByHidden(false).forEach(card -> {
             if (card.getServiceByCardId() != null) {
                 final Collection<CardRating> ratings = card.getCardRatingsByCardId();
                 final User tutor = card.getServiceByCardId().getUserByTutorId();
+                final Long cardId = card.getCardId();
                 tutors.add(
                         new TutorCvDTO(
                                 tutor.getUserId(),
                                 tutor.getName(),
                                 tutor.getSurname(),
-                                card.getCardId(),
+                                cardId,
                                 new AverageCardRating(ratings).averageRating(),
                                 ratings.size(),
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),
                                 new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
-                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
+                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList(),
+                                cardEnrollService.isEnrolled(cardId, userId)
                         )
                 );
             }
@@ -94,21 +97,23 @@ public class SearcherService {
         return tutors;
     }
 
-    private List<StudentRequestDTO> getAllStudentRequestDTOList() {
+    private List<StudentRequestDTO> getAllStudentRequestDTOList(final Long userId) {
         final List<StudentRequestDTO> students = new ArrayList<>();
         cardRepository.findByHidden(false).forEach(card -> {
             if (card.getRequestByCardId() != null) {
                 final User student = card.getRequestByCardId().getUserByStudentId();
+                final Long cardId = card.getCardId();
                 students.add(
                         new StudentRequestDTO(
                                 student.getUserId(),
                                 student.getName(),
                                 student.getSurname(),
-                                card.getCardId(),
+                                cardId,
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),
                                 new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
-                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
+                                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList(),
+                                cardEnrollService.isEnrolled(cardId, userId)
                         )
                 );
             }
