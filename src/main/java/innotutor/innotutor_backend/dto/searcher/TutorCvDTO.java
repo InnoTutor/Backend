@@ -22,6 +22,7 @@ public class TutorCvDTO implements UserCard {
     private String subject;
     private List<String> sessionFormat;
     private List<String> sessionType;
+    private boolean requested;
 
     @Override
     @JsonIgnore

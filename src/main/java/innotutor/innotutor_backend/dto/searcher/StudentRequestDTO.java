@@ -20,6 +20,7 @@ public class StudentRequestDTO implements UserCard {
     private String subject;
     private List<String> sessionFormat;
     private List<String> sessionType;
+    private boolean offered;
 
     @Override
     @JsonIgnore
