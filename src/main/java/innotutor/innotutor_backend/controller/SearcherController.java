@@ -32,8 +32,9 @@ public class SearcherController {
             @RequestParam(name = "format", required = false) final String format,
             @RequestParam(name = "type", required = false) final String type,
             @RequestParam(name = "sorting", required = false) final String sorting,
+            @RequestParam(name = "requested", required = false) final Boolean requested,
             @AuthenticationPrincipal final CustomPrincipal user) {
-        final List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, userService.getUserId(user));
+        final List<TutorCvDTO> tutors = searcherService.getTutorCvDTOList(subject, format, type, sorting, requested, userService.getUserId(user));
         return tutors == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(tutors, HttpStatus.OK);
@@ -44,8 +45,9 @@ public class SearcherController {
             @RequestParam(name = "subject", required = false) final String subject,
             @RequestParam(name = "format", required = false) final String format,
             @RequestParam(name = "type", required = false) final String type,
+            @RequestParam(name = "offered", required = false) final Boolean offered,
             @AuthenticationPrincipal final CustomPrincipal user) {
-        final List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type,
+        final List<StudentRequestDTO> students = searcherService.getStudentRequestDTOList(subject, format, type, offered,
                 userService.getUserId(user));
         return students == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)

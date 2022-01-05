@@ -22,12 +22,19 @@ public class TutorCvDTO implements UserCard {
     private String subject;
     private List<String> sessionFormat;
     private List<String> sessionType;
-    private boolean requested;
+    private Boolean requested;
 
     @Override
     @JsonIgnore
     @JsonProperty("creatorId")
     public Long getCreatorId() {
         return tutorId;
+    }
+
+    @Override
+    @JsonIgnore
+    @JsonProperty("enrolled")
+    public Boolean isEnrolled() {
+        return requested;
     }
 }
