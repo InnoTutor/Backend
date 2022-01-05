@@ -20,12 +20,19 @@ public class StudentRequestDTO implements UserCard {
     private String subject;
     private List<String> sessionFormat;
     private List<String> sessionType;
-    private boolean offered;
+    private Boolean offered;
 
     @Override
     @JsonIgnore
     @JsonProperty("creatorId")
     public Long getCreatorId() {
         return studentId;
+    }
+
+    @Override
+    @JsonIgnore
+    @JsonProperty("enrolled")
+    public Boolean isEnrolled() {
+        return offered;
     }
 }

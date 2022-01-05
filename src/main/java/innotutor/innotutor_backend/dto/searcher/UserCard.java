@@ -10,4 +10,6 @@ public interface UserCard {
     List<String> getSessionFormat();
 
     List<String> getSessionType();
+
+    Boolean isEnrolled();
 }

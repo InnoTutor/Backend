@@ -25,6 +25,7 @@ public class SearcherService {
                                               final String specifiedFormat,
                                               final String specifiedType,
                                               final String sorting,
+                                              final Boolean requested,
                                               final Long userId) {
         List<TutorCvDTO> tutors = new ArrayList<>();
         for (final UserCard user : this.filterCards(
@@ -32,7 +33,8 @@ public class SearcherService {
                 userId,
                 specifiedSubject,
                 specifiedFormat,
-                specifiedType)) {
+                specifiedType,
+                requested)) {
             tutors.add((TutorCvDTO) user);
         }
         if (sorting != null) {
@@ -57,6 +59,7 @@ public class SearcherService {
     public List<StudentRequestDTO> getStudentRequestDTOList(final String specifiedSubject,
                                                             final String specifiedFormat,
                                                             final String specifiedType,
+                                                            final Boolean offered,
                                                             final Long userId) {
         final List<StudentRequestDTO> students = new ArrayList<>();
         for (final UserCard user : this.filterCards(
@@ -64,7 +67,8 @@ public class SearcherService {
                 userId,
                 specifiedSubject,
                 specifiedFormat,
-                specifiedType)) {
+                specifiedType,
+                offered)) {
             students.add((StudentRequestDTO) user);
         }
         return students;
@@ -125,7 +129,8 @@ public class SearcherService {
                                        final Long userId,
                                        final String specifiedSubject,
                                        final String specifiedFormat,
-                                       final String specifiedType) {
+                                       final String specifiedType,
+                                       final Boolean requested) {
         List<UserCard> result = cards.stream().filter(userCard -> !userCard.getCreatorId().equals(userId))
                 .collect(Collectors.toList());
         if (specifiedSubject != null) {
@@ -138,6 +143,10 @@ public class SearcherService {
         }
         if (specifiedType != null) {
             result = result.stream().filter(userCard -> userCard.getSessionType().contains(specifiedType))
+                    .collect(Collectors.toList());
+        }
+        if (requested != null) {
+            result = result.stream().filter(userCard -> userCard.isEnrolled().equals(requested))
                     .collect(Collectors.toList());
         }
         return result;
