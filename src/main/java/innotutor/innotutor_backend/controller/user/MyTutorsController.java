@@ -1,6 +1,6 @@
 package innotutor.innotutor_backend.controller.user;
 
-import innotutor.innotutor_backend.dto.enrollment.RespondedTutorsListInfoDTO;
+import innotutor.innotutor_backend.dto.enrollment.tutor.RespondedTutorsListInfoDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.TutorsService;

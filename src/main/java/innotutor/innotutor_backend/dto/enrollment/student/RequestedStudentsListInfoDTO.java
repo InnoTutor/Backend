@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.dto.enrollment;
+package innotutor.innotutor_backend.dto.enrollment.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

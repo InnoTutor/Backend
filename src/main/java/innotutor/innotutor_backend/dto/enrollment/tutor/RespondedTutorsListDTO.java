@@ -1,5 +1,6 @@
-package innotutor.innotutor_backend.dto.enrollment;
+package innotutor.innotutor_backend.dto.enrollment.tutor;
 
+import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
