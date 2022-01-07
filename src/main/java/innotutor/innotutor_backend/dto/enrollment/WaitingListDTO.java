@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestedStudentsListInfoDTO {
-    private List<MyStudentDTO> newStudents;
-    private List<MyStudentDTO> acceptedStudents;
+public class WaitingListDTO {
+    private List<EnrollmentDTO> students;
+    private List<EnrollmentDTO> tutors;
 }

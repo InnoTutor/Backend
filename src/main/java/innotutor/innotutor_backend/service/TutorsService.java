@@ -3,15 +3,14 @@ package innotutor.innotutor_backend.service;
 import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
-import innotutor.innotutor_backend.dto.enrollment.student.MyStudentDTO;
-import innotutor.innotutor_backend.dto.enrollment.student.RequestedStudentsListDTO;
-import innotutor.innotutor_backend.dto.enrollment.student.RequestedStudentsListInfoDTO;
+import innotutor.innotutor_backend.dto.enrollment.tutor.MyTutorDTO;
+import innotutor.innotutor_backend.dto.enrollment.tutor.RespondedTutorsListDTO;
+import innotutor.innotutor_backend.dto.enrollment.tutor.RespondedTutorsListInfoDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
-import innotutor.innotutor_backend.entity.user.Request;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.enrollment.EnrollmentStatusRepository;
-import innotutor.innotutor_backend.repository.user.RequestRepository;
+import innotutor.innotutor_backend.repository.user.ServiceRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardEnrollSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
@@ -28,58 +27,58 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class StudentsService {
+public class TutorsService {
     private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
+    private final ServiceRepository serviceRepository;
     private final EnrollmentStatusRepository enrollmentStatusRepository;
     private final UserService userService;
     private final CardService cardService;
 
-    public RequestedStudentsListDTO getUserStudentsList(final Long userId) {
+    public RespondedTutorsListDTO getUserTutorsList(final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             final User user = userOptional.get();
-            final List<EnrollmentDTO> newStudentsList = this.getNewStudentsList(user);
-            final List<EnrollmentDTO> acceptedStudentsList = this.getAcceptedStudentsList(user);
-            return new RequestedStudentsListDTO(newStudentsList, acceptedStudentsList);
+            final List<EnrollmentDTO> newTutorsList = this.getNewTutorsList(user);
+            final List<EnrollmentDTO> acceptedTutorsList = this.getAcceptedTutorsList(user);
+            return new RespondedTutorsListDTO(newTutorsList, acceptedTutorsList);
         }
         return null;
     }
 
-    public RequestedStudentsListInfoDTO getUserStudentsListFullInfo(final Long userId) {
-        RequestedStudentsListDTO students = this.getUserStudentsList(userId);
-        if (students != null) {
-            List<MyStudentDTO> newStudents = students.getNewStudents().stream()
+    public RespondedTutorsListInfoDTO getUserTutorsListFullInfo(final Long userId) {
+        RespondedTutorsListDTO tutors = this.getUserTutorsList(userId);
+        if (tutors != null) {
+            List<MyTutorDTO> newTutors = tutors.getNewTutors().stream()
                     .map(this::convertEnrollmentDTOToEnrollmentInfoDTO)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-            List<MyStudentDTO> acceptedStudents = students.getAcceptedStudents().stream()
+            List<MyTutorDTO> acceptedTutors = tutors.getAcceptedTutors().stream()
                     .map(this::convertEnrollmentDTOToEnrollmentInfoDTO)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-            return new RequestedStudentsListInfoDTO(newStudents, acceptedStudents);
+            return new RespondedTutorsListInfoDTO(newTutors, acceptedTutors);
         }
         return null;
     }
 
-    private List<EnrollmentDTO> getNewStudentsList(User user) {
+    private List<EnrollmentDTO> getNewTutorsList(User user) {
         final Long requestedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("requested").getStatusId();
-        return this.getStudentsListByStatusId(user, requestedStatusId);
+        return this.getTutorsListByStatusId(user, requestedStatusId);
     }
 
-    private List<EnrollmentDTO> getAcceptedStudentsList(User user) {
+    private List<EnrollmentDTO> getAcceptedTutorsList(User user) {
         final Long acceptedStatusId = enrollmentStatusRepository.findEnrollmentStatusByStatus("accepted").getStatusId();
-        final List<EnrollmentDTO> acceptedStudentsList = this.getStudentsListByStatusId(user, acceptedStatusId);
-        acceptedStudentsList.addAll(this.getStudentsToWhomRequested(user, acceptedStatusId));
-        return acceptedStudentsList;
+        final List<EnrollmentDTO> acceptedTutorsList = this.getTutorsListByStatusId(user, acceptedStatusId);
+        acceptedTutorsList.addAll(this.getTutorsToWhomRequested(user, acceptedStatusId));
+        return acceptedTutorsList;
     }
 
-    private List<EnrollmentDTO> getStudentsListByStatusId(final User user, final Long statusId) {
-        final List<EnrollmentDTO> studentsList = new ArrayList<>();
-        user.getServicesByUserId().forEach(service -> service.getCardByCardId().getCardEnrollsByCardId()
+    private List<EnrollmentDTO> getTutorsListByStatusId(final User user, final Long statusId) {
+        final List<EnrollmentDTO> tutorsList = new ArrayList<>();
+        user.getRequestsByUserId().forEach(request -> request.getCardByCardId().getCardEnrollsByCardId()
                 .forEach(cardEnroll -> {
                     if (cardEnroll.getStatusId().equals(statusId)) {
-                        studentsList.add(new EnrollmentDTO(
+                        tutorsList.add(new EnrollmentDTO(
                                 cardEnroll.getCardEnrollId(),
                                 cardEnroll.getUserId(),
                                 cardEnroll.getCardId(),
@@ -89,18 +88,18 @@ public class StudentsService {
                         ));
                     }
                 }));
-        return studentsList;
+        return tutorsList;
     }
 
-    private List<EnrollmentDTO> getStudentsToWhomRequested(final User tutor, final Long acceptedStatusId) {
-        final List<EnrollmentDTO> studentsList = new ArrayList<>();
-        for (final Request request : requestRepository.findAll()) {
-            final Card card = request.getCardByCardId();
+    private List<EnrollmentDTO> getTutorsToWhomRequested(final User student, final Long acceptedStatusId) {
+        final List<EnrollmentDTO> tutorsList = new ArrayList<>();
+        for (final innotutor.innotutor_backend.entity.user.Service service : serviceRepository.findAll()) {
+            final Card card = service.getCardByCardId();
             for (final CardEnroll cardEnroll : card.getCardEnrollsByCardId()) {
-                if (cardEnroll.getUserId().equals(tutor.getUserId()) && cardEnroll.getStatusId().equals(acceptedStatusId)) {
-                    studentsList.add(new EnrollmentDTO(
+                if (cardEnroll.getUserId().equals(student.getUserId()) && cardEnroll.getStatusId().equals(acceptedStatusId)) {
+                    tutorsList.add(new EnrollmentDTO(
                             cardEnroll.getCardEnrollId(),
-                            request.getStudentId(),
+                            service.getTutorId(),
                             card.getCardId(),
                             cardEnroll.getDescription(),
                             new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
@@ -110,16 +109,16 @@ public class StudentsService {
                 }
             }
         }
-        return studentsList;
+        return tutorsList;
     }
 
-    private MyStudentDTO convertEnrollmentDTOToEnrollmentInfoDTO(EnrollmentDTO enrollmentDTO) {
+    private MyTutorDTO convertEnrollmentDTOToEnrollmentInfoDTO(EnrollmentDTO enrollmentDTO) {
         Long enrollerId = enrollmentDTO.getEnrollerId();
         Long cardId = enrollmentDTO.getCardId();
         UserDTO enroller = userService.getUserById(enrollerId);
         CardDTO card = cardService.getCardById(cardId, enrollerId);
         if (enroller != null && card != null) {
-            return new MyStudentDTO(
+            return new MyTutorDTO(
                     enrollmentDTO.getEnrollmentId(),
                     enrollerId,
                     enroller.getName(),
@@ -130,8 +129,6 @@ public class StudentsService {
                     enroller.getPicture(),
                     cardId,
                     card.getSubject(),
-                    card.getRating(),
-                    card.getCountVoted(),
                     card.getDescription(),
                     card.isHidden(),
                     enrollmentDTO.getDescription(),

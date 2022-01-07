@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.controller;
+package innotutor.innotutor_backend.controller.card;
 
 import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
@@ -56,7 +56,7 @@ public class CardController {
 
     @DeleteMapping(value = "/unenroll/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteCardEnrollByCardId(@PathVariable final Long cardId,
-                                                             @AuthenticationPrincipal final CustomPrincipal user) {
+                                                      @AuthenticationPrincipal final CustomPrincipal user) {
         ResponseEntity<?> response;
         if (cardId == null) {
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);

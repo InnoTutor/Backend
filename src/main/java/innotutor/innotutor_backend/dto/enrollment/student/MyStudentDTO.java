@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.dto.enrollment;
+package innotutor.innotutor_backend.dto.enrollment.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class MyStudentDTO {
     private Double cardRating;
     private Integer cardCountVoted;
     private String cardDescription;
-    private boolean hidden;
+    private Boolean hidden;
     private String enrollmentDescription;
     private List<String> sessionFormat;
     private List<String> sessionType;

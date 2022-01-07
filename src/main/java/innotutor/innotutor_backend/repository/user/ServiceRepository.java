@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
-    List<Service> deleteByCardId(Long cardId);
-
     Service findByCardId(Long cardId);
+
+    List<Service> deleteByCardId(Long cardId);
 }
