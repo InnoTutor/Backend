@@ -1,6 +1,7 @@
 package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.enrollment.WaitingListDTO;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnrollSessionFormat;
@@ -19,11 +20,14 @@ import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
 import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.service.utility.card.CardCreatorId;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardEnrollSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
+import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardEnrollSessionTypeConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,12 +74,11 @@ public class CardEnrollService {
         if (!cardOptional.isPresent() || !userOptional.isPresent()) {
             return false;
         }
-        CardEnroll cardEnroll = this.getCardEnrolment(cardId, userId);
+        CardEnroll cardEnroll = this.getCardEnrolmentByCardId(cardId, userId);
         if (cardEnroll == null) {
             return false;
         }
         cardEnrollRepository.deleteById(cardEnroll.getCardEnrollId());
-
         return true;
     }
 
@@ -129,7 +132,32 @@ public class CardEnrollService {
     }
 
     public boolean isEnrolled(final Long cardId, final Long userId) {
-        return this.getCardEnrolment(cardId, userId) != null;
+        return this.getCardEnrolmentByCardId(cardId, userId) != null;
+    }
+
+    public WaitingListDTO getWaitingList(final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<EnrollmentDTO> students = new ArrayList<>();
+            List<EnrollmentDTO> tutors = new ArrayList<>();
+            for (CardEnroll cardEnroll : user.getCardEnrollsByUserId()) {
+                if (cardEnroll.getEnrollmentStatusByStatusId().getStatus().equals(REQUESTED)) {
+                    Card card = cardEnroll.getCardByCardId();
+                    Request request = card.getRequestByCardId();
+                    if (request != null) {
+                        students.add(this.convertCardEnrollToEnrollmentDTO(cardEnroll));
+                    } else {
+                        innotutor.innotutor_backend.entity.user.Service service = card.getServiceByCardId();
+                        if (service != null) {
+                            tutors.add(this.convertCardEnrollToEnrollmentDTO(cardEnroll));
+                        }
+                    }
+                }
+            }
+            return new WaitingListDTO(students, tutors);
+        }
+        return null;
     }
 
     private boolean acceptUser(final CardEnroll cardEnroll) {
@@ -228,7 +256,7 @@ public class CardEnrollService {
         return true;
     }
 
-    private CardEnroll getCardEnrolment(final Long cardId, final Long userId) {
+    private CardEnroll getCardEnrolmentByCardId(final Long cardId, final Long userId) {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -239,5 +267,21 @@ public class CardEnrollService {
             }
         }
         return null;
+    }
+
+    private EnrollmentDTO convertCardEnrollToEnrollmentDTO(final CardEnroll cardEnroll) {
+        List<String> sessionFormat = new CardEnrollSessionFormatConverter(
+                cardEnroll.getCardEnrollSessionFormatsByCardId())
+                .stringList();
+        List<String> sessionType = new CardEnrollSessionTypeConverter(
+                cardEnroll.getCardEnrollSessionTypesByCardId())
+                .stringList();
+        return new EnrollmentDTO(
+                cardEnroll.getCardEnrollId(),
+                cardEnroll.getUserId(),
+                cardEnroll.getCardId(),
+                cardEnroll.getDescription(),
+                sessionFormat,
+                sessionType);
     }
 }
