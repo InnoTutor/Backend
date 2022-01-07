@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 public class CardEnrollService {
     private final static String REQUESTED = "requested";
     private final static String ACCEPTED = "accepted";
+    private final static String REJECTED = "rejected";
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardEnrollRepository cardEnrollRepository;
@@ -73,8 +74,6 @@ public class CardEnrollService {
         if (cardEnroll == null) {
             return false;
         }
-        //cardEnrollSessionFormatRepository.deleteByCardEnrollId(cardId);
-        //cardEnrollSessionTypeRepository.deleteByCardEnrollId(cardId);
         cardEnrollRepository.deleteById(cardEnroll.getCardEnrollId());
 
         return true;
@@ -85,13 +84,20 @@ public class CardEnrollService {
         if (cardEnrollOptional.isPresent()) {
             final CardEnroll cardEnroll = cardEnrollOptional.get();
             final innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
-            final String previousStatus = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
-            if (service != null && service.getTutorId().equals(tutorId) && previousStatus.equals(REQUESTED)) {
-                final EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus(ACCEPTED);
-                cardEnroll.setEnrollmentStatusByStatusId(enrollmentStatus);
-                cardEnroll.setStatusId(enrollmentStatus.getStatusId());
-                cardEnrollRepository.save(cardEnroll);
-                return true;
+            if (service != null && service.getTutorId().equals(tutorId)) {
+                return this.acceptUser(cardEnroll);
+            }
+        }
+        return false;
+    }
+
+    public boolean acceptTutor(final Long studentId, final Long enrollmentId) {
+        final Optional<CardEnroll> cardEnrollOptional = cardEnrollRepository.findById(enrollmentId);
+        if (cardEnrollOptional.isPresent()) {
+            final CardEnroll cardEnroll = cardEnrollOptional.get();
+            final Request request = cardEnroll.getCardByCardId().getRequestByCardId();
+            if (request != null && request.getStudentId().equals(studentId)) {
+                return this.acceptUser(cardEnroll);
             }
         }
         return false;
@@ -103,7 +109,20 @@ public class CardEnrollService {
             final CardEnroll cardEnroll = cardEnrollOptional.get();
             final String status = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
             if (REQUESTED.equals(status) || ACCEPTED.equals(status)) {
-                return this.removeStudentCvCard(tutorId, cardEnroll) || this.removeStudentRequestCard(tutorId, cardEnroll);
+                return this.removeStudentServiceCard(tutorId, cardEnroll) || this.removeStudentRequestCard(tutorId, cardEnroll);
+            }
+        }
+        return false;
+    }
+
+    public boolean removeTutor(final Long studentId, final Long enrollmentId) {
+        final Optional<CardEnroll> cardEnrollOptional = cardEnrollRepository.findById(enrollmentId);
+        if (cardEnrollOptional.isPresent()) {
+            final CardEnroll cardEnroll = cardEnrollOptional.get();
+            final String status = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
+            if (REQUESTED.equals(status) || ACCEPTED.equals(status)) {
+                return this.removeTutorRequestCard(studentId, cardEnroll)
+                        || this.removeTutorServiceCard(studentId, cardEnroll);
             }
         }
         return false;
@@ -113,10 +132,10 @@ public class CardEnrollService {
         return this.getCardEnrolment(cardId, userId) != null;
     }
 
-    private boolean removeStudentCvCard(final Long tutorId, final CardEnroll cardEnroll) {
-        final innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
-        if (service != null && service.getTutorId().equals(tutorId)) {
-            final EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus("rejected");
+    private boolean acceptUser(final CardEnroll cardEnroll) {
+        final String previousStatus = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
+        if (previousStatus.equals(REQUESTED)) {
+            final EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus(ACCEPTED);
             cardEnroll.setEnrollmentStatusByStatusId(enrollmentStatus);
             cardEnroll.setStatusId(enrollmentStatus.getStatusId());
             cardEnrollRepository.save(cardEnroll);
@@ -125,9 +144,48 @@ public class CardEnrollService {
         return false;
     }
 
+    private boolean removeStudentServiceCard(final Long tutorId, final CardEnroll cardEnroll) {
+        final innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
+        if (service != null && service.getTutorId().equals(tutorId)) {
+            return this.rejectUserEnroll(cardEnroll);
+        }
+        return false;
+    }
+
     private boolean removeStudentRequestCard(final Long tutorId, final CardEnroll cardEnroll) {
         final Request request = cardEnroll.getCardByCardId().getRequestByCardId();
-        if (request != null && cardEnroll.getUserId().equals(tutorId)) {
+        if (request != null) {
+            return this.deleteUserEnroll(tutorId, cardEnroll);
+        }
+        return false;
+    }
+
+    private boolean removeTutorRequestCard(final Long studentId, final CardEnroll cardEnroll) {
+        final Request request = cardEnroll.getCardByCardId().getRequestByCardId();
+        if (request != null && request.getStudentId().equals(studentId)) {
+            return this.rejectUserEnroll(cardEnroll);
+        }
+        return false;
+    }
+
+    private boolean removeTutorServiceCard(final Long studentId, final CardEnroll cardEnroll) {
+        final innotutor.innotutor_backend.entity.user.Service service = cardEnroll.getCardByCardId().getServiceByCardId();
+        if (service != null) {
+            return this.deleteUserEnroll(studentId, cardEnroll);
+        }
+        return false;
+    }
+
+    private boolean rejectUserEnroll(final CardEnroll cardEnroll) {
+        final EnrollmentStatus enrollmentStatus = enrollmentStatusRepository.findEnrollmentStatusByStatus(REJECTED);
+        cardEnroll.setEnrollmentStatusByStatusId(enrollmentStatus);
+        cardEnroll.setStatusId(enrollmentStatus.getStatusId());
+        cardEnrollRepository.save(cardEnroll);
+        return true;
+    }
+
+    private boolean deleteUserEnroll(final Long userId, final CardEnroll cardEnroll) {
+        if (cardEnroll.getUserId().equals(userId)) {
             cardEnrollRepository.delete(cardEnroll);
             return true;
         }

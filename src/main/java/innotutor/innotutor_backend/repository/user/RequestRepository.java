@@ -11,5 +11,4 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Request findByCardId(Long cardId);
 
     List<Request> deleteByCardId(Long cardId);
-
 }

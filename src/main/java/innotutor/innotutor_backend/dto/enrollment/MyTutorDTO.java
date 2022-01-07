@@ -9,19 +9,17 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyStudentDTO {
+public class MyTutorDTO {
     private Long enrollmentId;
-    private Long studentId;
-    private String studentName;
-    private String studentSurname;
-    private String studentEmail;
-    private String studentContacts;
-    private String studentDescription;
-    private String studentPicture;
+    private Long tutorId;
+    private String tutorName;
+    private String tutorSurname;
+    private String tutorEmail;
+    private String tutorContacts;
+    private String tutorDescription;
+    private String tutorPicture;
     private Long cardId;
     private String subject;
-    private Double cardRating;
-    private Integer cardCountVoted;
     private String cardDescription;
     private Boolean hidden;
     private String enrollmentDescription;

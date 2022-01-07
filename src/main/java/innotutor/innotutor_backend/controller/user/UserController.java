@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.controller;
+package innotutor.innotutor_backend.controller.user;
 
 import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.security.CustomPrincipal;

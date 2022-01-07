@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.controller;
+package innotutor.innotutor_backend.controller.card;
 
 import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
