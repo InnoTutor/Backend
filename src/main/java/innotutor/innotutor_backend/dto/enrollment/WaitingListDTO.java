@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WaitingListDTO {
-    private List<EnrollmentDTO> students;
-    private List<EnrollmentDTO> tutors;
+    private List<EnrollmentDTO> studentsRequested;
+    private List<EnrollmentDTO> studentsRejected;
+    private List<EnrollmentDTO> tutorsRequested;
+    private List<EnrollmentDTO> tutorsRejected;
 }

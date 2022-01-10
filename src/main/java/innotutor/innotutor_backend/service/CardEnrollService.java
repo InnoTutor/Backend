@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -139,23 +140,24 @@ public class CardEnrollService {
         final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<EnrollmentDTO> students = new ArrayList<>();
-            List<EnrollmentDTO> tutors = new ArrayList<>();
+            HashMap<String, List<EnrollmentDTO>> students = new HashMap<>(2);
+            HashMap<String, List<EnrollmentDTO>> tutors = new HashMap<>(2);
             for (CardEnroll cardEnroll : user.getCardEnrollsByUserId()) {
-                if (cardEnroll.getEnrollmentStatusByStatusId().getStatus().equals(REQUESTED)) {
+                String enrollmentStatus = cardEnroll.getEnrollmentStatusByStatusId().getStatus();
+                if (enrollmentStatus.equals(REQUESTED) || enrollmentStatus.equals(REJECTED)) {
                     Card card = cardEnroll.getCardByCardId();
+                    EnrollmentDTO enrollmentDTO = this.convertCardEnrollToEnrollmentDTO(cardEnroll);
                     Request request = card.getRequestByCardId();
+                    innotutor.innotutor_backend.entity.user.Service service = card.getServiceByCardId();
                     if (request != null) {
-                        students.add(this.convertCardEnrollToEnrollmentDTO(cardEnroll));
-                    } else {
-                        innotutor.innotutor_backend.entity.user.Service service = card.getServiceByCardId();
-                        if (service != null) {
-                            tutors.add(this.convertCardEnrollToEnrollmentDTO(cardEnroll));
-                        }
+                        this.updateEnrollmentList(students, enrollmentDTO, enrollmentStatus);
+                    } else if (service != null) {
+                        this.updateEnrollmentList(tutors, enrollmentDTO, enrollmentStatus);
                     }
                 }
             }
-            return new WaitingListDTO(students, tutors);
+            return new WaitingListDTO(students.get(REQUESTED), students.get(REJECTED),
+                    tutors.get(REQUESTED), tutors.get(REJECTED));
         }
         return null;
     }
@@ -283,5 +285,13 @@ public class CardEnrollService {
                 cardEnroll.getDescription(),
                 sessionFormat,
                 sessionType);
+    }
+
+    private void updateEnrollmentList(HashMap<String, List<EnrollmentDTO>> enrollmentList,
+                                      EnrollmentDTO enrollmentDTO,
+                                      String enrollmentStatus) {
+        List<EnrollmentDTO> currentList = enrollmentList.getOrDefault(enrollmentStatus, new ArrayList<>());
+        currentList.add(enrollmentDTO);
+        enrollmentList.put(enrollmentStatus, currentList);
     }
 }
