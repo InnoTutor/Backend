@@ -1,6 +1,7 @@
 package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.searcher.UserCard;
 import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.user.Request;
 import innotutor.innotutor_backend.entity.user.User;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CardService {
+    private final CardEnrollService cardEnrollService;
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final SessionFormatRepository sessionFormatRepository;
@@ -42,7 +44,25 @@ public class CardService {
             final Card card = cardOptional.get();
             final Long creatorId = new CardCreatorId(card).creatorId();
             if (!card.getHidden() || userId.equals(creatorId)) {
-                return new CardDTOCreator(card, creatorId, subjectRepository).create();
+                return new CardDTOCreator(card, creatorId, cardEnrollService, userId).create();
+            }
+        }
+        return null;
+    }
+
+    public UserCard getCardFullInfoById(final Long cardId, final Long userId) {
+        final Optional<Card> cardOptional = cardRepository.findById(cardId);
+        if (cardOptional.isPresent()) {
+            final Card card = cardOptional.get();
+            final Long creatorId = new CardCreatorId(card).creatorId();
+            if (!card.getHidden() || userId.equals(creatorId)) {
+                innotutor.innotutor_backend.entity.user.Service service = card.getServiceByCardId();
+                Request request = card.getRequestByCardId();
+                if (service != null) {
+                    return new CardDTOCreator(card, creatorId, cardEnrollService, userId).createTutorCvDTO();
+                } else if (request != null) {
+                    return new CardDTOCreator(card, creatorId, cardEnrollService, userId).createStudentRequestDTO();
+                }
             }
         }
         return null;
@@ -79,6 +99,7 @@ public class CardService {
     public CardDTO putCvCard(final CardDTO cardDTO) {
         return new CardUpdater(cardDTO,
                 CardType.SERVICE,
+                cardDTO.getCreatorId(),
                 cardRepository,
                 userRepository,
                 subjectRepository,
@@ -87,12 +108,14 @@ public class CardService {
                 serviceRepository,
                 requestRepository,
                 cardSessionFormatRepository,
-                cardSessionTypeRepository).putCard();
+                cardSessionTypeRepository,
+                cardEnrollService).putCard();
     }
 
     public CardDTO putRequestCard(final CardDTO cardDTO) {
         return new CardUpdater(cardDTO,
                 CardType.REQUEST,
+                cardDTO.getCreatorId(),
                 cardRepository,
                 userRepository,
                 subjectRepository,
@@ -101,7 +124,8 @@ public class CardService {
                 serviceRepository,
                 requestRepository,
                 cardSessionFormatRepository,
-                cardSessionTypeRepository).putCard();
+                cardSessionTypeRepository,
+                cardEnrollService).putCard();
     }
 
     public boolean deleteCardById(final Long userId, final Long cardId) {
