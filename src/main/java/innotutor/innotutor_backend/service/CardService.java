@@ -68,67 +68,23 @@ public class CardService {
         return null;
     }
 
-    public CardDTO postCvCard(final CardDTO cardDTO) {
-        return new CardCreator(cardDTO,
-                CardType.SERVICE,
-                cardRepository,
-                userRepository,
-                subjectRepository,
-                sessionFormatRepository,
-                sessionTypeRepository,
-                serviceRepository,
-                requestRepository,
-                cardSessionFormatRepository,
-                cardSessionTypeRepository).postCard();
+    public CardDTO postCvCard(final CardDTO cardDTO, final Long userId) {
+        return this.postCard(CardType.SERVICE, cardDTO, userId);
     }
 
-    public CardDTO postRequestCard(final CardDTO cardDTO) {
-        return new CardCreator(cardDTO,
-                CardType.REQUEST,
-                cardRepository,
-                userRepository,
-                subjectRepository,
-                sessionFormatRepository,
-                sessionTypeRepository,
-                serviceRepository,
-                requestRepository,
-                cardSessionFormatRepository,
-                cardSessionTypeRepository).postCard();
+    public CardDTO postRequestCard(final CardDTO cardDTO, final Long userId) {
+        return this.postCard(CardType.REQUEST, cardDTO, userId);
     }
 
-    public CardDTO putCvCard(final CardDTO cardDTO) {
-        return new CardUpdater(cardDTO,
-                CardType.SERVICE,
-                cardDTO.getCreatorId(),
-                cardRepository,
-                userRepository,
-                subjectRepository,
-                sessionFormatRepository,
-                sessionTypeRepository,
-                serviceRepository,
-                requestRepository,
-                cardSessionFormatRepository,
-                cardSessionTypeRepository,
-                cardEnrollService).putCard();
+    public CardDTO putCvCard(final Long cardId, final CardDTO cardDTO, final Long userId) {
+        return this.putCard(cardId, CardType.SERVICE, cardDTO, userId);
     }
 
-    public CardDTO putRequestCard(final CardDTO cardDTO) {
-        return new CardUpdater(cardDTO,
-                CardType.REQUEST,
-                cardDTO.getCreatorId(),
-                cardRepository,
-                userRepository,
-                subjectRepository,
-                sessionFormatRepository,
-                sessionTypeRepository,
-                serviceRepository,
-                requestRepository,
-                cardSessionFormatRepository,
-                cardSessionTypeRepository,
-                cardEnrollService).putCard();
+    public CardDTO putRequestCard(final Long cardId, final CardDTO cardDTO, final Long userId) {
+        return this.putCard(cardId, CardType.REQUEST, cardDTO, userId);
     }
 
-    public boolean deleteCardById(final Long userId, final Long cardId) {
+    public boolean deleteCardById(final Long cardId, final Long userId) {
         final Optional<Card> cardOptional = cardRepository.findById(cardId);
         final Optional<User> userOptional = userRepository.findById(userId);
         if (!cardOptional.isPresent() || !userOptional.isPresent()) {
@@ -145,5 +101,38 @@ public class CardService {
             return true;
         }
         return false;
+    }
+
+    private CardDTO postCard(final CardType cardType, final CardDTO cardDTO, final Long userId) {
+        cardDTO.setCreatorId(userId);
+        return new CardCreator(cardDTO,
+                cardType,
+                cardRepository,
+                userRepository,
+                subjectRepository,
+                sessionFormatRepository,
+                sessionTypeRepository,
+                serviceRepository,
+                requestRepository,
+                cardSessionFormatRepository,
+                cardSessionTypeRepository).postCard();
+    }
+
+    private CardDTO putCard(final Long cardId, final CardType cardType, final CardDTO cardDTO, final Long userId) {
+        cardDTO.setCreatorId(userId);
+        cardDTO.setCardId(cardId);
+        return new CardUpdater(cardDTO,
+                cardType,
+                userId,
+                cardRepository,
+                userRepository,
+                subjectRepository,
+                sessionFormatRepository,
+                sessionTypeRepository,
+                serviceRepository,
+                requestRepository,
+                cardSessionFormatRepository,
+                cardSessionTypeRepository,
+                cardEnrollService).putCard();
     }
 }

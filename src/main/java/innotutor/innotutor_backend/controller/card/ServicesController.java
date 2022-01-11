@@ -75,8 +75,7 @@ public class ServicesController {
         if (cardDTO == null) {
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            cardDTO.setCreatorId(userService.getUserId(user));
-            final CardDTO result = cardService.postCvCard(cardDTO);
+            final CardDTO result = cardService.postCvCard(cardDTO, userService.getUserId(user));
             response = result == null
                     ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)
                     : new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -92,9 +91,7 @@ public class ServicesController {
         if (cardDTO == null || cardId == null) {
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            cardDTO.setCreatorId(userService.getUserId(user));
-            cardDTO.setCardId(cardId);
-            final CardDTO result = cardService.putCvCard(cardDTO);
+            final CardDTO result = cardService.putCvCard(cardId, cardDTO, userService.getUserId(user));
             if (result == null) {
                 response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {

@@ -73,7 +73,7 @@ public class CardController {
         if (cardId == null) {
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            response = cardService.deleteCardById(userService.getUserId(user), cardId)
+            response = cardService.deleteCardById(cardId, userService.getUserId(user))
                     ? new ResponseEntity<>(HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
