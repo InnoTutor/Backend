@@ -233,7 +233,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
         this.sessionsByUserId = sessionsByUserId;
     }
 
-    @OneToMany(mappedBy = "userByStudentId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userByStudentId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<SessionStudent> getSessionStudentsByUserId() {
         return sessionStudentsByUserId;
     }

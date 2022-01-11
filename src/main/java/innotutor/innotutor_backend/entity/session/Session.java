@@ -7,8 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -257,7 +255,7 @@ public class Session { // NOPMD - suppressed GodClass
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 
-    @OneToMany(mappedBy = "sessionBySessionId")
+    @OneToMany(mappedBy = "sessionBySessionId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<SessionStudent> getSessionStudentsBySessionId() {
         return sessionStudentsBySessionId;
     }

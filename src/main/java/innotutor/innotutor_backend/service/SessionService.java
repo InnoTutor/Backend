@@ -88,7 +88,10 @@ public class SessionService {
         final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
         final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
         final Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent() && sessionFormat != null && sessionType != null) {
+        if (sessionDTO.getStartTime().compareTo(LocalDateTime.now()) >= 0
+                && userOptional.isPresent()
+                && sessionFormat != null
+                && sessionType != null) {
             final User tutor = userOptional.get();
             final Optional<Card> cardOptional = tutor.getServicesByUserId().stream()
                     .map(innotutor.innotutor_backend.entity.user.Service::getCardByCardId)
@@ -99,6 +102,22 @@ public class SessionService {
             }
         }
         return null;
+    }
+
+    public Boolean cancelSession(final Long sessionId, final Long userId) {
+        Optional<Session> sessionOptional = sessionRepository.findById(sessionId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sessionOptional.isPresent() && userOptional.isPresent()) {
+            Session session = sessionOptional.get();
+            User user = userOptional.get();
+            if (session.getEndTime().compareTo(LocalDateTime.now()) >= 0) {
+                return session.getTutorId().equals(userId)
+                        ? this.cancelSessionTutor(session)
+                        : this.cancelSessionStudent(sessionId, user);
+            }
+            return null;
+        }
+        return false;
     }
 
     public List<UserDTO> filterStudentsForSession(final Long tutorId,
@@ -194,6 +213,24 @@ public class SessionService {
                     session.getDescription());
         }
         return null;
+    }
+
+    private boolean cancelSessionTutor(Session session) {
+        sessionRepository.delete(session);
+        return true;
+    }
+
+    private boolean cancelSessionStudent(Long sessionId, User student) {
+        Optional<SessionStudent> sessionStudentToDeleteOptional = student.getSessionStudentsByUserId()
+                .stream()
+                .filter(sessionStudent -> sessionStudent.getSessionId().equals(sessionId))
+                .findAny();
+        if (sessionStudentToDeleteOptional.isPresent()) {
+            SessionStudent sessionStudentToDelete = sessionStudentToDeleteOptional.get();
+            sessionStudentRepository.delete(sessionStudentToDelete);
+            return true;
+        }
+        return false;
     }
 
     private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
