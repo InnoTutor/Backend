@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,12 +16,10 @@ public class SessionDTO {
     private Long tutorId;
     private List<Long> studentIDsList;
     private String subject;
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date date;
-    @JsonFormat(pattern = "hh:mm:ss")
-    private Time startTime;
-    @JsonFormat(pattern = "hh:mm:ss")
-    private Time endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSSSS")
+    private LocalDateTime startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSSSS")
+    private LocalDateTime endTime;
     private String sessionFormat;
     private String sessionType;
     private String description;

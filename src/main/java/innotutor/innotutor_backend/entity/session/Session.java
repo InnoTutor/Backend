@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -24,9 +25,8 @@ public class Session { // NOPMD - suppressed GodClass
     private Long subjectId;
     private Long sessionFormatId;
     private Long sessionTypeId;
-    private Date date;
-    private Time startTime;
-    private Time endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String description;
     private Timestamp creationDate;
     private Timestamp lastUpdate;
@@ -40,9 +40,8 @@ public class Session { // NOPMD - suppressed GodClass
                    final Long subjectId,
                    final Long sessionFormatId,
                    final Long sessionTypeId,
-                   final Date date,
-                   final Time startTime,
-                   final Time endTime,
+                   final LocalDateTime startTime,
+                   final LocalDateTime endTime,
                    final String description,
                    final User userByTutorId,
                    final Subject subjectBySubjectId,
@@ -52,7 +51,6 @@ public class Session { // NOPMD - suppressed GodClass
         this.subjectId = subjectId;
         this.sessionFormatId = sessionFormatId;
         this.sessionTypeId = sessionTypeId;
-        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
@@ -114,32 +112,22 @@ public class Session { // NOPMD - suppressed GodClass
     }
 
     @Basic
-    @Column(name = "date", nullable = false)
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(final Date date) {
-        this.date = date;
-    }
-
-    @Basic
     @Column(name = "start_time", nullable = false)
-    public Time getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(final Time startTime) {
+    public void setStartTime(final LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "end_time", nullable = false)
-    public Time getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(final Time endTime) {
+    public void setEndTime(final LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -199,9 +187,6 @@ public class Session { // NOPMD - suppressed GodClass
         if (!Objects.equals(sessionTypeId, session.sessionTypeId)) {
             return false;
         }
-        if (!Objects.equals(date, session.date)) {
-            return false;
-        }
         if (!Objects.equals(startTime, session.startTime)) {
             return false;
         }
@@ -224,7 +209,6 @@ public class Session { // NOPMD - suppressed GodClass
         result = 31 * result + (subjectId == null ? 0 : subjectId.hashCode());
         result = 31 * result + (sessionFormatId == null ? 0 : sessionFormatId.hashCode());
         result = 31 * result + (sessionTypeId == null ? 0 : sessionTypeId.hashCode());
-        result = 31 * result + (date == null ? 0 : date.hashCode());
         result = 31 * result + (startTime == null ? 0 : startTime.hashCode());
         result = 31 * result + (endTime == null ? 0 : endTime.hashCode());
         result = 31 * result + (description == null ? 0 : description.hashCode());

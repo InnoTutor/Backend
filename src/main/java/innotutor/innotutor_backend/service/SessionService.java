@@ -2,8 +2,10 @@ package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.SessionRatingDTO;
 import innotutor.innotutor_backend.dto.card.SubjectDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.session.ScheduleDTO;
 import innotutor.innotutor_backend.dto.session.SessionDTO;
 import innotutor.innotutor_backend.dto.session.sessionsettings.SessionFormatDTO;
 import innotutor.innotutor_backend.dto.session.sessionsettings.SessionTypeDTO;
@@ -24,9 +26,8 @@ import innotutor.innotutor_backend.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,10 +83,11 @@ public class SessionService {
         return null;
     }
 
-    public SessionDTO postSession(final SessionDTO sessionDTO) {
+    public SessionDTO postSession(final SessionDTO sessionDTO, final Long userId) {
+        sessionDTO.setTutorId(userId);
         final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
         final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
-        final Optional<User> userOptional = userRepository.findById(sessionDTO.getTutorId());
+        final Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent() && sessionFormat != null && sessionType != null) {
             final User tutor = userOptional.get();
             final Optional<Card> cardOptional = tutor.getServicesByUserId().stream()
@@ -125,6 +127,39 @@ public class SessionService {
         return result;
     }
 
+    public ScheduleDTO getSchedule(final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            final User user = userOptional.get();
+            Collection<Session> studyingSessions = user.getSessionStudentsByUserId()
+                    .stream()
+                    .map(SessionStudent::getSessionBySessionId)
+                    .collect(Collectors.toList());
+            Collection<Session> teachingSessions = user.getSessionsByUserId();
+            HashMap<String, List<SessionDTO>> studyingSessionsSeparated
+                    = this.separateConductedUpcomingSessions(studyingSessions);
+            HashMap<String, List<SessionDTO>> teachingSessionsSeparated
+                    = this.separateConductedUpcomingSessions(teachingSessions);
+            return new ScheduleDTO(
+                    studyingSessionsSeparated.get("conducted"),
+                    studyingSessionsSeparated.get("upcoming"),
+                    teachingSessionsSeparated.get("conducted"),
+                    teachingSessionsSeparated.get("upcoming")
+            );
+        }
+        return null;
+    }
+
+    //todo implement
+    //todo you can rate someone's service cards
+    //todo you can rate your request cards
+    //todo handle null rating and delete request
+    //todo rate sessions instead of cards (add feedback form)
+    public SessionRatingDTO rateSession(final SessionRatingDTO sessionRatingDTO, final Long userId) {
+
+        return null;
+    }
+
     private SessionDTO createSession(final User tutor, final Card card, final SessionDTO sessionDTO,
                                      final SessionFormat sessionFormat, final SessionType sessionType) {
         final List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
@@ -138,7 +173,6 @@ public class SessionService {
                             card.getSubjectId(),
                             sessionFormat.getSessionFormatId(),
                             sessionType.getSessionTypeId(),
-                            sessionDTO.getDate(),
                             sessionDTO.getStartTime(),
                             sessionDTO.getEndTime(),
                             sessionDTO.getDescription(),
@@ -153,7 +187,6 @@ public class SessionService {
                     tutor.getUserId(),
                     studentIDsList,
                     card.getSubjectBySubjectId().getName(),
-                    session.getDate(),
                     session.getStartTime(),
                     session.getEndTime(),
                     sessionFormat.getName(),
@@ -179,8 +212,8 @@ public class SessionService {
 
     private void saveSessionStudentList(final Session session, final List<User> students) {
         final List<SessionStudent> sessionStudentList = new ArrayList<>();
-        students.forEach(student -> sessionStudentList.add(new SessionStudent(session.getSessionId(), student.getUserId(),
-                session, student)));
+        students.forEach(student -> sessionStudentList.add(
+                new SessionStudent(session.getSessionId(), student.getUserId(), session, student)));
         sessionStudentRepository.saveAll(sessionStudentList);
     }
 
@@ -199,5 +232,38 @@ public class SessionService {
             }
         }
         return result;
+    }
+
+    private HashMap<String, List<SessionDTO>> separateConductedUpcomingSessions(Collection<Session> sessions) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        List<SessionDTO> conductedSessions = sessions.stream()
+                .filter(session -> session.getEndTime().compareTo(currentDateTime) < 0)
+                .map(this::convertSessionToSessionDTO)
+                .sorted(Comparator.comparing(SessionDTO::getStartTime).reversed())
+                .collect(Collectors.toList());
+        List<SessionDTO> upcomingSessions = sessions.stream()
+                .filter(session -> session.getEndTime().compareTo(currentDateTime) >= 0)
+                .map(this::convertSessionToSessionDTO)
+                .sorted(Comparator.comparing(SessionDTO::getStartTime))
+                .collect(Collectors.toList());
+        HashMap<String, List<SessionDTO>> separatedSessions = new HashMap<>(2);
+        separatedSessions.put("conducted", conductedSessions);
+        separatedSessions.put("upcoming", upcomingSessions);
+        return separatedSessions;
+    }
+
+    private SessionDTO convertSessionToSessionDTO(Session session) {
+        final List<Long> studentIDsList = new ArrayList<>();
+        session.getSessionStudentsBySessionId().forEach(student -> studentIDsList.add(student.getStudentId()));
+        return new SessionDTO(
+                session.getSessionId(),
+                session.getTutorId(),
+                studentIDsList,
+                session.getSubjectBySubjectId().getName(),
+                session.getStartTime(),
+                session.getEndTime(),
+                session.getSessionFormatBySessionFormatId().getName(),
+                session.getSessionTypeBySessionTypeId().getName(),
+                session.getDescription());
     }
 }
