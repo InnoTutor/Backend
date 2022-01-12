@@ -170,7 +170,7 @@ public class SessionService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (sessionOptional.isPresent() && userOptional.isPresent()) {
             Session session = sessionOptional.get();
-            if (this.isSessionStudentExist(session, userId)) {
+            if (session.getEndTime().compareTo(LocalDateTime.now()) < 0 && this.isSessionStudentExist(session, userId)) {
                 return this.changeSessionRating(sessionRatingDTO, session, userId, userOptional.get());
             }
         }
@@ -302,7 +302,7 @@ public class SessionService {
                 .stream()
                 .filter(sessionRating -> sessionRating.getUserId().equals(studentId))
                 .findAny();
-        if (sessionRatingOptional.isPresent()){
+        if (sessionRatingOptional.isPresent()) {
             sessionRatingRepository.delete(sessionRatingOptional.get());
             return true;
         }
