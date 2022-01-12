@@ -3,6 +3,7 @@ package innotutor.innotutor_backend.entity.user;
 import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.session.Session;
+import innotutor.innotutor_backend.entity.session.SessionRating;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,6 +30,7 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
     private Timestamp lastUpdate;
     private Collection<CardEnroll> cardEnrollsByUserId;
     private Collection<CardRating> cardRatingsByUserId;
+    private Collection<SessionRating> sessionRatingsByUserId;
     private Collection<Request> requestsByUserId;
     private Collection<Service> servicesByUserId;
     private Collection<Session> sessionsByUserId;
@@ -204,6 +206,15 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
 
     public void setCardRatingsByUserId(final Collection<CardRating> cardRatingsByUserId) {
         this.cardRatingsByUserId = cardRatingsByUserId;
+    }
+
+    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+    public Collection<SessionRating> getSessionRatingsByUserId() {
+        return sessionRatingsByUserId;
+    }
+
+    public void setSessionRatingsByUserId(final Collection<SessionRating> sessionRatingsByUserId) {
+        this.sessionRatingsByUserId = sessionRatingsByUserId;
     }
 
     @OneToMany(mappedBy = "userByStudentId", cascade = CascadeType.ALL)

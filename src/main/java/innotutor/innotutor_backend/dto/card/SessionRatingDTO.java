@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionRatingDTO {
-    private Long cardId;
+    private Long sessionId;
     private Integer mark;
+    private String feedback;
 }

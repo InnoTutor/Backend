@@ -73,7 +73,7 @@ public class SessionController {
         return response;
     }
 
-    @DeleteMapping(value = "cancel/{sessionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/cancel/{sessionId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> cancelSession(@PathVariable final Long sessionId,
                                            @AuthenticationPrincipal final CustomPrincipal user) {
         ResponseEntity<?> response;
@@ -105,6 +105,21 @@ public class SessionController {
             } else {
                 response = new ResponseEntity<>(result, HttpStatus.OK);
             }
+        }
+        return response;
+    }
+
+    @DeleteMapping(value = "/rate/{sessionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteRating(@PathVariable final Long sessionId,
+                                          @AuthenticationPrincipal final CustomPrincipal user) {
+        ResponseEntity<?> response;
+        if (sessionId == null) {
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            response = sessionService.deleteRating(sessionId, userService.getUserId(user))
+                    ? new ResponseEntity<>(HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
         return response;
     }

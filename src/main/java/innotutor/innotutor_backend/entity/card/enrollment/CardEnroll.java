@@ -28,7 +28,8 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final String description, final Card cardByCardId, final User userByUserId,
+    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final String description,
+                      final Card cardByCardId, final User userByUserId,
                       final EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;

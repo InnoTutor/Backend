@@ -18,6 +18,7 @@ import java.util.Objects;
 public class Session { // NOPMD - suppressed GodClass
     // NOPMD - suppressed TooManyFields
     // It's not a GodClass since it represents only entity from DB
+    private final static String SESSION_BY_SESSION_ID = "sessionBySessionId";
     private Long sessionId;
     private Long tutorId;
     private Long subjectId;
@@ -33,6 +34,7 @@ public class Session { // NOPMD - suppressed GodClass
     private SessionFormat sessionFormatBySessionFormatId;
     private SessionType sessionTypeBySessionTypeId;
     private Collection<SessionStudent> sessionStudentsBySessionId;
+    private Collection<SessionRating> sessionRatingsBySessionId;
 
     public Session(final Long tutorId,
                    final Long subjectId,
@@ -255,12 +257,21 @@ public class Session { // NOPMD - suppressed GodClass
         this.sessionTypeBySessionTypeId = sessionTypeBySessionTypeId;
     }
 
-    @OneToMany(mappedBy = "sessionBySessionId", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = SESSION_BY_SESSION_ID, cascade = CascadeType.REMOVE, orphanRemoval = true)
     public Collection<SessionStudent> getSessionStudentsBySessionId() {
         return sessionStudentsBySessionId;
     }
 
     public void setSessionStudentsBySessionId(final Collection<SessionStudent> sessionStudentsBySessionId) {
         this.sessionStudentsBySessionId = sessionStudentsBySessionId;
+    }
+
+    @OneToMany(mappedBy = SESSION_BY_SESSION_ID)
+    public Collection<SessionRating> getSessionRatingsBySessionId() {
+        return sessionRatingsBySessionId;
+    }
+
+    public void setSessionRatingsBySessionId(final Collection<SessionRating> sessionRatingsBySessionId) {
+        this.sessionRatingsBySessionId = sessionRatingsBySessionId;
     }
 }

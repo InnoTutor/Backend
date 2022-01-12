@@ -96,7 +96,7 @@ public class CardUpdater {
         }
         if (cardDTO.getCreatorId().equals(new CardCreatorId(card).creatorId())
                 && !sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
-            return updateCard();
+            return this.updateCard();
         }
         return null;
     }
