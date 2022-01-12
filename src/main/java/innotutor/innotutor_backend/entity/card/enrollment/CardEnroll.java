@@ -4,8 +4,6 @@ import innotutor.innotutor_backend.entity.card.Card;
 import innotutor.innotutor_backend.entity.user.User;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -30,7 +28,8 @@ public class CardEnroll {
     private Collection<CardEnrollSessionFormat> cardEnrollSessionFormatsByCardId;
     private Collection<CardEnrollSessionType> cardEnrollSessionTypesByCardId;
 
-    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final String description, final Card cardByCardId, final User userByUserId,
+    public CardEnroll(final Long cardId, final Long userId, final Long statusId, final String description,
+                      final Card cardByCardId, final User userByUserId,
                       final EnrollmentStatus enrollmentStatusByStatusId) {
         this.cardId = cardId;
         this.userId = userId;

@@ -1,7 +1,7 @@
 package innotutor.innotutor_backend.controller.card;
 
-import innotutor.innotutor_backend.dto.card.CardDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.searcher.UserCard;
 import innotutor.innotutor_backend.security.CustomPrincipal;
 import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.CardService;
@@ -28,11 +28,11 @@ public class CardController {
     }
 
     @GetMapping(value = "/card/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CardDTO> getCard(@PathVariable final Long cardId, @AuthenticationPrincipal final CustomPrincipal user) {
+    public ResponseEntity<UserCard> getCard(@PathVariable final Long cardId, @AuthenticationPrincipal final CustomPrincipal user) {
         if (cardId == null) {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        final CardDTO card = cardService.getCardById(cardId, userService.getUserId(user));
+        final UserCard card = cardService.getCardFullInfoById(cardId, userService.getUserId(user));
         return card == null
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(card, HttpStatus.OK);
@@ -73,7 +73,7 @@ public class CardController {
         if (cardId == null) {
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            response = cardService.deleteCardById(userService.getUserId(user), cardId)
+            response = cardService.deleteCardById(cardId, userService.getUserId(user))
                     ? new ResponseEntity<>(HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

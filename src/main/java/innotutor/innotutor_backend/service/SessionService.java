@@ -2,47 +2,44 @@ package innotutor.innotutor_backend.service;
 
 import innotutor.innotutor_backend.dto.UserDTO;
 import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.card.SessionRatingDTO;
 import innotutor.innotutor_backend.dto.card.SubjectDTO;
 import innotutor.innotutor_backend.dto.enrollment.EnrollmentDTO;
+import innotutor.innotutor_backend.dto.session.ScheduleDTO;
 import innotutor.innotutor_backend.dto.session.SessionDTO;
 import innotutor.innotutor_backend.dto.session.sessionsettings.SessionFormatDTO;
 import innotutor.innotutor_backend.dto.session.sessionsettings.SessionTypeDTO;
 import innotutor.innotutor_backend.entity.card.Card;
-import innotutor.innotutor_backend.entity.session.Session;
-import innotutor.innotutor_backend.entity.session.SessionFormat;
-import innotutor.innotutor_backend.entity.session.SessionType;
-import innotutor.innotutor_backend.entity.session.Subject;
+import innotutor.innotutor_backend.entity.session.*;
 import innotutor.innotutor_backend.entity.user.SessionStudent;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.CardRepository;
-import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
-import innotutor.innotutor_backend.repository.session.SessionRepository;
-import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
-import innotutor.innotutor_backend.repository.session.SubjectRepository;
+import innotutor.innotutor_backend.repository.session.*;
 import innotutor.innotutor_backend.repository.user.SessionStudentRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
+import innotutor.innotutor_backend.service.utility.card.ValidSessionRating;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class SessionService {
     private final static String PRIVATE_TYPE = "private";
-    private final CardsListService cardsListService;
     private final UserService userService;
+    private final StudentsService studentsService;
+    private final CardsListService cardsListService;
     private final SessionRepository sessionRepository;
     private final SessionFormatRepository sessionFormatRepository;
     private final SessionTypeRepository sessionTypeRepository;
-    private final SubjectRepository subjectRepository;
-    private final UserRepository userRepository;
     private final SessionStudentRepository sessionStudentRepository;
+    private final SessionRatingRepository sessionRatingRepository;
+    private final UserRepository userRepository;
     private final CardRepository cardRepository;
-    private final StudentsService studentsService;
+    private final SubjectRepository subjectRepository;
 
     public List<SessionFormatDTO> getSessionFormats() {
         final List<SessionFormatDTO> sessionFormats = new ArrayList<>();
@@ -82,11 +79,15 @@ public class SessionService {
         return null;
     }
 
-    public SessionDTO postSession(final SessionDTO sessionDTO) {
+    public SessionDTO postSession(final SessionDTO sessionDTO, final Long userId) {
+        sessionDTO.setTutorId(userId);
         final SessionFormat sessionFormat = sessionFormatRepository.findSessionFormatByName(sessionDTO.getSessionFormat());
         final SessionType sessionType = sessionTypeRepository.findSessionTypeByName(sessionDTO.getSessionType());
-        final Optional<User> userOptional = userRepository.findById(sessionDTO.getTutorId());
-        if (userOptional.isPresent() && sessionFormat != null && sessionType != null) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (sessionDTO.getStartTime().compareTo(LocalDateTime.now()) >= 0
+                && userOptional.isPresent()
+                && sessionFormat != null
+                && sessionType != null) {
             final User tutor = userOptional.get();
             final Optional<Card> cardOptional = tutor.getServicesByUserId().stream()
                     .map(innotutor.innotutor_backend.entity.user.Service::getCardByCardId)
@@ -97,6 +98,22 @@ public class SessionService {
             }
         }
         return null;
+    }
+
+    public Boolean cancelSession(final Long sessionId, final Long userId) {
+        Optional<Session> sessionOptional = sessionRepository.findById(sessionId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sessionOptional.isPresent() && userOptional.isPresent()) {
+            Session session = sessionOptional.get();
+            User user = userOptional.get();
+            if (session.getEndTime().compareTo(LocalDateTime.now()) >= 0) {
+                return session.getTutorId().equals(userId)
+                        ? this.cancelSessionTutor(session)
+                        : this.cancelSessionStudent(sessionId, user);
+            }
+            return null;
+        }
+        return false;
     }
 
     public List<UserDTO> filterStudentsForSession(final Long tutorId,
@@ -125,6 +142,53 @@ public class SessionService {
         return result;
     }
 
+    public ScheduleDTO getSchedule(final Long userId) {
+        final Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            final User user = userOptional.get();
+            Collection<Session> studyingSessions = user.getSessionStudentsByUserId()
+                    .stream()
+                    .map(SessionStudent::getSessionBySessionId)
+                    .collect(Collectors.toList());
+            Collection<Session> teachingSessions = user.getSessionsByUserId();
+            HashMap<String, List<SessionDTO>> studyingSessionsSeparated
+                    = this.separateConductedUpcomingSessions(studyingSessions);
+            HashMap<String, List<SessionDTO>> teachingSessionsSeparated
+                    = this.separateConductedUpcomingSessions(teachingSessions);
+            return new ScheduleDTO(
+                    studyingSessionsSeparated.get("conducted"),
+                    studyingSessionsSeparated.get("upcoming"),
+                    teachingSessionsSeparated.get("conducted"),
+                    teachingSessionsSeparated.get("upcoming")
+            );
+        }
+        return null;
+    }
+
+    public SessionRatingDTO rateSession(final SessionRatingDTO sessionRatingDTO, final Long userId) {
+        Optional<Session> sessionOptional = sessionRepository.findById(sessionRatingDTO.getSessionId());
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sessionOptional.isPresent() && userOptional.isPresent()) {
+            Session session = sessionOptional.get();
+            if (session.getEndTime().compareTo(LocalDateTime.now()) < 0 && this.isSessionStudentExist(session, userId)) {
+                return this.changeSessionRating(sessionRatingDTO, session, userId, userOptional.get());
+            }
+        }
+        return null;
+    }
+
+    public boolean deleteRating(final Long sessionId, final Long userId) {
+        Optional<Session> sessionOptional = sessionRepository.findById(sessionId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sessionOptional.isPresent() && userOptional.isPresent()) {
+            Session session = sessionOptional.get();
+            if (this.isSessionStudentExist(session, userId)) {
+                return this.deleteSessionRating(session, userId);
+            }
+        }
+        return false;
+    }
+
     private SessionDTO createSession(final User tutor, final Card card, final SessionDTO sessionDTO,
                                      final SessionFormat sessionFormat, final SessionType sessionType) {
         final List<User> students = this.getValidStudents(tutor.getUserId(), sessionDTO.getStudentIDsList(),
@@ -138,7 +202,6 @@ public class SessionService {
                             card.getSubjectId(),
                             sessionFormat.getSessionFormatId(),
                             sessionType.getSessionTypeId(),
-                            sessionDTO.getDate(),
                             sessionDTO.getStartTime(),
                             sessionDTO.getEndTime(),
                             sessionDTO.getDescription(),
@@ -153,7 +216,6 @@ public class SessionService {
                     tutor.getUserId(),
                     studentIDsList,
                     card.getSubjectBySubjectId().getName(),
-                    session.getDate(),
                     session.getStartTime(),
                     session.getEndTime(),
                     sessionFormat.getName(),
@@ -161,6 +223,24 @@ public class SessionService {
                     session.getDescription());
         }
         return null;
+    }
+
+    private boolean cancelSessionTutor(Session session) {
+        sessionRepository.delete(session);
+        return true;
+    }
+
+    private boolean cancelSessionStudent(Long sessionId, User student) {
+        Optional<SessionStudent> sessionStudentToDeleteOptional = student.getSessionStudentsByUserId()
+                .stream()
+                .filter(sessionStudent -> sessionStudent.getSessionId().equals(sessionId))
+                .findAny();
+        if (sessionStudentToDeleteOptional.isPresent()) {
+            SessionStudent sessionStudentToDelete = sessionStudentToDeleteOptional.get();
+            sessionStudentRepository.delete(sessionStudentToDelete);
+            return true;
+        }
+        return false;
     }
 
     private List<User> getValidStudents(final Long tutorId, final List<Long> studentIDsList, final String subject, final String sessionFormat,
@@ -179,9 +259,60 @@ public class SessionService {
 
     private void saveSessionStudentList(final Session session, final List<User> students) {
         final List<SessionStudent> sessionStudentList = new ArrayList<>();
-        students.forEach(student -> sessionStudentList.add(new SessionStudent(session.getSessionId(), student.getUserId(),
-                session, student)));
+        students.forEach(student -> sessionStudentList.add(
+                new SessionStudent(session.getSessionId(), student.getUserId(), session, student)));
         sessionStudentRepository.saveAll(sessionStudentList);
+    }
+
+    private SessionRatingDTO changeSessionRating(final SessionRatingDTO sessionRatingDTO,
+                                                 final Session session,
+                                                 final Long userId,
+                                                 final User student) {
+        Long sessionId = sessionRatingDTO.getSessionId();
+        Integer mark = sessionRatingDTO.getMark();
+        if (new ValidSessionRating(mark).isValid()) {
+            Optional<SessionRating> sessionRatingOptional = session.getSessionRatingsBySessionId()
+                    .stream()
+                    .filter(sessionRating -> sessionRating.getUserId().equals(userId))
+                    .findAny();
+            String feedback = sessionRatingDTO.getFeedback();
+            SessionRating savedSessionRating;
+            if (sessionRatingOptional.isPresent()) {
+                SessionRating sessionRating = sessionRatingOptional.get();
+                sessionRating.setMark(mark);
+                sessionRating.setFeedback(feedback);
+                savedSessionRating = sessionRatingRepository.save(sessionRating);
+            } else {
+                savedSessionRating = sessionRatingRepository.save(
+                        new SessionRating(sessionId, userId, mark, feedback, session, student));
+            }
+            return new SessionRatingDTO(
+                    savedSessionRating.getSessionId(),
+                    savedSessionRating.getMark(),
+                    savedSessionRating.getFeedback());
+        } else if (mark == null) {
+            this.deleteSessionRating(session, userId);
+            return sessionRatingDTO;
+        }
+        return null;
+    }
+
+    private boolean deleteSessionRating(final Session session, final Long studentId) {
+        Optional<SessionRating> sessionRatingOptional = session.getSessionRatingsBySessionId()
+                .stream()
+                .filter(sessionRating -> sessionRating.getUserId().equals(studentId))
+                .findAny();
+        if (sessionRatingOptional.isPresent()) {
+            sessionRatingRepository.delete(sessionRatingOptional.get());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSessionStudentExist(final Session session, final Long studentId) {
+        return session.getSessionStudentsBySessionId()
+                .stream()
+                .anyMatch(sessionStudent -> sessionStudent.getStudentId().equals(studentId));
     }
 
     private List<SubjectDTO> getAvailableSubjects(final List<CardDTO> userCards) {
@@ -199,5 +330,38 @@ public class SessionService {
             }
         }
         return result;
+    }
+
+    private HashMap<String, List<SessionDTO>> separateConductedUpcomingSessions(Collection<Session> sessions) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        List<SessionDTO> conductedSessions = sessions.stream()
+                .filter(session -> session.getEndTime().compareTo(currentDateTime) < 0)
+                .map(this::convertSessionToSessionDTO)
+                .sorted(Comparator.comparing(SessionDTO::getStartTime).reversed())
+                .collect(Collectors.toList());
+        List<SessionDTO> upcomingSessions = sessions.stream()
+                .filter(session -> session.getEndTime().compareTo(currentDateTime) >= 0)
+                .map(this::convertSessionToSessionDTO)
+                .sorted(Comparator.comparing(SessionDTO::getStartTime))
+                .collect(Collectors.toList());
+        HashMap<String, List<SessionDTO>> separatedSessions = new HashMap<>(2);
+        separatedSessions.put("conducted", conductedSessions);
+        separatedSessions.put("upcoming", upcomingSessions);
+        return separatedSessions;
+    }
+
+    private SessionDTO convertSessionToSessionDTO(Session session) {
+        final List<Long> studentIDsList = new ArrayList<>();
+        session.getSessionStudentsBySessionId().forEach(student -> studentIDsList.add(student.getStudentId()));
+        return new SessionDTO(
+                session.getSessionId(),
+                session.getTutorId(),
+                studentIDsList,
+                session.getSubjectBySubjectId().getName(),
+                session.getStartTime(),
+                session.getEndTime(),
+                session.getSessionFormatBySessionFormatId().getName(),
+                session.getSessionTypeBySessionTypeId().getName(),
+                session.getDescription());
     }
 }

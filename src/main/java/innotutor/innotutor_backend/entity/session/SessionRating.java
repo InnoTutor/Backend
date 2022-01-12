@@ -1,4 +1,4 @@
-package innotutor.innotutor_backend.entity.card;
+package innotutor.innotutor_backend.entity.session;
 
 import innotutor.innotutor_backend.entity.user.User;
 import lombok.NoArgsConstructor;
@@ -11,36 +11,47 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "card_rating", schema = "public", catalog = "innotutor")
-public class CardRating {
-    private Long cardRatingId;
-    private Long cardId;
+@Table(name = "session_rating", schema = "public", catalog = "innotutor")
+public class SessionRating {
+    private Long sessionRatingId;
+    private Long sessionId;
     private Long userId;
     private Integer mark;
+    private String feedback;
     private Timestamp creationDate;
     private Timestamp lastUpdate;
-    private Card cardByCardId;
+    private Session sessionBySessionId;
     private User userByUserId;
+
+    public SessionRating(final Long sessionId, final Long userId, final Integer mark, final String feedback,
+                         final Session sessionBySessionId, final User userByUserId) {
+        this.sessionId = sessionId;
+        this.userId = userId;
+        this.mark = mark;
+        this.feedback = feedback;
+        this.sessionBySessionId = sessionBySessionId;
+        this.userByUserId = userByUserId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "card_rating_id", nullable = false)
-    public Long getCardRatingId() {
-        return cardRatingId;
+    @Column(name = "session_rating_id", nullable = false)
+    public Long getSessionRatingId() {
+        return sessionRatingId;
     }
 
-    public void setCardRatingId(final Long cardRatingId) {
-        this.cardRatingId = cardRatingId;
+    public void setSessionRatingId(final Long sessionRatingId) {
+        this.sessionRatingId = sessionRatingId;
     }
 
     @Basic
-    @Column(name = "card_id", nullable = false, insertable = false, updatable = false)
-    public Long getCardId() {
-        return cardId;
+    @Column(name = "session_id", nullable = false, insertable = false, updatable = false)
+    public Long getSessionId() {
+        return sessionId;
     }
 
-    public void setCardId(final Long cardId) {
-        this.cardId = cardId;
+    public void setSessionId(final Long sessionId) {
+        this.sessionId = sessionId;
     }
 
     @Basic
@@ -61,6 +72,16 @@ public class CardRating {
 
     public void setMark(final Integer mark) {
         this.mark = mark;
+    }
+
+    @Basic
+    @Column(name = "feedback", length = 256)
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(final String feedback) {
+        this.feedback = feedback;
     }
 
     @Basic
@@ -93,17 +114,20 @@ public class CardRating {
         if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        final CardRating that = (CardRating) object;
-        if (!Objects.equals(cardRatingId, that.cardRatingId)) {
+        final SessionRating that = (SessionRating) object;
+        if (!Objects.equals(sessionRatingId, that.sessionRatingId)) {
             return false;
         }
-        if (!Objects.equals(cardId, that.cardId)) {
+        if (!Objects.equals(sessionId, that.sessionId)) {
             return false;
         }
         if (!Objects.equals(userId, that.userId)) {
             return false;
         }
         if (!Objects.equals(mark, that.mark)) {
+            return false;
+        }
+        if (!Objects.equals(feedback, that.feedback)) {
             return false;
         }
         if (!Objects.equals(creationDate, that.creationDate)) {
@@ -114,23 +138,24 @@ public class CardRating {
 
     @Override
     public int hashCode() {
-        int result = cardRatingId == null ? 0 : cardRatingId.hashCode();
-        result = 31 * result + (cardId == null ? 0 : cardId.hashCode());
+        int result = sessionRatingId == null ? 0 : sessionRatingId.hashCode();
+        result = 31 * result + (sessionId == null ? 0 : sessionId.hashCode());
         result = 31 * result + (userId == null ? 0 : userId.hashCode());
         result = 31 * result + (mark == null ? 0 : mark.hashCode());
+        result = 31 * result + (feedback == null ? 0 : feedback.hashCode());
         result = 31 * result + (creationDate == null ? 0 : creationDate.hashCode());
         result = 31 * result + (lastUpdate == null ? 0 : lastUpdate.hashCode());
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "card_id", referencedColumnName = "card_id", nullable = false)
-    public Card getCardByCardId() {
-        return cardByCardId;
+    @JoinColumn(name = "session_id", referencedColumnName = "session_id", nullable = false)
+    public Session getSessionBySessionId() {
+        return sessionBySessionId;
     }
 
-    public void setCardByCardId(final Card cardByCardId) {
-        this.cardByCardId = cardByCardId;
+    public void setSessionBySessionId(final Session sessionBySessionId) {
+        this.sessionBySessionId = sessionBySessionId;
     }
 
     @ManyToOne

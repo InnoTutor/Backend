@@ -1,37 +1,73 @@
 package innotutor.innotutor_backend.service.utility.card;
 
 import innotutor.innotutor_backend.dto.card.CardDTO;
+import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
+import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.entity.card.Card;
-import innotutor.innotutor_backend.entity.card.CardRating;
-import innotutor.innotutor_backend.repository.session.SubjectRepository;
+import innotutor.innotutor_backend.entity.user.User;
+import innotutor.innotutor_backend.service.CardEnrollService;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
 
-import java.util.Collection;
-
 public class CardDTOCreator {
     private final transient Card card;
-    private final transient Long creatorId;
-    private final transient SubjectRepository subjectRepository;
+    private final transient User creator;
+    private final transient CardEnrollService cardEnrollService;
+    private final transient Long userId;
 
-    public CardDTOCreator(final Card card, final Long creatorId, final SubjectRepository subjectRepository) {
+    public CardDTOCreator(final Card card, final User creator,
+                          final CardEnrollService cardEnrollService, final Long userId) {
         this.card = card;
-        this.creatorId = creatorId;
-        this.subjectRepository = subjectRepository;
+        this.creator = creator;
+        this.cardEnrollService = cardEnrollService;
+        this.userId = userId;
     }
 
     public CardDTO create() {
-        final Collection<CardRating> ratings = card.getCardRatingsByCardId();
+        final Ratings ratings = new Ratings(creator, card.getSubjectId());
         return new CardDTO(
                 card.getCardId(),
-                creatorId,
-                subjectRepository.getById(card.getSubjectId()).getName(),
-                new AverageCardRating(ratings).averageRating(),
-                ratings.size(),
+                creator.getUserId(),
+                card.getSubjectBySubjectId().getName(),
+                ratings.averageRating(),
+                ratings.countVoted(),
                 card.getDescription(),
                 card.getHidden(),
                 new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
                 new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList()
+        );
+    }
+
+    public TutorCvDTO createTutorCvDTO() {
+        final Long cardId = card.getCardId();
+        final Ratings ratings = new Ratings(creator, card.getSubjectId());
+        return new TutorCvDTO(
+                creator.getUserId(),
+                creator.getName(),
+                creator.getSurname(),
+                cardId,
+                ratings.averageRating(),
+                ratings.countVoted(),
+                card.getDescription(),
+                card.getSubjectBySubjectId().getName(),
+                new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
+                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList(),
+                cardEnrollService.isEnrolled(cardId, userId)
+        );
+    }
+
+    public StudentRequestDTO createStudentRequestDTO() {
+        final Long cardId = card.getCardId();
+        return new StudentRequestDTO(
+                creator.getUserId(),
+                creator.getName(),
+                creator.getSurname(),
+                cardId,
+                card.getDescription(),
+                card.getSubjectBySubjectId().getName(),
+                new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
+                new CardSessionTypeConverter(card.getCardSessionTypesByCardId()).stringList(),
+                cardEnrollService.isEnrolled(cardId, userId)
         );
     }
 }
