@@ -14,7 +14,7 @@ import innotutor.innotutor_backend.repository.user.RequestRepository;
 import innotutor.innotutor_backend.repository.user.ServiceRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
 import innotutor.innotutor_backend.service.CardEnrollService;
-import innotutor.innotutor_backend.service.utility.card.CardCreatorId;
+import innotutor.innotutor_backend.service.utility.card.CardCreatorUser;
 import innotutor.innotutor_backend.service.utility.card.CardDTOCreator;
 import innotutor.innotutor_backend.service.utility.card.CardType;
 import innotutor.innotutor_backend.service.utility.saver.SessionFormatsCardSaver;
@@ -82,7 +82,7 @@ public class CardUpdater {
 
     public CardDTO putCard() {
         if (card == null) {
-            return new CardCreator(cardDTO,
+            return new innotutor.innotutor_backend.service.utility.cardmanager.CardCreator(cardDTO,
                     type,
                     cardRepository,
                     userRepository,
@@ -94,7 +94,7 @@ public class CardUpdater {
                     cardSessionFormatRepository,
                     cardSessionTypeRepository).postCard();
         }
-        if (cardDTO.getCreatorId().equals(new CardCreatorId(card).creatorId())
+        if (cardDTO.getCreatorId().equals(new CardCreatorUser(card).creatorId())
                 && !sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {
             return this.updateCard();
         }
@@ -107,7 +107,7 @@ public class CardUpdater {
         Card savedCard = cardRepository.save(card);
         savedCard = this.updateSessionFormats(savedCard);
         savedCard = this.updateSessionTypes(savedCard);
-        return new CardDTOCreator(savedCard, cardDTO.getCreatorId(), cardEnrollService, userId).create();
+        return new CardDTOCreator(savedCard, new CardCreatorUser(savedCard).creator(), cardEnrollService, userId).create();
     }
 
     private Card updateSessionFormats(final Card card) {

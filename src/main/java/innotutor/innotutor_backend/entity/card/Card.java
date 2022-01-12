@@ -27,7 +27,6 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
     private Request requestByCardId;
     private Service serviceByCardId;
     private Collection<CardEnroll> cardEnrollsByCardId;
-    private Collection<CardRating> cardRatingsByCardId;
     private Collection<CardSessionFormat> cardSessionFormatsByCardId;
     private Collection<CardSessionType> cardSessionTypesByCardId;
 
@@ -150,15 +149,6 @@ public class Card { //NOPMD - suppressed ShortClassName - It has the same databa
 
     public void setCardEnrollsByCardId(final Collection<CardEnroll> cardEnrollsByCardId) {
         this.cardEnrollsByCardId = cardEnrollsByCardId;
-    }
-
-    @OneToMany(mappedBy = CARD_BY_CARD_ID)
-    public Collection<CardRating> getCardRatingsByCardId() {
-        return cardRatingsByCardId;
-    }
-
-    public void setCardRatingsByCardId(final Collection<CardRating> cardRatingsByCardId) {
-        this.cardRatingsByCardId = cardRatingsByCardId;
     }
 
     @OneToMany(mappedBy = CARD_BY_CARD_ID)

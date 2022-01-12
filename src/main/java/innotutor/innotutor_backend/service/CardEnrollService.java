@@ -19,7 +19,7 @@ import innotutor.innotutor_backend.repository.card.enrollment.EnrollmentStatusRe
 import innotutor.innotutor_backend.repository.session.SessionFormatRepository;
 import innotutor.innotutor_backend.repository.session.SessionTypeRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
-import innotutor.innotutor_backend.service.utility.card.CardCreatorId;
+import innotutor.innotutor_backend.service.utility.card.CardCreatorUser;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardEnrollSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardEnrollSessionTypeConverter;
@@ -55,7 +55,7 @@ public class CardEnrollService {
         final Optional<User> userOptional = userRepository.findById(enrollerId);
         if (cardOptional.isPresent() && userOptional.isPresent()) {
             final Card card = cardOptional.get();
-            if (!enrollerId.equals(new CardCreatorId(card).creatorId()) && isUniquePair(enrollerId, cardId)) {
+            if (!enrollerId.equals(new CardCreatorUser(card).creatorId()) && isUniquePair(enrollerId, cardId)) {
                 final List<String> sessionFormats = this.getCommonSessionFormats(card, enrollmentDTO);
                 final List<String> sessionTypes = this.getCommonSessionTypes(card, enrollmentDTO);
                 if (!sessionFormats.isEmpty() && !sessionTypes.isEmpty()) {

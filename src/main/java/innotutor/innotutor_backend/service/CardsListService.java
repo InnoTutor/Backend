@@ -27,7 +27,7 @@ public class CardsListService {
                     services.add(
                             new CardDTOCreator(
                                     service.getCardByCardId(),
-                                    user.getUserId(),
+                                    user,
                                     cardEnrollService,
                                     userId).create()
                     )
@@ -51,7 +51,7 @@ public class CardsListService {
             user.getRequestsByUserId().forEach(request ->
                     requests.add(
                             new CardDTOCreator(request.getCardByCardId(),
-                                    user.getUserId(),
+                                    user,
                                     cardEnrollService,
                                     userId).create()
                     )

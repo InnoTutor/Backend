@@ -14,10 +14,9 @@ import innotutor.innotutor_backend.repository.session.SubjectRepository;
 import innotutor.innotutor_backend.repository.user.RequestRepository;
 import innotutor.innotutor_backend.repository.user.ServiceRepository;
 import innotutor.innotutor_backend.repository.user.UserRepository;
-import innotutor.innotutor_backend.service.utility.card.CardCreatorId;
+import innotutor.innotutor_backend.service.utility.card.CardCreatorUser;
 import innotutor.innotutor_backend.service.utility.card.CardDTOCreator;
 import innotutor.innotutor_backend.service.utility.card.CardType;
-import innotutor.innotutor_backend.service.utility.cardmanager.CardCreator;
 import innotutor.innotutor_backend.service.utility.cardmanager.CardUpdater;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,9 +41,9 @@ public class CardService {
         final Optional<Card> cardOptional = cardRepository.findById(cardId);
         if (cardOptional.isPresent()) {
             final Card card = cardOptional.get();
-            final Long creatorId = new CardCreatorId(card).creatorId();
-            if (!card.getHidden() || userId.equals(creatorId)) {
-                return new CardDTOCreator(card, creatorId, cardEnrollService, userId).create();
+            final User creator = new CardCreatorUser(card).creator();
+            if (!card.getHidden() || userId.equals(creator.getUserId())) {
+                return new CardDTOCreator(card, creator, cardEnrollService, userId).create();
             }
         }
         return null;
@@ -54,14 +53,14 @@ public class CardService {
         final Optional<Card> cardOptional = cardRepository.findById(cardId);
         if (cardOptional.isPresent()) {
             final Card card = cardOptional.get();
-            final Long creatorId = new CardCreatorId(card).creatorId();
-            if (!card.getHidden() || userId.equals(creatorId)) {
+            final User creator = new CardCreatorUser(card).creator();
+            if (!card.getHidden() || userId.equals(creator.getUserId())) {
                 innotutor.innotutor_backend.entity.user.Service service = card.getServiceByCardId();
                 Request request = card.getRequestByCardId();
                 if (service != null) {
-                    return new CardDTOCreator(card, creatorId, cardEnrollService, userId).createTutorCvDTO();
+                    return new CardDTOCreator(card, creator, cardEnrollService, userId).createTutorCvDTO();
                 } else if (request != null) {
-                    return new CardDTOCreator(card, creatorId, cardEnrollService, userId).createStudentRequestDTO();
+                    return new CardDTOCreator(card, creator, cardEnrollService, userId).createStudentRequestDTO();
                 }
             }
         }
@@ -105,7 +104,7 @@ public class CardService {
 
     private CardDTO postCard(final CardType cardType, final CardDTO cardDTO, final Long userId) {
         cardDTO.setCreatorId(userId);
-        return new CardCreator(cardDTO,
+        return new innotutor.innotutor_backend.service.utility.cardmanager.CardCreator(cardDTO,
                 cardType,
                 cardRepository,
                 userRepository,

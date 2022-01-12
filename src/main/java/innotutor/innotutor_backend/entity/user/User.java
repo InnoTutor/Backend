@@ -1,6 +1,5 @@
 package innotutor.innotutor_backend.entity.user;
 
-import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.card.enrollment.CardEnroll;
 import innotutor.innotutor_backend.entity.session.Session;
 import innotutor.innotutor_backend.entity.session.SessionRating;
@@ -29,7 +28,6 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
     private Timestamp creationDate;
     private Timestamp lastUpdate;
     private Collection<CardEnroll> cardEnrollsByUserId;
-    private Collection<CardRating> cardRatingsByUserId;
     private Collection<SessionRating> sessionRatingsByUserId;
     private Collection<Request> requestsByUserId;
     private Collection<Service> servicesByUserId;
@@ -197,15 +195,6 @@ public class User { //NOPMD - suppressed ShortClassName - It has the same databa
 
     public void setCardEnrollsByUserId(final Collection<CardEnroll> cardEnrollsByUserId) {
         this.cardEnrollsByUserId = cardEnrollsByUserId;
-    }
-
-    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
-    public Collection<CardRating> getCardRatingsByUserId() {
-        return cardRatingsByUserId;
-    }
-
-    public void setCardRatingsByUserId(final Collection<CardRating> cardRatingsByUserId) {
-        this.cardRatingsByUserId = cardRatingsByUserId;
     }
 
     @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)

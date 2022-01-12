@@ -3,16 +3,18 @@ package innotutor.innotutor_backend.service;
 import innotutor.innotutor_backend.dto.searcher.StudentRequestDTO;
 import innotutor.innotutor_backend.dto.searcher.TutorCvDTO;
 import innotutor.innotutor_backend.dto.searcher.UserCard;
-import innotutor.innotutor_backend.entity.card.CardRating;
 import innotutor.innotutor_backend.entity.user.User;
 import innotutor.innotutor_backend.repository.card.CardRepository;
-import innotutor.innotutor_backend.service.utility.card.AverageCardRating;
+import innotutor.innotutor_backend.service.utility.card.Ratings;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessionformat.CardSessionFormatConverter;
 import innotutor.innotutor_backend.service.utility.sessionconverter.sessiontype.CardSessionTypeConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,17 +80,17 @@ public class SearcherService {
         final List<TutorCvDTO> tutors = new ArrayList<>();
         cardRepository.findByHidden(false).forEach(card -> {
             if (card.getServiceByCardId() != null) {
-                final Collection<CardRating> ratings = card.getCardRatingsByCardId();
                 final User tutor = card.getServiceByCardId().getUserByTutorId();
                 final Long cardId = card.getCardId();
+                Ratings ratings = new Ratings(tutor, card.getSubjectId());
                 tutors.add(
                         new TutorCvDTO(
                                 tutor.getUserId(),
                                 tutor.getName(),
                                 tutor.getSurname(),
                                 cardId,
-                                new AverageCardRating(ratings).averageRating(),
-                                ratings.size(),
+                                ratings.averageRating(),
+                                ratings.countVoted(),
                                 card.getDescription(),
                                 card.getSubjectBySubjectId().getName(),
                                 new CardSessionFormatConverter(card.getCardSessionFormatsByCardId()).stringList(),
